@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/startup"
+    android:layout_width="fill_parent"
+    android:layout_height="fill_parent"
+    >
+
+    <ImageView
+        android:layout_width="150dp"
+        android:layout_height="101.1dp"
+        android:layout_marginStart="30dp"
+        android:layout_marginTop="120dp"
+        android:src="@drawable/ic_dotoo_blue"
+        android:contentDescription="@string/logo" />
+
+    <View
+        android:id="@+id/startup_upper_box"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="44dp"
+        android:background="@drawable/ic_startup_upper_box"
+        />
+
+    <View
+        android:id="@+id/startup_lower_box"
+        android:layout_width="fill_parent"
+        android:layout_height="fill_parent"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginTop="82dp"
+        android:background="@drawable/ic_startup_lower_box" />
+
+    <Button
+        android:id="@+id/button_startup_login"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="243dp"
+        android:layout_height="66dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="58dp"
+        android:layout_marginBottom="133dp"
+        android:background="@drawable/ic_button"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/button_login"
+        android:textColor="@color/text_blue"
+        android:textSize="26sp" />
+
+    <Button
+        android:id="@+id/button_startup_signup"
+        style="@style/Widget.AppCompat.Button"
+        android:layout_width="243dp"
+        android:layout_height="66dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginLeft="58dp"
+        android:layout_marginRight="58dp"
+        android:layout_marginBottom="51dp"
+        android:background="@drawable/ic_button"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/button_signup"
+        android:textColor="@color/text_blue"
+        android:textSize="26sp" />
+</RelativeLayout>
+<!--<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"-->
+<!--    xmlns:app="http://schemas.android.com/apk/res-auto"-->
+<!--    xmlns:tools="http://schemas.android.com/tools"-->
+<!--    android:layout_width="match_parent"-->
+<!--    android:layout_height="match_parent"-->
+<!--    tools:context=".StartupActivity"/>-->
