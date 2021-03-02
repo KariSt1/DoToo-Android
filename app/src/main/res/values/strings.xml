@@ -5,4 +5,5 @@
     <string name="logo">Dotoo logo</string>
     <string name="hint_password">Password</string>
     <string name="hint_username">Username</string>
+    <string name="hint_name">Name</string>
 </resources>

@@ -26,6 +26,13 @@ public class StartupActivity extends AppCompatActivity {
             }
         });
         mSignupButton = (Button) findViewById(R.id.button_startup_signup);
+        mSignupButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent i = new Intent(StartupActivity.this, SignupActivity.class);
+                startActivity(i);
+            }
+        });
 
     }
 }
