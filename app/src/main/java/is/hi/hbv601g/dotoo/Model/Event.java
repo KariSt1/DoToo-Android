@@ -1,4 +1,4 @@
-package is.hi.hbv601g.dotoo.server.entities;
+package is.hi.hbv601g.dotoo.Model;
 
 import java.util.Calendar;
 

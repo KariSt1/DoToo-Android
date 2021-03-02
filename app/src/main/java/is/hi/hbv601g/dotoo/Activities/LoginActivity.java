@@ -1,4 +1,4 @@
-package is.hi.hbv601g.dotoo.client;
+package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 

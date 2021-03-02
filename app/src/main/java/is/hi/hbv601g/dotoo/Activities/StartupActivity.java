@@ -1,4 +1,4 @@
-package is.hi.hbv601g.dotoo.client;
+package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -31,6 +31,7 @@ public class StartupActivity extends AppCompatActivity {
         mSignupButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                System.out.println("TEST");
                 Intent i = new Intent(StartupActivity.this, SignupActivity.class);
                 startActivity(i);
             }
