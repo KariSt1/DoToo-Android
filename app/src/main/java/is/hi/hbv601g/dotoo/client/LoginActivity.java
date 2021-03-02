@@ -1,14 +1,16 @@
-package is.hi.hbv601g.dotoo;
+package is.hi.hbv601g.dotoo.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
 
-public class SignupActivity extends AppCompatActivity {
+import is.hi.hbv601g.dotoo.R;
+
+public class LoginActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_signup);
+        setContentView(R.layout.activity_login);
     }
 }
