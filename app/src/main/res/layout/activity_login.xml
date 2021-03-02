@@ -69,6 +69,7 @@
         android:layout_marginBottom="201dp"
         android:ems="10"
         android:inputType="textPersonName"
+        android:hint="Username"
         android:autofillHints="username" />
 
     <EditText
@@ -86,6 +87,7 @@
         android:fontFamily="@font/montserrat_regular"
         android:layout_marginBottom="148dp"
         android:ems="10"
+        android:hint="Password"
         android:inputType="textPassword"
         android:autofillHints="password" />
 </RelativeLayout>
