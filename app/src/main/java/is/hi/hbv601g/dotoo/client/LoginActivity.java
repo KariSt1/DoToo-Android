@@ -1,8 +1,10 @@
-package is.hi.hbv601g.dotoo;
+package is.hi.hbv601g.dotoo.client;
 
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.os.Bundle;
+
+import is.hi.hbv601g.dotoo.R;
 
 public class LoginActivity extends AppCompatActivity {
 
