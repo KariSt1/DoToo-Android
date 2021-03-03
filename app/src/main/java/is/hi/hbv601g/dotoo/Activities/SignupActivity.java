@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.Request;
@@ -48,30 +49,40 @@ public class SignupActivity extends AppCompatActivity {
                 RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
                 String url = "http://10.0.2.2:8080/signup";
                 //Gson gson = new Gson();
-                User user = new User(mUsername.getText().toString(), mName.getText().toString(), mPassword.getText().toString());
-                //String json = gson.toJson(user);
-                JSONObject json = new JSONObject();
-                try {
-                    json.put("username", user.getUsername());
-                    json.put("name", user.getName());
-                    json.put("password", user.getPassword());
-                } catch (JSONException e) {
-                    e.printStackTrace();
+                if(mPassword.getText().toString().equals("")) {
+                    mPassword.setError(getString(R.string.signup_no_password));
+                    mPassword.requestFocus();
                 }
+                else if(mPassword.getText().toString().length() < 8) {
+                    mPassword.setError(getString(R.string.signup_password_incorrect_length));
+                    mPassword.requestFocus();
+                } else {
+                    User user = new User(mUsername.getText().toString(), mName.getText().toString(), mPassword.getText().toString());
+                    //String json = gson.toJson(user);
+                    JSONObject json = new JSONObject();
+                    try {
+                        json.put("username", user.getUsername());
+                        json.put("name", user.getName());
+                        json.put("password", user.getPassword());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
 
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("Fengum villu, notandi líklega til");
-                        error.printStackTrace();
-                    }
-                });
-                queue.add(jsonObjectRequest);
+                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            System.out.println(response);
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            mUsername.setError(getString(R.string.toast_signup_username_taken));
+                            mUsername.requestFocus();
+                            error.printStackTrace();
+                        }
+                    });
+                    queue.add(jsonObjectRequest);
+                }
             }
         });
     }
