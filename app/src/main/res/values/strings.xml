@@ -6,4 +6,7 @@
     <string name="hint_password">Password</string>
     <string name="hint_username">Username</string>
     <string name="hint_name">Name</string>
+    <string name="toast_signup_username_taken">That username is taken. Try another.</string>
+    <string name="signup_password_incorrect_length">Password must be at least 8 characters</string>
+    <string name="signup_no_password">Please enter a password</string>
 </resources>
