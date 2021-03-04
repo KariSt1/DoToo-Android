@@ -35,8 +35,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-       // mUsername = (EditText) findViewById(R.id.login_username);
-       // mPassword = (EditText) findViewById(R.id.login_password);
+        mUsername = (EditText) findViewById(R.id.login_username);
+        mPassword = (EditText) findViewById(R.id.login_password);
         mLoginButton = (Button) findViewById(R.id.button_login);
         mLoginButton.setOnClickListener(new View.OnClickListener() {
 
@@ -44,37 +44,29 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 System.out.print("Ýtt á login");
 
-                String url = "http://10.0.2.2:8080/login";
+                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
+                String url = "https://dotoo2.herokuapp.com/login";
 
-                List<String> jsonResponses = new ArrayList<>();
+                JSONObject json = new JSONObject();
+                try {
+                    json.put("username", mUsername.getText().toString());
+                    json.put("password", mPassword.getText().toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
 
-                RequestQueue requestQueue = Volley.newRequestQueue(LoginActivity.this);
-                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, null, new Response.Listener<JSONObject>() {
+                JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.GET, url, json, new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
-                        try {
-                            JSONArray jsonArray = response.getJSONArray("user");
-                            for(int i = 0; i < jsonArray.length(); i++){
-                                JSONObject jsonObject = jsonArray.getJSONObject(i);
-                                String username = jsonObject.getString("username");
-                                String password = jsonObject.getString("password");
-
-                                jsonResponses.add(username);
-                                jsonResponses.add(password);
-                            }
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
+                        System.out.println(response);
                     }
                 }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         error.printStackTrace();
-                        System.out.println("Fengum villu við að logga inn");
                     }
                 });
-
-                requestQueue.add(jsonObjectRequest);
+                queue.add(jsonObjectRequest);
 
             }
         });
