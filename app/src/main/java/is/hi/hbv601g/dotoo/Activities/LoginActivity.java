@@ -2,6 +2,7 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +45,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 System.out.print("Ýtt á login");
 
-                String url = "http://10.0.2.2:8080/login";
+                String url = "https://dotoo2.herokuapp.com/login";
 
                 List<String> jsonResponses = new ArrayList<>();
 
@@ -62,6 +63,9 @@ public class LoginActivity extends AppCompatActivity {
                                 jsonResponses.add(username);
                                 jsonResponses.add(password);
                             }
+                            Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                            i.putExtra("is.hi.hbv601g.dotoo.user_result", "fakeUser");
+                            startActivity(i);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
