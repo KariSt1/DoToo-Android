@@ -13,6 +13,7 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoToo">
+        <activity android:name=".Activities.HomeActivity"></activity>
         <activity android:name=".Activities.SignupActivity"></activity>
         <activity android:name=".Activities.StartupActivity">
             <intent-filter>
