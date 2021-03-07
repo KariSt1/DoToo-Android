@@ -4,10 +4,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".Activities.TodoListActivity">
+    tools:context=".Activities.TodoListActivity"
+    android:orientation="horizontal">
 
     <ExpandableListView
-        android:id="@+id/todolist_expandablelist"
+        android:id="@+id/todolist_expandableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"></ExpandableListView>
 

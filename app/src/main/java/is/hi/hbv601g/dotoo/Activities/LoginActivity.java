@@ -60,6 +60,9 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
+                        Intent i = new Intent(LoginActivity.this, TodoListActivity.class);
+                        startActivity(i);
+                        /**
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         String user = "Vitlaust nafn";
                         try {
@@ -69,6 +72,7 @@ public class LoginActivity extends AppCompatActivity {
                         }
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user);
                         startActivity(i);
+                         **/
                     }
                 }, new Response.ErrorListener() {
                     @Override
