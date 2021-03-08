@@ -63,7 +63,7 @@ public class LoginActivity extends AppCompatActivity {
                         Intent i = new Intent(LoginActivity.this, TodoListActivity.class);
                         startActivity(i);
                         /**
-                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                        Intent i = new Intent(LoginActivity.this, CalendarActivity.class);
                         String user = "Vitlaust nafn";
                         try {
                             user = response.getString("name");
