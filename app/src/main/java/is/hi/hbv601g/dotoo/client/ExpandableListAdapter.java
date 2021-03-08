@@ -81,6 +81,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView listText = (TextView) convertView.findViewById(R.id.todolist_title);
         listText.setText(todoList.getName());
+
+        Button deleteList = (Button) convertView.findViewById(R.id.todolist_delete);
+
         return convertView;
     }
 
