@@ -6,6 +6,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
+import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.TextView;
@@ -106,6 +107,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView itemText = (TextView) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
+
+        Button deleteItemButton = (Button) convertView.findViewById(R.id.todolist_item_delete);
+        deleteItemButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mTodoListItems.get(mTodoLists.get(groupPosition)).remove(childPosition);
+                notifyDataSetChanged();
+            }
+        });
+
         return convertView;
     }
 
