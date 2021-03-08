@@ -7,6 +7,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -70,6 +71,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TodoList todoList = (TodoList) getGroup(groupPosition);
+        System.out.println("getGroupView todolist name: " + todoList.getName());
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -84,6 +86,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         TodoListItem todoListItem = (TodoListItem) getChild(groupPosition, childPosition);
+        System.out.println("getChildView item: " + todoListItem.getDescription());
 
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -92,7 +95,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         CheckBox itemCheckBox = (CheckBox) convertView.findViewById(R.id.todolist_item_checkbox);
-        //itemCheckBox.setChecked(todoListItem.getChecked());
+        itemCheckBox.setChecked(todoListItem.getChecked());
+        itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                TodoListItem item = mTodoListItems.get(mTodoLists.get(groupPosition)).get(childPosition);
+                item.setChecked(!item.getChecked());
+            }
+        });
 
         TextView itemText = (TextView) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
