@@ -13,7 +13,8 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.DoToo">
-        <activity android:name=".Activities.TodoListActivity"></activity>
+        <activity android:name=".Activities.CalendarActivity"></activity>
+        <activity android:name=".Activities.TodoListActivity" />
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".Activities.StartupActivity">
