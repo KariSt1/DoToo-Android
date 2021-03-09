@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.speech.tts.TextToSpeech;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -28,8 +29,11 @@ public class HomeActivity extends AppCompatActivity {
 
         mWelcomeText = (TextView) findViewById(R.id.welcomeUser);
         String user = getIntent().getStringExtra("is.hi.hbv601g.dotoo.user_result");
-        mWelcomeText.setText(user);
+        mWelcomeText.setText(getString(R.string.welcome_user, user));
 
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         System.out.println("found navigation view");
         navigationView.setSelectedItemId(R.id.nav_home);

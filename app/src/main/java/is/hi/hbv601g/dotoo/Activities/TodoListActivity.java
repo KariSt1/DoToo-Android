@@ -4,6 +4,7 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
+import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -61,6 +62,9 @@ public class TodoListActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
 
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_todolists);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,7 +100,7 @@ public class TodoListActivity extends AppCompatActivity {
         mTodoListItems = new HashMap<TodoList, List<TodoListItem>>();
 
         // Adding child data
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<5;i++) {
             TodoList list = new TodoList();
             list.setId(i);
             list.setName("List " + i);
