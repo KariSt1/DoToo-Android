@@ -61,7 +61,7 @@ public class LoginActivity extends AppCompatActivity {
                     public void onResponse(JSONObject response) {
                         System.out.println(response);
 
-                        Intent i = new Intent(LoginActivity.this, CalendarActivity.class);
+                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         String user = "Vitlaust nafn";
                         try {
                             user = response.getString("name");

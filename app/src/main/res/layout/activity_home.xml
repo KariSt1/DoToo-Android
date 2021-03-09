@@ -10,6 +10,7 @@
         android:id="@+id/welcomeUser"
         android:layout_width="229dp"
         android:layout_height="96dp"
+        android:layout_weight="1"
         android:layout_marginStart="77dp"
         android:layout_marginTop="8dp"
         android:layout_marginEnd="105dp"
@@ -24,6 +25,7 @@
         layout="@layout/bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_weight="0"
         android:layout_gravity="bottom"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.105"/>
