@@ -1,15 +1,21 @@
 package is.hi.hbv601g.dotoo.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.ArrayList;
 import java.util.List;
 
 public class TodoList {
+
+    @SerializedName("id")
     private long mId;
-
+    @SerializedName("name")
     private String mName;
+    @SerializedName("color")
     private String mColor;
+    @SerializedName("items")
     private List<TodoListItem> mItems = new ArrayList<>();
-
+    @SerializedName("user")
     private User mUser;
 
     public long getId() {

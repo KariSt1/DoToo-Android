@@ -5,11 +5,14 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 import android.view.View;
 import android.widget.ExpandableListView;
@@ -30,10 +33,30 @@ public class TodoListActivity extends AppCompatActivity {
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
     List<TodoList> mTodoLists;
+    List<TodoList> mTodoListsPrufa; // prufa fyrir network
+    private static final String TAG = "TodoListActivity";
     HashMap<TodoList, List<TodoListItem>> mTodoListItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
+        // networking prufa
+
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getTodolist(new NetworkCallback<List<TodoList>>() {
+            @Override
+            public void onSuccess(List<TodoList> result) {
+                mTodoListsPrufa = result;
+                Log.d(TAG, "texti í todolista"+ mTodoListsPrufa.get(0).getItems().get(0).getDescription());
+
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.d(TAG, "Failed to get todolists: " + errorString);
+            }
+        });
+
         System.out.println("Er í TodoListActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
