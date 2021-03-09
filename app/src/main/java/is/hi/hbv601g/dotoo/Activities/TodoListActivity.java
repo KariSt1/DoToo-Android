@@ -11,7 +11,9 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.R;
+import android.view.View;
 import android.widget.ExpandableListView;
+import android.widget.ExpandableListView.OnChildClickListener;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -62,6 +64,7 @@ public class TodoListActivity extends AppCompatActivity {
         prepareListData();
 
         mListAdapter = new ExpandableListAdapter(this, mTodoLists, mTodoListItems);
+
         mTodoListView.setAdapter(mListAdapter);
     }
 
@@ -79,7 +82,7 @@ public class TodoListActivity extends AppCompatActivity {
             for(int j=0;j<5;j++) {
                 TodoListItem item = new TodoListItem();
                 item.setId(6*i+j);
-                item.setDescription("Item " + j);
+                item.setDescription("Item " + (6*i+j));
                 if(Math.random() > 0.5) {
                     item.setChecked(true);
                 } else {

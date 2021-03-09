@@ -16,6 +16,7 @@
         android:theme="@style/Theme.AppCompat.Light">
 
         <activity android:name=".Activities.TodoListActivity"></activity>
+        <activity android:name=".Activities.CalendarActivity"></activity>
         <activity android:name=".Activities.HomeActivity" />
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".Activities.StartupActivity">

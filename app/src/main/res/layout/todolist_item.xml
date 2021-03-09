@@ -1,26 +1,41 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="55dip"
-    android:orientation="vertical"
+    android:layout_height="100dp"
+    android:orientation="horizontal"
     android:background="#FFDBB9">
 
     <CheckBox
         android:id="@+id/todolist_item_checkbox"
         android:layout_width="40dp"
+        android:layout_weight="0"
         android:layout_height="match_parent"
         android:textColor="@color/text_blue"
-        android:buttonTint="@color/text_blue">
+        android:buttonTint="@color/text_blue"
+        android:layout_marginStart="3dp">
     </CheckBox>
 
     <TextView
         android:id="@+id/todolist_item_text"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:textSize="17dip"
+        android:layout_weight="1"
+        android:textSize="16sp"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/text_blue"
         android:paddingTop="5dp"
-        android:paddingBottom="5dp"
-        android:paddingRight="40dp"
-        android:paddingLeft="?android:attr/expandableListPreferredChildPaddingLeft" />
+        android:paddingStart="6dp"
+        android:paddingEnd="6dp"
+        android:paddingBottom="5dp"/>
+
+    <Button
+        android:id="@+id/todolist_item_delete"
+        android:layout_gravity="center"
+        android:layout_width="24dp"
+        android:layout_weight="0"
+        android:layout_height="24dp"
+        android:layout_marginEnd="9dp"
+        android:background="@drawable/ic_x">
+    </Button>
 
 </LinearLayout>
