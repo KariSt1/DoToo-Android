@@ -5,10 +5,10 @@
     <item
         android:id="@+id/nav_home"
         android:icon="@drawable/ic_home"
+        android:textSize="64dp"
         android:title="@string/menu_home"
         android:visible="true"
-        app:showAsAction="ifRoom"
-        android:textSize="64dp"/>
+        app:showAsAction="ifRoom" />
     <item
         android:id="@+id/nav_todolists"
         android:icon="@drawable/ic_user"
