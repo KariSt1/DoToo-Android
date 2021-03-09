@@ -22,6 +22,7 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        System.out.println("home activity on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -30,6 +31,7 @@ public class HomeActivity extends AppCompatActivity {
         mWelcomeText.setText(user);
 
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
+        System.out.println("found navigation view");
         navigationView.setSelectedItemId(R.id.nav_home);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

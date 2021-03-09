@@ -37,11 +37,12 @@ public class TodoListActivity extends AppCompatActivity {
         setContentView(R.layout.activity_todo_list);
 
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        navigationView.setSelectedItemId(R.id.nav_home);
+        navigationView.setSelectedItemId(R.id.nav_todolists);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                switch(navigationView.getSelectedItemId()) {
+                System.out.println("on navigation item selected");
+                switch(item.getItemId()) {
                     case R.id.nav_calendar:
                         Intent cal = new Intent(TodoListActivity.this, TodoListActivity.class);
                         startActivity(cal);

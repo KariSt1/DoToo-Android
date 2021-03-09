@@ -1,19 +1,23 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<com.google.android.material.bottomnavigation.BottomNavigationView android:layout_width="match_parent"
-    android:layout_height="109dp"
+<com.google.android.material.bottomnavigation.BottomNavigationView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/bottomNavigationView"
-    xmlns:android="http://schemas.android.com/apk/res/android">
+    android:layout_width="match_parent"
+    android:layout_height="200dp"
+    android:layout_gravity="bottom"
+    android:background="@color/white"
+    android:visibility="visible"
+    android:elevation="4dp"
+    app:itemBackground="@android:color/holo_blue_light"
+    app:itemIconTint="@drawable/selector_navigation"
+    app:itemTextColor="@android:color/black"
+    app:labelVisibilityMode="auto"
+    app:menu="@menu/menu_items"
+    app:showAsAction="ifRoom"
+    app:layout_behavior="BottomNavigationBehavior"
+    tools:menu="@menu/menu_items"
+    tools:visibility="visible">
 
-        <menu xmlns:android="http://schemas.android.com/apk/res/android">
-            <item android:id="@+id/nav_home"
-                android:title="@string/menu_home"
-                android:icon="@drawable/ic_lock" />
-            <item android:id="@+id/nav_todolists"
-                android:title="@string/menu_todolists"
-                android:icon="@drawable/ic_user" />
-            <item android:id="@+id/nav_calendar"
-                android:title="@string/menu_calendar"
-                android:icon="@drawable/ic_lock" />
-        </menu>
-    </com.google.android.material.bottomnavigation.BottomNavigationView>
+</com.google.android.material.bottomnavigation.BottomNavigationView>
