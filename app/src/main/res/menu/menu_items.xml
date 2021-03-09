@@ -11,14 +11,14 @@
         app:showAsAction="ifRoom" />
     <item
         android:id="@+id/nav_todolists"
-        android:icon="@drawable/ic_user"
+        android:icon="@drawable/ic_checkmark"
         android:title="@string/menu_todolists"
         android:visible="true"
         app:showAsAction="ifRoom"
         android:textSize="64dp"/>
     <item
         android:id="@+id/nav_calendar"
-        android:icon="@drawable/ic_lock"
+        android:icon="@drawable/ic_calendar"
         android:title="@string/menu_calendar"
         android:visible="true"
         app:showAsAction="ifRoom"
