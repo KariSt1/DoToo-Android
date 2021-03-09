@@ -6,40 +6,40 @@
 
         public class User {
 
-            public String username;
-            public String name;
-            public String password;
-            private List<TodoList> todoLists = new ArrayList<>();
-            private List<Event> events = new ArrayList<>();
+            public String mUsername;
+            public String mName;
+            public String mPassword;
+            private List<TodoList> mTodoLists = new ArrayList<>();
+            private List<Event> mEvents = new ArrayList<>();
 
             public String getUsername() {
-            return username;
+            return mUsername;
             }
 
             public void setUsername(String username) {
-            this.username = username;
+            mUsername = username;
             }
 
             public String getName() {
-            return name;
+            return mName;
             }
 
             public void setName(String name) {
-            this.name = name;
+            mName = name;
             }
 
             public String getPassword() {
-            return password;
+            return mPassword;
             }
 
             public void setPassword(String password) {
-            this.password = password;
+            mPassword = password;
             }
 
             public User(String username, String name, String password) {
-            this.username = username;
-            this.name = name;
-            this.password = password;
+            mUsername = username;
+            mName = name;
+            mPassword = password;
             }
 
             public User() {
