@@ -74,7 +74,7 @@ public class TodoListActivity extends AppCompatActivity {
         mTodoListItems = new HashMap<TodoList, List<TodoListItem>>();
 
         // Adding child data
-        for(int i=0;i<3;i++) {
+        for(int i=0;i<5;i++) {
             TodoList list = new TodoList();
             list.setId(i);
             list.setName("List " + i);
