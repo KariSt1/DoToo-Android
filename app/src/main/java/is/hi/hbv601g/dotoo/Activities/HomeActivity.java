@@ -41,7 +41,7 @@ public class HomeActivity extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 switch(navigationView.getSelectedItemId()) {
                     case R.id.nav_calendar:
-                        Intent cal = new Intent(HomeActivity.this, TodoListActivity.class);
+                        Intent cal = new Intent(HomeActivity.this, CalendarActivity.class);
                         startActivity(cal);
                         return true;
                     case R.id.nav_todolists:

@@ -50,7 +50,7 @@ public class TodoListActivity extends AppCompatActivity {
                 System.out.println("on navigation item selected");
                 switch(item.getItemId()) {
                     case R.id.nav_calendar:
-                        Intent cal = new Intent(TodoListActivity.this, TodoListActivity.class);
+                        Intent cal = new Intent(TodoListActivity.this, CalendarActivity.class);
                         startActivity(cal);
                         return true;
                     case R.id.nav_todolists:
