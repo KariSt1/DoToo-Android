@@ -1,51 +1,51 @@
 package is.hi.hbv601g.dotoo.Model;
 
 public class TodoListItem {
-    private long id;
+    private long mId;
 
-    private String description;
-    private boolean checked;
+    private String mDescription;
+    private boolean mChecked;
 
-    private TodoList todoList;
+    private TodoList mTodoList;
 
     public TodoListItem() {
     }
 
     public TodoListItem(String description, boolean checked, TodoList todoList) {
-        this.description = description;
-        this.checked = checked;
-        this.todoList = todoList;
+        mDescription = description;
+        mChecked = checked;
+        mTodoList = todoList;
     }
 
     public long getId() {
-        return id;
+        return mId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        mId = id;
     }
 
     public String getDescription() {
-        return description;
+        return mDescription;
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        mDescription = description;
     }
 
     public boolean getChecked() {
-        return checked;
+        return mChecked;
     }
 
     public void setChecked(boolean done) {
-        checked = done;
+        mChecked = done;
     }
 
     public TodoList getTodoList() {
-        return todoList;
+        return mTodoList;
     }
 
     public void setTodoList(TodoList todoList) {
-        this.todoList = todoList;
+        mTodoList = todoList;
     }
 }

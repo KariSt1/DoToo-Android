@@ -3,22 +3,22 @@ package is.hi.hbv601g.dotoo.Model;
 import java.util.Calendar;
 
 public class Event {
-    private long id;
+    private long mId;
 
-    private Calendar startDate;
-    private Calendar endDate;
-    private String title;
-    private String category;
-    private String color;
-    private User user;
+    private Calendar mStartDate;
+    private Calendar mEndDate;
+    private String mTitle;
+    private String mCategory;
+    private String mColor;
+    private User mUser;
 
     public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
-        this.startDate = startDate;
-        this.endDate = endDate;
-        this.title = title;
-        this.category = category;
-        this.color = color;
-        this.user = user;
+        mStartDate = startDate;
+        mEndDate = endDate;
+        mTitle = title;
+        mCategory = category;
+        mColor = color;
+        mUser = user;
     }
 
     public Event() {
@@ -26,50 +26,50 @@ public class Event {
     }
 
     public long getId() {
-        return id;
+        return mId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        mId = id;
     }
 
     public Calendar getStartDate() {
-        return startDate;
+        return mStartDate;
     }
 
     public void setStartDate(Calendar startDate) {
-        this.startDate = startDate;
+        mStartDate = startDate;
     }
 
     public Calendar getEndDate() {
-        return endDate;
+        return mEndDate;
     }
 
     public void setEndDate(Calendar endDate) {
-        this.endDate = endDate;
+        mEndDate = endDate;
     }
 
     public String getTitle() {
-        return title;
+        return mTitle;
     }
 
     public void setTitle(String title) {
-        this.title = title;
+        mTitle = title;
     }
 
     public String getCategory() {
-        return category;
+        return mCategory;
     }
 
     public void setCategory(String category) {
-        this.category = category;
+        mCategory = category;
     }
 
     public String getColor() {
-        return color;
+        return mColor;
     }
 
     public void setColor(String color) {
-        this.color = color;
+        mColor = color;
     }
 }

@@ -4,58 +4,58 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TodoList {
-    private long id;
+    private long mId;
 
-    private String name;
-    private String color;
-    private List<TodoListItem> items = new ArrayList<>();
+    private String mName;
+    private String mColor;
+    private List<TodoListItem> mItems = new ArrayList<>();
 
-    private User user;
+    private User mUser;
 
     public long getId() {
-        return id;
+        return mId;
     }
 
     public void setId(long id) {
-        this.id = id;
+        mId = id;
     }
 
     public String getName() {
-        return name;
+        return mName;
     }
 
     public void setName(String name) {
-        this.name = name;
+        mName = name;
     }
 
     public String getColor() {
-        return color;
+        return mColor;
     }
 
     public void setColor(String color) {
-        this.color = color;
+        mColor = color;
     }
 
     public List<TodoListItem> getItems() {
-        return items;
+        return mItems;
     }
 
     public void setItems(List<TodoListItem> items) {
-        this.items = items;
+        mItems = items;
     }
 
     public User getUser() {
-        return user;
+        return mUser;
     }
 
     public void setUser(User user) {
-        this.user = user;
+        mUser = user;
     }
 
     public TodoList(String name, String color, User user) {
-        this.name = name;
-        this.color = color;
-        this.user = user;
+        mName = name;
+        mColor = color;
+        mUser = user;
     }
 
     public TodoList() {
