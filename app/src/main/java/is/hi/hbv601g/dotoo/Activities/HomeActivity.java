@@ -28,8 +28,11 @@ public class HomeActivity extends AppCompatActivity {
 
         mWelcomeText = (TextView) findViewById(R.id.welcomeUser);
         String user = getIntent().getStringExtra("is.hi.hbv601g.dotoo.user_result");
-        mWelcomeText.setText(user);
+        mWelcomeText.setText(getString(R.string.welcome_user, user));
 
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         System.out.println("found navigation view");
         navigationView.setSelectedItemId(R.id.nav_home);
