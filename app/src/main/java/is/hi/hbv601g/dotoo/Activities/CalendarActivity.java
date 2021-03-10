@@ -2,13 +2,10 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.fragment.app.FragmentTransaction;
 
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.util.Log;
-import android.util.TypedValue;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -17,7 +14,6 @@ import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
-import com.roomorama.caldroid.CaldroidFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -25,9 +21,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+
 import is.hi.hbv601g.dotoo.R;
 
-public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener{
+public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener {
 
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
@@ -71,6 +68,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         // month every time the month changes on the week view.
         mWeekView.setMonthChangeListener(this);
 
+        setupDateTimeInterpreter(false);
 
     }
 
@@ -93,6 +91,27 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         return events;
     }
 
+    private void setupDateTimeInterpreter(final boolean shortDate) {
+        mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
+            @Override
+            public String interpretDate(Calendar date) {
+                SimpleDateFormat weekdayNameFormat = new SimpleDateFormat("EEE", Locale.getDefault());
+                String weekday = weekdayNameFormat.format(date.getTime());
+                SimpleDateFormat format = new SimpleDateFormat(" d/M", Locale.getDefault());
+
+                if (shortDate)
+                    weekday = String.valueOf(weekday.charAt(0));
+                return weekday.toUpperCase() + format.format(date.getTime());
+            }
+
+            @Override
+            public String interpretTime(int hour) {
+                if (hour == 24) hour = 0;
+                if (hour == 0) hour = 0;
+                return hour + ":00";
+            }
+        });
+    }
 
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
