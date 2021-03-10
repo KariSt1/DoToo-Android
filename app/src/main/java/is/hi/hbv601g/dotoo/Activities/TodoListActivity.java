@@ -16,6 +16,7 @@ import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
@@ -33,6 +34,7 @@ public class TodoListActivity extends AppCompatActivity {
 
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
+    List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
     List<TodoList> mTodoListsPrufa; // prufa fyrir network
     private static final String TAG = "TodoListActivity";
@@ -85,6 +87,16 @@ public class TodoListActivity extends AppCompatActivity {
                 return false;
             }
         });
+
+       /** toggleFavorite.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(toggleFavorite.getBackground().equals(R.drawable.ic_baseline_star_favorite)) {
+                    toggleFavorite.setBackground(getResources().getDrawable(R.drawable.ic_baseline_star_not_favorite));
+                }
+                else toggleFavorite.setBackground(getResources().getDrawable(R.drawable.ic_baseline_star_favorite));
+            }
+        });*/
         mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
 
         //TODO: Get request fyrir todolista
@@ -98,12 +110,18 @@ public class TodoListActivity extends AppCompatActivity {
     private void prepareListData() {
         mTodoLists = new ArrayList<TodoList>();
         mTodoListItems = new HashMap<TodoList, List<TodoListItem>>();
+        mFavoriteButtons = new ArrayList<Button>();
 
         // Adding child data
         for(int i=0;i<5;i++) {
             TodoList list = new TodoList();
             list.setId(i);
             list.setName("List " + i);
+            if(Math.random() > 0.5) {
+                list.setFavorite(true);
+            } else {
+                list.setFavorite(false);
+            }
             mTodoLists.add(list);
             List<TodoListItem> items = new ArrayList<TodoListItem>();
             for(int j=0;j<5;j++) {
