@@ -9,14 +9,23 @@
 
     <TextView
         android:id="@+id/todolist_title"
-        android:layout_width="fill_parent"
+        android:layout_width="331dp"
         android:layout_height="wrap_content"
         android:layout_gravity="center"
         android:layout_weight="1"
-        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
         android:fontFamily="@font/montserrat_regular"
-        android:textSize="20dp"
-        android:textColor="@color/text_blue" />
+        android:paddingLeft="?android:attr/expandableListPreferredItemPaddingLeft"
+        android:textColor="@color/text_blue"
+        android:textSize="20dp" />
+
+    <Button
+        android:id="@+id/todolist_favorite"
+        android:focusable="false"
+        android:layout_gravity="center"
+        android:layout_width="27dp"
+        android:layout_height="27dp"
+        android:layout_weight="0"
+        android:background="@drawable/ic_baseline_star_not_favorite" />
 
     <Button
         android:id="@+id/todolist_delete"
