@@ -58,7 +58,7 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onFailure(String errorString) {
                 Log.d(TAG, "Failed to get todolists: " + errorString);
-                ystem.out.println("Erum í onFailur frá networking tengingunni.");
+                System.out.println("Erum í onFailur frá networking tengingunni.");
             }
         });
 
