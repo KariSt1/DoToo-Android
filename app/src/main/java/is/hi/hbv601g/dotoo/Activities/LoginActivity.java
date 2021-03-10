@@ -4,6 +4,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Parcelable;
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
@@ -65,7 +66,11 @@ public class LoginActivity extends AppCompatActivity {
                     public void onSuccess(User result) {
                         userPrufa = result;
                         Log.d(TAG, "texti í todolista"+ userPrufa.getName());
-
+                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
+                        User user = networkManager.getUser();
+                        System.out.println("User í onSuccess: " + user.getName());
+                        i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());
+                        startActivity(i);
                     }
 
                     @Override

@@ -33,6 +33,7 @@ public class NetworkManager {
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
     private Context mContext;
+    private User mUser;
 
     public static synchronized NetworkManager getInstance(Context context) {
         if(mInstance == null) {
@@ -54,14 +55,16 @@ public class NetworkManager {
     }
 
     public void getTodolist(final NetworkCallback<List<TodoList>> callback) {
+
         StringRequest request = new StringRequest(
-                Request.Method.GET, BASE_URL + "todolist", new Response.Listener<String>() {
+                Request.Method.GET, BASE_URL + "todolist",  new Response.Listener<String>() {
             @Override
             public void onResponse(String response) {
             // getum hér vitnað í widged í viðmótinu okkar
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response, listType);
+                System.out.println("Fyrsti todolisti: " + todoListBank.get(0).getName());
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
@@ -76,10 +79,6 @@ public class NetworkManager {
     }
 
     public void postLogin(final NetworkCallback<User> callback, String username, String password) {
-
-
-
-
         JSONObject json = new JSONObject();
         try {
             json.put("username", username);
@@ -88,19 +87,20 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL, json, new Response.Listener<JSONObject>() {
+        System.out.println(json);
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "login", json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println(response);
-
-
-                String user = "Vitlaust nafn";
+                mUser = new User();
                 try {
-                    user = response.getString("name");
+                    mUser.setName(response.getString("name"));
+                    mUser.setPassword(response.getString("password"));
+                    mUser.setUsername(response.getString("username"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
+                callback.onSuccess(mUser);
             }
         }, new Response.ErrorListener() {
             @Override
@@ -113,6 +113,8 @@ public class NetworkManager {
 
     }
 
-
+    public User getUser() {
+        return mUser;
+    }
 
 }

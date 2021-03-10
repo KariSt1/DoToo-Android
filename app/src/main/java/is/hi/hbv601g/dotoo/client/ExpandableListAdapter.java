@@ -9,6 +9,7 @@ import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -103,13 +104,27 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                TodoListItem item = mTodoListItems.get(mTodoLists.get(groupPosition)).get(childPosition);
-                item.setChecked(!item.getChecked());
+                //TodoListItem item = mTodoListItems.get(mTodoLists.get(groupPosition)).get(childPosition);
+                System.out.println("Item checked fyrir: " + todoListItem.getDescription() + todoListItem.getChecked());
+                System.out.println("Í hashmap fyrir" + mTodoListItems.get(groupPosition).get(childPosition));
+                todoListItem.setChecked(!todoListItem.getChecked());
+
+                System.out.println("Item checked eftir: " + todoListItem.getDescription() + todoListItem.getChecked());
             }
         });
 
-        TextView itemText = (TextView) convertView.findViewById(R.id.todolist_item_text);
+        EditText itemText = (EditText) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
+        itemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
+
+            @Override
+            public void onFocusChange(View v, boolean hasFocus) {
+                if(!hasFocus) {
+                    String text = itemText.getText().toString();
+                    todoListItem.setDescription(text);
+                }
+            }
+        });
 
         Button deleteItemButton = (Button) convertView.findViewById(R.id.todolist_item_delete);
         deleteItemButton.setOnClickListener(new View.OnClickListener() {
