@@ -51,12 +51,14 @@ public class TodoListActivity extends AppCompatActivity {
             public void onSuccess(List<TodoList> result) {
                 mTodoListsPrufa = result;
                 Log.d(TAG, "texti í todolista"+ mTodoListsPrufa.get(0).getItems().get(0).getDescription());
+                System.out.println("Verið er að ná networking tenging.");
 
             }
 
             @Override
             public void onFailure(String errorString) {
                 Log.d(TAG, "Failed to get todolists: " + errorString);
+                ystem.out.println("Erum í onFailur frá networking tengingunni.");
             }
         });
 
