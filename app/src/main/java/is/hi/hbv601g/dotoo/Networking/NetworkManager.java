@@ -66,4 +66,5 @@ public class NetworkManager {
         );
         mQueue.add(request); // volley sér um að keyra þetta request
     }
+
 }

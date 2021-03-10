@@ -13,6 +13,8 @@ public class TodoList {
     private String mName;
     @SerializedName("color")
     private String mColor;
+    @SerializedName("favorite")
+    private boolean mFavorite;
     @SerializedName("items")
     private List<TodoListItem> mItems = new ArrayList<>();
     @SerializedName("user")
@@ -40,6 +42,14 @@ public class TodoList {
 
     public void setColor(String color) {
         mColor = color;
+    }
+
+    public boolean isFavorite() {
+        return mFavorite;
+    }
+
+    public void setFavorite(boolean favorite) {
+        this.mFavorite = favorite;
     }
 
     public List<TodoListItem> getItems() {
