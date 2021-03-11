@@ -12,7 +12,9 @@
         android:id="@+id/todolist_expandableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:childDivider="#FFDBB9"
+        android:divider="#FFC895"/>
 
     <!--<androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"

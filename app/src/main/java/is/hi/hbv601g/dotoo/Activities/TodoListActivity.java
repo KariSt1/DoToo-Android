@@ -38,7 +38,6 @@ public class TodoListActivity extends AppCompatActivity {
     List<TodoList> mTodoLists;
     List<TodoList> mTodoListsPrufa; // prufa fyrir network
     private static final String TAG = "TodoListActivity";
-    HashMap<TodoList, List<TodoListItem>> mTodoListItems;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -102,14 +101,13 @@ public class TodoListActivity extends AppCompatActivity {
         //TODO: Get request fyrir todolista
         prepareListData();
 
-        mListAdapter = new ExpandableListAdapter(this, mTodoLists, mTodoListItems);
+        mListAdapter = new ExpandableListAdapter(this, mTodoLists);
 
         mTodoListView.setAdapter(mListAdapter);
     }
 
     private void prepareListData() {
         mTodoLists = new ArrayList<TodoList>();
-        mTodoListItems = new HashMap<TodoList, List<TodoListItem>>();
         mFavoriteButtons = new ArrayList<Button>();
 
         // Adding child data
@@ -126,8 +124,8 @@ public class TodoListActivity extends AppCompatActivity {
             List<TodoListItem> items = new ArrayList<TodoListItem>();
             for(int j=0;j<5;j++) {
                 TodoListItem item = new TodoListItem();
-                item.setId(6*i+j);
-                item.setDescription("Item " + (6*i+j));
+                item.setId(5*i+j);
+                item.setDescription("Item " + (5*i+j));
                 if(Math.random() > 0.5) {
                     item.setChecked(true);
                 } else {
@@ -135,7 +133,7 @@ public class TodoListActivity extends AppCompatActivity {
                 }
                 items.add(item);
             }
-            mTodoListItems.put(mTodoLists.get(i), items);
+            mTodoLists.get(i).setItems(items);
         }
         System.out.println("TodoListar voru búnir til");
         System.out.println("Fyrsti listi: " + mTodoLists.get(0).getName());

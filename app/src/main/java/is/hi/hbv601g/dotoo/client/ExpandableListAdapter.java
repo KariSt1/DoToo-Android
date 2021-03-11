@@ -25,15 +25,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<TodoList> mTodoLists;
-    private HashMap<TodoList, List<TodoListItem>> mTodoListItems;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists,
-                                 HashMap<TodoList, List<TodoListItem>> todoListItems) {
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists) {
         this.mContext = context;
         this.mTodoLists = todoLists;
-        this.mTodoListItems = todoListItems;
     }
-
 
     @Override
     public int getGroupCount() {
@@ -42,7 +38,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.mTodoListItems.get(this.mTodoLists.get(groupPosition)).size();
+        return this.mTodoLists.get(groupPosition).getItems().size();
     }
 
     @Override
@@ -52,7 +48,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.mTodoListItems.get(this.mTodoLists.get(groupPosition)).get(childPosition);
+        return this.mTodoLists.get(groupPosition).getItems().get(childPosition);
     }
 
     @Override
@@ -73,7 +69,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TodoList todoList = (TodoList) getGroup(groupPosition);
-        System.out.println("getGroupView todolist name: " + todoList.getName());
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
@@ -91,7 +86,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         TodoListItem todoListItem = (TodoListItem) getChild(groupPosition, childPosition);
-        System.out.println("getChildView item: " + todoListItem.getDescription());
 
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -104,12 +98,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //TodoListItem item = mTodoListItems.get(mTodoLists.get(groupPosition)).get(childPosition);
-                System.out.println("Item checked fyrir: " + todoListItem.getDescription() + todoListItem.getChecked());
-                System.out.println("Í hashmap fyrir" + mTodoListItems.get(groupPosition).get(childPosition));
-                todoListItem.setChecked(!todoListItem.getChecked());
+                if(buttonView.isPressed()) {
+                    todoListItem.setChecked(!todoListItem.getChecked());
+                }
 
-                System.out.println("Item checked eftir: " + todoListItem.getDescription() + todoListItem.getChecked());
             }
         });
 
@@ -131,7 +123,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                mTodoListItems.get(mTodoLists.get(groupPosition)).remove(childPosition);
+                mTodoLists.get(groupPosition).getItems().remove(childPosition);
                 notifyDataSetChanged();
             }
         });
