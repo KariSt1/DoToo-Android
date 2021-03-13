@@ -27,7 +27,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<TodoList> mTodoLists;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<TodoList> changedTodoLists) {
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists) {
         this.mContext = context;
         this.mTodoLists = todoLists;
     }
