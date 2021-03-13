@@ -35,7 +35,7 @@
         android:layout_weight="0"
         android:layout_height="27dp"
 
-        android:background="@drawable/ic_more">
+        android:background="@drawable/ic_delete">
     </Button>
 
 </LinearLayout>

@@ -5,6 +5,7 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -26,7 +27,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<TodoList> mTodoLists;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists) {
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<TodoList> changedTodoLists) {
         this.mContext = context;
         this.mTodoLists = todoLists;
     }
@@ -78,7 +79,35 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         TextView listText = (TextView) convertView.findViewById(R.id.todolist_title);
         listText.setText(todoList.getName());
 
+        Button favoriteList = (Button) convertView.findViewById(R.id.todolist_favorite);
+        if(todoList.isFavorite()) {
+            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
+        } else {
+            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_favorite);
+        }
+
+        favoriteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoList.setFavorite(!todoList.isFavorite());
+                if(todoList.isFavorite()) {
+                    favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
+                } else {
+                    favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_favorite);
+                }
+                notifyDataSetChanged();
+            }
+        });
+
         Button deleteList = (Button) convertView.findViewById(R.id.todolist_delete);
+        deleteList.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mTodoLists.remove(groupPosition);
+                notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }
@@ -98,6 +127,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                System.out.println("Erum í onCheckedChanged");
                 if(buttonView.isPressed()) {
                     todoListItem.setChecked(!todoListItem.getChecked());
                 }
@@ -111,9 +141,18 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                System.out.println("Erum í onFocusChange");
                 if(!hasFocus) {
+                    System.out.println("Erum í if-setningu í onFocusChange");
                     String text = itemText.getText().toString();
-                    todoListItem.setDescription(text);
+                    if(text.length() == 0) {
+                        mTodoLists.get(groupPosition).getItems().remove(childPosition);
+                        notifyDataSetChanged();
+                    } else {
+                        todoListItem.setDescription(text);
+                    }
+                    //InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    //imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
                 }
             }
         });

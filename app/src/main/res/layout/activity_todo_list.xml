@@ -5,14 +5,15 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
+    android:windowSoftInputMode="adjustPan"
     tools:context=".Activities.TodoListActivity">
-
 
     <ExpandableListView
         android:id="@+id/todolist_expandableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
+        android:descendantFocusability="afterDescendants"
         android:childDivider="#FFDBB9"
         android:divider="#FFC895"/>
 
