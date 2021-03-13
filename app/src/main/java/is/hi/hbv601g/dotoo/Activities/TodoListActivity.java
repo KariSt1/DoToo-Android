@@ -103,7 +103,7 @@ public class TodoListActivity extends AppCompatActivity {
         //TODO: Get request fyrir todolista
         prepareListData();
 
-        mListAdapter = new ExpandableListAdapter(this, mTodoLists);
+        mListAdapter = new ExpandableListAdapter(this, mTodoLists, mTodoListView);
 
         mTodoListView.setAdapter(mListAdapter);
     }

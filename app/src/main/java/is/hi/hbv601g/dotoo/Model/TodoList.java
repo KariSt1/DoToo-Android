@@ -60,6 +60,8 @@ public class TodoList {
         mItems = items;
     }
 
+    public void addItem(TodoListItem item) { mItems.add(item); }
+
     public User getUser() {
         return mUser;
     }

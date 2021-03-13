@@ -11,6 +11,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -26,10 +27,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<TodoList> mTodoLists;
+    private TodoListItem mNewItem;
+    private ExpandableListView mListView;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists) {
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists,
+                                 ExpandableListView listView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
+        this.mListView = listView;
     }
 
     @Override
@@ -78,6 +83,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         TextView listText = (TextView) convertView.findViewById(R.id.todolist_title);
         listText.setText(todoList.getName());
+
+        Button newItemButton = (Button) convertView.findViewById(R.id.todolist_newitem);
+        newItemButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mNewItem = new TodoListItem();
+                mTodoLists.get(groupPosition).addItem(mNewItem);
+                InputMethodManager imm =
+                        (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                mListView.expandGroup(groupPosition);
+                notifyDataSetChanged();
+            }
+        });
 
         Button favoriteList = (Button) convertView.findViewById(R.id.todolist_favorite);
         if(todoList.isFavorite()) {
@@ -135,6 +155,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
+
         EditText itemText = (EditText) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
         itemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
@@ -145,14 +166,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if(!hasFocus) {
                     System.out.println("Erum í if-setningu í onFocusChange");
                     String text = itemText.getText().toString();
-                    if(text.length() == 0) {
+                    if(text.length() == 0 && todoListItem != mNewItem) {
                         mTodoLists.get(groupPosition).getItems().remove(childPosition);
                         notifyDataSetChanged();
                     } else {
                         todoListItem.setDescription(text);
+                        mNewItem = null;
                     }
+                    itemText.clearFocus();
                     //InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
                     //imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+                } else {
+                    itemText.requestFocus();
+                    itemText.setSelection(itemText.getText().length());
                 }
             }
         });
@@ -166,6 +192,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 notifyDataSetChanged();
             }
         });
+
+        if(todoListItem == mNewItem) {
+            itemText.requestFocus();
+        }
 
         return convertView;
     }
