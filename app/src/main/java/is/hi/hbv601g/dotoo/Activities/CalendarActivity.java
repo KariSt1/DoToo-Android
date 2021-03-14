@@ -2,11 +2,17 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
+import android.widget.EditText;
 import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
@@ -22,21 +28,43 @@ import java.util.List;
 import java.util.Locale;
 
 
+import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
+import is.hi.hbv601g.dotoo.Model.Event;
+import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 
-public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener {
+public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, NewEventDialogFragment.NoticeDialogListener {
 
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
+    private ArrayList<WeekViewEvent> mNewEvents;
+    List<Event> mEvent; // prufa fyrir network
+    private static final String TAG = "CalendarActivity";
+    private Button mEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        /**
-         * Navigation bar logic
-         */
+        mEventButton = (Button) findViewById(R.id.button_newEvent);
+        mEventButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                System.out.println("Ýtt á new event");
+                DialogFragment dialog = new NewEventDialogFragment();
+                dialog.show(getSupportFragmentManager(),"newEvent");
+
+            }
+        });
+
+                /**
+                 * Navigation bar logic
+                 */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_calendar);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -58,6 +86,28 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
+        /*
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getEvents(new NetworkCallback<List<Event>>() {
+            @Override
+            public void onSuccess(List<Event> result) {
+                mEvent = result;
+                Log.d(TAG, "titill Events "+ mEvent.get(0).getTitle());
+
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.d(TAG, "Failed to get events: " + errorString);
+                System.out.println("Network failaði í event");
+            }
+        });
+
+        */
+
+        System.out.println("Er í CalendarActivity");
+
+
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
 
@@ -68,28 +118,79 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         // month every time the month changes on the week view.
         mWeekView.setMonthChangeListener(this);
 
+        //Format date and time
         setupDateTimeInterpreter(false);
+
+     //   mWeekView.setEmptyViewClickListener(this);
+
+        // Initially, there will be no events on the week view because the user has not tapped on
+        // it yet.
+        mNewEvents = new ArrayList<WeekViewEvent>();
 
     }
 
     @Override
-    public List<? extends WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+    public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
+        // Populate the week view with the events that was added by tapping on empty view.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
-
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, newMonth-1);
-        startTime.set(Calendar.YEAR, newYear);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 1);
-        endTime.set(Calendar.MONTH, newMonth-1);
-        WeekViewEvent event = new WeekViewEvent(1, "gaman", startTime, endTime);
-        event.setColor(getResources().getColor(R.color.event_color_01));
-        events.add(event);
-
+        ArrayList<WeekViewEvent> newEvents = getNewEvents(newYear, newMonth);
+        events.addAll(newEvents);
         return events;
     }
+
+    /**
+     * Get events that were added by tapping on empty view.
+     * @param year The year currently visible on the week view.
+     * @param month The month currently visible on the week view.
+     * @return The events of the given year and month.
+     */
+    private ArrayList<WeekViewEvent> getNewEvents(int year, int month) {
+
+        // Get the starting point and ending point of the given month. We need this to find the
+        // events of the given month.
+        Calendar startOfMonth = Calendar.getInstance();
+        startOfMonth.set(Calendar.YEAR, year);
+        startOfMonth.set(Calendar.MONTH, month - 1);
+        startOfMonth.set(Calendar.DAY_OF_MONTH, 1);
+        startOfMonth.set(Calendar.HOUR_OF_DAY, 0);
+        startOfMonth.set(Calendar.MINUTE, 0);
+        startOfMonth.set(Calendar.SECOND, 0);
+        startOfMonth.set(Calendar.MILLISECOND, 0);
+        Calendar endOfMonth = (Calendar) startOfMonth.clone();
+        endOfMonth.set(Calendar.DAY_OF_MONTH, endOfMonth.getMaximum(Calendar.DAY_OF_MONTH));
+        endOfMonth.set(Calendar.HOUR_OF_DAY, 23);
+        endOfMonth.set(Calendar.MINUTE, 59);
+        endOfMonth.set(Calendar.SECOND, 59);
+
+        // Find the events that were added by tapping on empty view and that occurs in the given
+        // time frame.
+        ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
+        for (WeekViewEvent event : mNewEvents) {
+            if (event.getEndTime().getTimeInMillis() > startOfMonth.getTimeInMillis() &&
+                    event.getStartTime().getTimeInMillis() < endOfMonth.getTimeInMillis()) {
+                events.add(event);
+            }
+        }
+        return events;
+    }
+
+/*
+    @Override
+    public void onEmptyViewClicked(Calendar time) {
+        // Set the new event with duration one hour.
+        Calendar endTime = (Calendar) time.clone();
+        endTime.add(Calendar.HOUR, 1);
+
+        // Create a new event.
+        WeekViewEvent event = new WeekViewEvent(20, "New event", time, endTime);
+        mNewEvents.add(event);
+
+        // Refresh the week view. onMonthChange will be called again.
+        mWeekView.notifyDatasetChanged();
+    }
+
+ */
+
 
     private void setupDateTimeInterpreter(final boolean shortDate) {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
@@ -116,6 +217,27 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
         Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+    }
+
+    @Override
+    public void onDialogPositiveClick(String title) {
+        System.out.println("title: " + title);
+
+        Calendar startTime = Calendar.getInstance();
+        startTime.set(Calendar.HOUR_OF_DAY, 3);
+        startTime.set(Calendar.MINUTE, 0);
+        startTime.set(Calendar.MONTH, 3 - 1);
+        startTime.set(Calendar.YEAR, 2021);
+        Calendar endTime = (Calendar) startTime.clone();
+        endTime.add(Calendar.HOUR, 1);
+        endTime.set(Calendar.MONTH, 3 - 1);
+
+        WeekViewEvent event = new WeekViewEvent(20, title, startTime, endTime);
+        mNewEvents.add(event);
+
+        // Refresh the week view. onMonthChange will be called again.
+        mWeekView.notifyDatasetChanged();
+
     }
 
 }
