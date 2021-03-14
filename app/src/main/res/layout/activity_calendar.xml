@@ -8,15 +8,17 @@
 
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:layout_width="386dp"
+        android:layout_height="293dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginStart="-3dp"
-        android:layout_marginTop="3dp"
-        android:layout_marginBottom="-1dp"
-        android:layout_weight="1"
+        android:layout_alignParentEnd="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="2dp"
+        android:layout_marginTop="-2dp"
+        android:layout_marginEnd="23dp"
+        android:layout_marginBottom="64dp"
+        android:layout_weight="2"
         app:columnGap="8dp"
         app:dayBackgroundColor="#05000000"
         app:eventTextColor="@android:color/white"
@@ -29,6 +31,19 @@
         app:noOfVisibleDays="3"
         app:textSize="12sp"
         app:todayBackgroundColor="#1848adff" />
+
+    <Button
+        android:id="@+id/button_newEvent"
+        android:layout_width="91dp"
+        android:layout_height="49dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="309dp"
+        android:layout_marginEnd="17dp"
+        android:layout_weight="1"
+        android:background="@drawable/ic_button"
+        android:text="@string/button_newEvent" />
 
     <include
         layout="@layout/bottom_menu"
