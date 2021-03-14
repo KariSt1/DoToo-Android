@@ -104,9 +104,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         Button favoriteList = (Button) convertView.findViewById(R.id.todolist_favorite);
         if(todoList.isFavorite()) {
-            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
-        } else {
             favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_favorite);
+        } else {
+            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
         }
 
         favoriteList.setOnClickListener(new View.OnClickListener() {
