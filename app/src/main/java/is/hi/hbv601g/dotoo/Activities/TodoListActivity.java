@@ -45,7 +45,7 @@ public class TodoListActivity extends AppCompatActivity {
         // networking prufa
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
-        networkManager.getTodolist(new NetworkCallback<List<TodoList>>() {
+        networkManager.getTodolist(false, new NetworkCallback<List<TodoList>>() {
             @Override
             public void onSuccess(List<TodoList> result) {
                 mTodoLists = result;

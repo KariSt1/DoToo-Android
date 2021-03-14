@@ -21,6 +21,15 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="parent" />
 
+    <ExpandableListView
+        android:id="@+id/home_expandableList"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_weight="1"
+        android:descendantFocusability="afterDescendants"
+        android:childDivider="#FFDBB9"
+        android:divider="#FFC895"/>
+
     <include
         layout="@layout/bottom_menu"
         android:layout_width="match_parent"

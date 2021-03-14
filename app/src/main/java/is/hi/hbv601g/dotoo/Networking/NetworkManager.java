@@ -38,8 +38,8 @@ import is.hi.hbv601g.dotoo.Model.User;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-    //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+    // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
@@ -65,7 +65,7 @@ public class NetworkManager {
         return mQueue;
     }
 
-    public void getTodolist(final NetworkCallback<List<TodoList>> callback) {
+    public void getTodolist(boolean isFavorite, final NetworkCallback<List<TodoList>> callback) {
 /*
         StringRequest request = new StringRequest(
                 Request.Method.GET, BASE_URL + "todolist",  new Response.Listener<String>() {
@@ -97,7 +97,10 @@ public class NetworkManager {
         }
         System.out.println(json);
 
-        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + "todolist", json, new Response.Listener<JSONArray>() {
+        String requestURL = "todolist";
+        if(isFavorite) requestURL = "favoritetodolists";
+
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + requestURL, json, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
