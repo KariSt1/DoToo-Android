@@ -111,12 +111,14 @@ public class TodoListActivity extends AppCompatActivity {
     private void prepareListData() {
         mTodoLists = new ArrayList<TodoList>();
         mFavoriteButtons = new ArrayList<Button>();
+        String[] colors = new String[] {"orange", "green", "blue", "yellow", "red", "pink", "purple"};
 
         // Adding child data
         for(int i=0;i<5;i++) {
             TodoList list = new TodoList();
             list.setId(i);
             list.setName("List " + i);
+            list.setColor(colors[(int) Math.floor(Math.random()*7)]);
             if(Math.random() > 0.5) {
                 list.setFavorite(true);
             } else {

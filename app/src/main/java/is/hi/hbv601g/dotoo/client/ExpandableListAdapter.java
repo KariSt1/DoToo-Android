@@ -12,6 +12,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -81,6 +82,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.todolist_group, null);
         }
 
+        setHeaderColor(convertView, todoList);
+
         TextView listText = (TextView) convertView.findViewById(R.id.todolist_title);
         listText.setText(todoList.getName());
 
@@ -142,6 +145,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.todolist_item, null);
         }
 
+        setItemColor(convertView, (TodoList) getGroup(groupPosition));
+
         CheckBox itemCheckBox = (CheckBox) convertView.findViewById(R.id.todolist_item_checkbox);
         itemCheckBox.setChecked(todoListItem.getChecked());
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -159,7 +164,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         EditText itemText = (EditText) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
         itemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
                 System.out.println("Erum í onFocusChange");
@@ -174,8 +178,9 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         mNewItem = null;
                     }
                     itemText.clearFocus();
-                    //InputMethodManager imm = (InputMethodManager) mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                    //imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+//                    InputMethodManager imm =
+//                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
                 } else {
                     itemText.requestFocus();
                     itemText.setSelection(itemText.getText().length());
@@ -203,5 +208,57 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void setHeaderColor(View view, TodoList list) {
+        switch (list.getColor()) {
+            case "yellow":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_darker));
+                break;
+            case "orange":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.orange_darker));
+                break;
+            case "red":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.red_darker));
+                break;
+            case "green":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.green_darker));
+                break;
+            case "blue":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.blue_darker));
+                break;
+            case "pink":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.pink_darker));
+                break;
+            case "purple":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.purple_darker));
+                break;
+        }
+    }
+
+    public void setItemColor(View view, TodoList list) {
+        switch (list.getColor()) {
+            case "yellow":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_lighter));
+                break;
+            case "orange":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.orange_lighter));
+                break;
+            case "red":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.red_lighter));
+                break;
+            case "green":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.green_lighter));
+                break;
+            case "blue":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.blue_lighter));
+                break;
+            case "pink":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.pink_lighter));
+                break;
+            case "purple":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.purple_lighter));
+                break;
+        }
     }
 }
