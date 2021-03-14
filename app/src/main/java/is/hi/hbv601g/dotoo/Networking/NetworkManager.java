@@ -21,6 +21,7 @@ import java.util.List;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
 import is.hi.hbv601g.dotoo.Activities.LoginActivity;
+import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.User;
 
@@ -29,6 +30,7 @@ import is.hi.hbv601g.dotoo.Model.User;
 public class NetworkManager {
 
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+    //private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
@@ -116,5 +118,35 @@ public class NetworkManager {
     public User getUser() {
         return mUser;
     }
+
+
+    /*
+    public void getEvents(final NetworkCallback<List<Event>> callback) {
+
+        StringRequest request = new StringRequest(
+                Request.Method.GET, BASE_URL + "events",  new Response.Listener<String>() {
+            @Override
+            public void onResponse(String response) {
+                System.out.println(response);
+                Gson gson = new Gson();
+                Type listType = new TypeToken<List<Event>>(){}.getType();
+                List<Event> eventBank = gson.fromJson(response, listType);
+                System.out.println("Fyrsti event: " + eventBank.get(0).getTitle());
+                callback.onSuccess(eventBank);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onFailure(error.toString());
+
+            }
+        }
+        );
+        mQueue.add(request); // volley sér um að keyra þetta request
+    }
+
+     */
+
+
 
 }

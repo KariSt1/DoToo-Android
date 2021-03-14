@@ -5,11 +5,14 @@ import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import org.w3c.dom.Text;
@@ -25,15 +28,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<TodoList> mTodoLists;
-    private HashMap<TodoList, List<TodoListItem>> mTodoListItems;
+    private TodoListItem mNewItem;
+    private ExpandableListView mListView;
 
     public ExpandableListAdapter(Context context, List<TodoList> todoLists,
-                                 HashMap<TodoList, List<TodoListItem>> todoListItems) {
+                                 ExpandableListView listView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
-        this.mTodoListItems = todoListItems;
+        this.mListView = listView;
     }
-
 
     @Override
     public int getGroupCount() {
@@ -42,7 +45,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public int getChildrenCount(int groupPosition) {
-        return this.mTodoListItems.get(this.mTodoLists.get(groupPosition)).size();
+        return this.mTodoLists.get(groupPosition).getItems().size();
     }
 
     @Override
@@ -52,7 +55,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     @Override
     public Object getChild(int groupPosition, int childPosition) {
-        return this.mTodoListItems.get(this.mTodoLists.get(groupPosition)).get(childPosition);
+        return this.mTodoLists.get(groupPosition).getItems().get(childPosition);
     }
 
     @Override
@@ -73,17 +76,61 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TodoList todoList = (TodoList) getGroup(groupPosition);
-        System.out.println("getGroupView todolist name: " + todoList.getName());
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);
             convertView = infalInflater.inflate(R.layout.todolist_group, null);
         }
 
+        setHeaderColor(convertView, todoList);
+
         TextView listText = (TextView) convertView.findViewById(R.id.todolist_title);
         listText.setText(todoList.getName());
 
+        Button newItemButton = (Button) convertView.findViewById(R.id.todolist_newitem);
+        newItemButton.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mNewItem = new TodoListItem();
+                mTodoLists.get(groupPosition).addItem(mNewItem);
+                InputMethodManager imm =
+                        (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                mListView.expandGroup(groupPosition);
+                notifyDataSetChanged();
+            }
+        });
+
+        Button favoriteList = (Button) convertView.findViewById(R.id.todolist_favorite);
+        if(todoList.isFavorite()) {
+            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
+        } else {
+            favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_favorite);
+        }
+
+        favoriteList.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                todoList.setFavorite(!todoList.isFavorite());
+                if(todoList.isFavorite()) {
+                    favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
+                } else {
+                    favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_favorite);
+                }
+                notifyDataSetChanged();
+            }
+        });
+
         Button deleteList = (Button) convertView.findViewById(R.id.todolist_delete);
+        deleteList.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                mTodoLists.remove(groupPosition);
+                notifyDataSetChanged();
+            }
+        });
 
         return convertView;
     }
@@ -91,7 +138,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         TodoListItem todoListItem = (TodoListItem) getChild(groupPosition, childPosition);
-        System.out.println("getChildView item: " + todoListItem.getDescription());
 
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -99,29 +145,45 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.todolist_item, null);
         }
 
+        setItemColor(convertView, (TodoList) getGroup(groupPosition));
+
         CheckBox itemCheckBox = (CheckBox) convertView.findViewById(R.id.todolist_item_checkbox);
         itemCheckBox.setChecked(todoListItem.getChecked());
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                //TodoListItem item = mTodoListItems.get(mTodoLists.get(groupPosition)).get(childPosition);
-                System.out.println("Item checked fyrir: " + todoListItem.getDescription() + todoListItem.getChecked());
-                System.out.println("Í hashmap fyrir" + mTodoListItems.get(groupPosition).get(childPosition));
-                todoListItem.setChecked(!todoListItem.getChecked());
+                System.out.println("Erum í onCheckedChanged");
+                if(buttonView.isPressed()) {
+                    todoListItem.setChecked(!todoListItem.getChecked());
+                }
 
-                System.out.println("Item checked eftir: " + todoListItem.getDescription() + todoListItem.getChecked());
             }
         });
+
 
         EditText itemText = (EditText) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
         itemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
-
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
+                System.out.println("Erum í onFocusChange");
                 if(!hasFocus) {
+                    System.out.println("Erum í if-setningu í onFocusChange");
                     String text = itemText.getText().toString();
-                    todoListItem.setDescription(text);
+                    if(text.length() == 0 && todoListItem != mNewItem) {
+                        mTodoLists.get(groupPosition).getItems().remove(childPosition);
+                        notifyDataSetChanged();
+                    } else {
+                        todoListItem.setDescription(text);
+                        mNewItem = null;
+                    }
+                    itemText.clearFocus();
+//                    InputMethodManager imm =
+//                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+//                    imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+                } else {
+                    itemText.requestFocus();
+                    itemText.setSelection(itemText.getText().length());
                 }
             }
         });
@@ -131,10 +193,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                mTodoListItems.get(mTodoLists.get(groupPosition)).remove(childPosition);
+                mTodoLists.get(groupPosition).getItems().remove(childPosition);
                 notifyDataSetChanged();
             }
         });
+
+        if(todoListItem == mNewItem) {
+            itemText.requestFocus();
+        }
 
         return convertView;
     }
@@ -142,5 +208,57 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public boolean isChildSelectable(int groupPosition, int childPosition) {
         return true;
+    }
+
+    public void setHeaderColor(View view, TodoList list) {
+        switch (list.getColor()) {
+            case "yellow":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_darker));
+                break;
+            case "orange":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.orange_darker));
+                break;
+            case "red":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.red_darker));
+                break;
+            case "green":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.green_darker));
+                break;
+            case "blue":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.blue_darker));
+                break;
+            case "pink":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.pink_darker));
+                break;
+            case "purple":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.purple_darker));
+                break;
+        }
+    }
+
+    public void setItemColor(View view, TodoList list) {
+        switch (list.getColor()) {
+            case "yellow":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_lighter));
+                break;
+            case "orange":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.orange_lighter));
+                break;
+            case "red":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.red_lighter));
+                break;
+            case "green":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.green_lighter));
+                break;
+            case "blue":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.blue_lighter));
+                break;
+            case "pink":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.pink_lighter));
+                break;
+            case "purple":
+                view.setBackgroundColor(mContext.getResources().getColor(R.color.purple_lighter));
+                break;
+        }
     }
 }

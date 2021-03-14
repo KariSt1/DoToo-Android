@@ -5,31 +5,64 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Activities.TodoListActivity">
+    android:windowSoftInputMode="adjustPan"
+    tools:context=".Activities.TodoListActivity"
+    android:background="@color/dark_blue">
 
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <View
+            android:layout_width="79.445dp"
+            android:layout_height="63dp"
+            android:layout_marginBottom="10dp"
+            android:background="@drawable/ic_triangles"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            />
+
+        <ImageView
+            android:layout_width="37.5dp"
+            android:layout_height="25.275dp"
+            android:layout_marginStart="5dp"
+            android:layout_marginTop="5dp"
+            android:layout_alignParentTop="true"
+            android:layout_alignParentStart="true"
+            android:src="@drawable/ic_dotoo_blue"
+            android:contentDescription="@string/logo" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_marginStart="80dp"
+            android:layout_marginTop="11.5dp"
+            android:fontFamily="@font/montserrat_regular"
+            android:text="TODOLISTS"
+            android:textColor="@color/white"
+            android:textSize="30sp" />
+    </RelativeLayout>
 
     <ExpandableListView
         android:id="@+id/todolist_expandableList"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_weight="1"/>
+        android:layout_weight="1"
+        android:descendantFocusability="afterDescendants"
+        android:childDivider="#FFDBB9"
+        android:divider="#FFC895"/>
 
-    <!--<androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="match_parent"
-        android:layout_height="100dp"
-        android:orientation="horizontal">
-        -->
-
-        <include
-            layout="@layout/bottom_menu"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_weight="0"
-            android:layout_gravity="bottom"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toTopOf="parent"
-            app:layout_constraintVertical_bias="0.105" />
-    <!--</androidx.constraintlayout.widget.ConstraintLayout>-->
+    <include
+        layout="@layout/bottom_menu"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_weight="0"
+        android:layout_gravity="bottom"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintVertical_bias="0.105" />
 </LinearLayout>
 
