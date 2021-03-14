@@ -49,8 +49,17 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<TodoList> result) {
                 mTodoListsPrufa = result;
+                System.out.println(mTodoListsPrufa.get(0).getName());
                 Log.d(TAG, "texti í todolista"+ mTodoListsPrufa.get(0).getItems().get(0).getDescription());
                 System.out.println("Verið er að ná networking tenging.");
+                mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
+
+                //TODO: Get request fyrir todolista
+                prepareListData();
+
+                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoListsPrufa, mTodoListView);
+
+                mTodoListView.setAdapter(mListAdapter);
 
             }
 
@@ -98,14 +107,6 @@ public class TodoListActivity extends AppCompatActivity {
                 else toggleFavorite.setBackground(getResources().getDrawable(R.drawable.ic_baseline_star_favorite));
             }
         });*/
-        mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
-
-        //TODO: Get request fyrir todolista
-        prepareListData();
-
-        mListAdapter = new ExpandableListAdapter(this, mTodoLists, mTodoListView);
-
-        mTodoListView.setAdapter(mListAdapter);
     }
 
     private void prepareListData() {

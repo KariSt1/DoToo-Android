@@ -3,34 +3,43 @@ package is.hi.hbv601g.dotoo.Networking;
 import android.content.Context;
 import android.content.Intent;
 
+import com.android.volley.NetworkResponse;
+import com.android.volley.ParseError;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
+import com.android.volley.toolbox.HttpHeaderParser;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
 import is.hi.hbv601g.dotoo.Activities.LoginActivity;
 import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
 
 
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
-    //private static final String BASE_URL = "http://10.0.2.2:8080/";
+    //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
@@ -57,7 +66,7 @@ public class NetworkManager {
     }
 
     public void getTodolist(final NetworkCallback<List<TodoList>> callback) {
-
+/*
         StringRequest request = new StringRequest(
                 Request.Method.GET, BASE_URL + "todolist",  new Response.Listener<String>() {
             @Override
@@ -78,6 +87,54 @@ public class NetworkManager {
         }
         );
         mQueue.add(request); // volley sér um að keyra þetta request
+        */
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", mUser.getUsername());
+            json.put("password", mUser.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(json);
+
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + "todolist", json, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                try {
+                    JSONObject test = (JSONObject) response.get(0);
+                    System.out.println("Response" +  response.get(0));
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+                List<TodoList> todoLists = new ArrayList<TodoList>();
+                Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
+                Type listType = new TypeToken<List<TodoList>>(){}.getType();
+                List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
+                /*for(int i=0;i<response.length(); i++) {
+                    Type itemListType = new TypeToken<List<TodoListItem>>(){}.getType();
+                    JSONObject list;
+                    try {
+                        list = (JSONObject) response.get(i);
+                        JSONArray items = list.getJSONArray("items");
+                        List<TodoListItem> itemBank = gson.fromJson(list.getJSONArray("items").toString(), itemListType);
+                        todoListBank.get(i).setItems(itemBank);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } */
+                System.out.println("Todolistbank: " + todoListBank);
+                System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
+                callback.onSuccess(todoListBank);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að fá todo lista");
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(request); // volley sér um að keyra þetta request
+
     }
 
     public void postLogin(final NetworkCallback<User> callback, String username, String password) {
@@ -147,6 +204,24 @@ public class NetworkManager {
 
      */
 
+    private class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
+        public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
+            super(method, url, (jsonRequest == null) ? null : jsonRequest.toString(), listener, errorListener);
+        }
 
+        @Override
+        protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+            try {
+                String jsonString = new String(response.data,
+                        HttpHeaderParser.parseCharset(response.headers, PROTOCOL_CHARSET));
+                return Response.success(new JSONArray(jsonString),
+                        HttpHeaderParser.parseCacheHeaders(response));
+            } catch (UnsupportedEncodingException e) {
+                return Response.error(new ParseError(e));
+            } catch (JSONException je) {
+                return Response.error(new ParseError(je));
+            }
+        }
+    }
 
 }
