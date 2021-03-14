@@ -49,7 +49,7 @@ public class TodoList {
     }
 
     public void setFavorite(boolean favorite) {
-        this.mFavorite = favorite;
+        mFavorite = favorite;
     }
 
     public List<TodoListItem> getItems() {
