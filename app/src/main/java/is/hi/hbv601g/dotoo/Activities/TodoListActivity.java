@@ -36,13 +36,10 @@ public class TodoListActivity extends AppCompatActivity {
     ExpandableListView mTodoListView;
     List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
-    List<TodoList> mTodoListsPrufa; // prufa fyrir network
     private static final String TAG = "TodoListActivity";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
-        // networking prufa
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getTodolist(false, new NetworkCallback<List<TodoList>>() {
@@ -61,7 +58,6 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onFailure(String errorString) {
                 Log.d(TAG, "Failed to get todolists: " + errorString);
-                System.out.println("Erum í onFailure í todolistActivity.");
             }
         });
 

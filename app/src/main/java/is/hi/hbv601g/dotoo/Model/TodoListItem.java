@@ -3,16 +3,19 @@ package is.hi.hbv601g.dotoo.Model;
 import com.google.gson.annotations.SerializedName;
 
 public class TodoListItem {
+
     @SerializedName("id")
     private long mId;
 
     @SerializedName("description")
     private String mDescription;
+
     @SerializedName("checked")
     private boolean mChecked;
 
     @SerializedName("todolist")
     private TodoList mTodoList;
+
 
     public TodoListItem() {
     }

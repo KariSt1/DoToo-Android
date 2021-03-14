@@ -1,15 +1,30 @@
 package is.hi.hbv601g.dotoo.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 import java.util.Calendar;
 
 public class Event {
+
+    @SerializedName("id")
     private long mId;
 
+    @SerializedName("startDate")
     private Calendar mStartDate;
+
+    @SerializedName("endDate")
     private Calendar mEndDate;
+
+    @SerializedName("tile")
     private String mTitle;
+
+    @SerializedName("category")
     private String mCategory;
+
+    @SerializedName("color")
     private String mColor;
+
+    @SerializedName("user")
     private User mUser;
 
     public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {

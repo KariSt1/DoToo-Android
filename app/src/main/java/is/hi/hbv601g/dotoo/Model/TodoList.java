@@ -9,14 +9,19 @@ public class TodoList {
 
     @SerializedName("id")
     private long mId;
+
     @SerializedName("name")
     private String mName;
+
     @SerializedName("color")
     private String mColor;
+
     @SerializedName("favorite")
     private boolean mFavorite;
+
     @SerializedName("items")
     private List<TodoListItem> mItems = new ArrayList<>();
+
     @SerializedName("user")
     private User mUser;
 
