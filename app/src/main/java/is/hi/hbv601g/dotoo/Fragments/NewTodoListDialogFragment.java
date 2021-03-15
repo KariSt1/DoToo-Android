@@ -14,12 +14,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
+import android.widget.Toast;
 
 import java.util.Calendar;
 
@@ -28,12 +30,15 @@ import is.hi.hbv601g.dotoo.R;
 
 public class NewTodoListDialogFragment extends DialogFragment {
 
+    String[] colors = new String[]{"yellow", "orange", "red", "green", "blue", "pink", "purple"};
 
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(String name, String color);
     }
 
     NewTodoListDialogFragment.NoticeDialogListener mListener;
+
+
 
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
@@ -56,16 +61,20 @@ public class NewTodoListDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_new_todo_list_dialog, null);
 
        final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
+
        System.out.println("Titill á nýja todolistanum er:" + mTitle);
 
         //get the spinner from the xml.
         Spinner dropdown = (Spinner)view.findViewById(R.id.color_list);
+        //dropdown.setOnItemSelectedListener(getActivity());
         //create a list of items for the spinner.
-        String[] items = new String[]{"yellow", "red", "green", "blue", "pink", "purple"};
+
         //create an adapter to describe how the items are displayed
-        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
-        //set the spinners adapter to the previously created one.
-        //dropdown.setAdapter(adapter);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colors);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
+        dropdown.setAdapter(adapter);
+
+        String selectedColor = dropdown.getSelectedItem().toString();
 
         builder.setTitle(R.string.dialog_newTodolist)
                 .setView(view)
@@ -76,8 +85,10 @@ public class NewTodoListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String title = mTitle.getText().toString();
-                        String color = "purple_darker";
-                        boolean favorite = false;
+                        String color = "purple_lighter";
+                        System.out.println("Titill er: " + title );
+                        System.out.println("Valinn litur er: " + selectedColor);
+
                         mListener.onDialogPositiveClick(title, color);
 
                     }
