@@ -148,7 +148,8 @@ public class NewEventDialogFragment extends DialogFragment {
                 // Add action buttons
                 .setPositiveButton(R.string.save_event, new DialogInterface.OnClickListener() {
                     @Override
-                    //Sends title, startdate and enddate to NoticeDialogListener which will be added to new event in CalendarActivity
+                    //Sends title, startDate(sd) and endDate(ed) to NoticeDialogListener
+                    // which will be added to new Event in CalendarActivity
                     public void onClick(DialogInterface dialog, int id) {
                         String title = mTitle.getText().toString();
                         mListener.onDialogPositiveClick(title, sd, ed);
