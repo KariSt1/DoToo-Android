@@ -14,9 +14,11 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 
 import java.util.Calendar;
@@ -53,21 +55,27 @@ public class NewTodoListDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_new_todo_list_dialog, null);
 
-       //final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
+       final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
+       System.out.println("Titill á nýja todolistanum er:" + mTitle);
 
-
-
-
+        //get the spinner from the xml.
+        Spinner dropdown = (Spinner)view.findViewById(R.id.color_list);
+        //create a list of items for the spinner.
+        String[] items = new String[]{"yellow", "red", "green", "blue", "pink", "purple"};
+        //create an adapter to describe how the items are displayed
+        //ArrayAdapter<String> adapter = new ArrayAdapter<>(this, android.R.layout.simple_spinner_dropdown_item, items);
+        //set the spinners adapter to the previously created one.
+        //dropdown.setAdapter(adapter);
 
         builder.setTitle(R.string.dialog_newTodolist)
                 .setView(view)
 
                 // Add action buttons
-                .setPositiveButton(R.string.save_event, new DialogInterface.OnClickListener() {
+                .setPositiveButton(R.string.save_todo_list, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
 
-                        String title = "prufa";
+                        String title = mTitle.getText().toString();
                         String color = "blue";
                         boolean favorite = false;
                         mListener.onDialogPositiveClick(title, color, favorite);
@@ -83,4 +91,4 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
         return builder.create();
     }
-    }
+}

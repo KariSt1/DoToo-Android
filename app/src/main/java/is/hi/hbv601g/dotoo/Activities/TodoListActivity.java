@@ -5,11 +5,11 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
-import android.icu.util.Calendar;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
+import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
@@ -25,6 +25,7 @@ import android.widget.ExpandableListView;
 import android.widget.ExpandableListView.OnChildClickListener;
 
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
@@ -33,7 +34,7 @@ import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.R;
 import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
 
-public class TodoListActivity extends AppCompatActivity {
+public class TodoListActivity extends AppCompatActivity implements NewTodoListDialogFragment.NoticeDialogListener{
     protected BottomNavigationView navigationView;
 
     ExpandableListAdapter mListAdapter;
@@ -162,5 +163,16 @@ public class TodoListActivity extends AppCompatActivity {
         networkManager.deleteTodolist(mDeletedLists);
 
         super.onStop();
+    }
+
+    @Override
+    public void onDialogPositiveClick(String name, String color, boolean favorite) {
+
+        System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
+        //WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
+        //mNewEvents.add(event);
+        // Refresh the week view. onMonthChange will be called again.
+        //mWeekView.notifyDatasetChanged();
+
     }
 }
