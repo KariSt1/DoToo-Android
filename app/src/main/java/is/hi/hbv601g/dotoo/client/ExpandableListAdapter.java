@@ -29,17 +29,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<TodoList> mTodoLists;
-    private List<TodoList> mDeletedLists;
+    private List<Long> mDeletedListIds;
     private List<TodoList> mChangedTodoLists;
     private TodoListItem mNewItem;
     private ExpandableListView mListView;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<TodoList> deletedLists,
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<Long> deletedLists,
                                  List<TodoList> changedTodoLists, ExpandableListView listView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
         this.mListView = listView;
-        this.mDeletedLists = deletedLists;
+        this.mDeletedListIds = deletedLists;
         this.mChangedTodoLists = changedTodoLists;
     }
 
@@ -78,12 +78,12 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
-    public List<TodoList> getDeletedLists() {
-        return this.mDeletedLists;
+    public List<Long> getDeletedLists() {
+        return this.mDeletedListIds;
     }
 
-    public void setDeletedLists(List<TodoList> mDeletedLists) {
-        this.mDeletedLists = mDeletedLists;
+    public void setDeletedLists(List<Long> mDeletedLists) {
+        this.mDeletedListIds = mDeletedLists;
     }
 
     @Override
@@ -140,8 +140,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         deleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<TodoList> currentDeleted = getDeletedLists();
-                currentDeleted.add(mTodoLists.get(groupPosition));
+                List<Long> currentDeleted = getDeletedLists();
+                currentDeleted.add(mTodoLists.get(groupPosition).getId());
                 setDeletedLists(currentDeleted);
                 mTodoLists.remove(groupPosition);
                 System.out.println("currently deleted" + getDeletedLists());

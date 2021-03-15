@@ -41,7 +41,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     ExpandableListView mTodoListView;
     List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
-    List<TodoList> mDeletedLists;
+    List<Long> mDeletedListIds;
     List<TodoList> mChangedTodoLists = new ArrayList<TodoList>();
     private static final String TAG = "TodoListActivity";
 
@@ -56,9 +56,9 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
 
-                mDeletedLists = new ArrayList<TodoList>();
+                mDeletedListIds = new ArrayList<Long>();
 
-                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedLists, mChangedTodoLists, mTodoListView);
+                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
             }
@@ -159,8 +159,12 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     @Override
     protected void onStop() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
-        mDeletedLists = mListAdapter.getDeletedLists();
-        networkManager.deleteTodolist(mDeletedLists);
+        mDeletedListIds = mListAdapter.getDeletedLists();
+        try {
+            networkManager.deleteTodolist(mDeletedListIds);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
 
         super.onStop();
     }
