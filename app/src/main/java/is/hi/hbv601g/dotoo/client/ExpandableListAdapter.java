@@ -20,6 +20,7 @@ import org.w3c.dom.Text;
 import java.util.HashMap;
 import java.util.List;
 
+import is.hi.hbv601g.dotoo.Activities.TodoListActivity;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.R;
@@ -28,14 +29,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     private Context mContext;
     private List<TodoList> mTodoLists;
+    private List<TodoList> mDeletedLists;
     private TodoListItem mNewItem;
     private ExpandableListView mListView;
 
-    public ExpandableListAdapter(Context context, List<TodoList> todoLists,
+    public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<TodoList> deletedLists,
                                  ExpandableListView listView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
         this.mListView = listView;
+        this.mDeletedLists = deletedLists;
     }
 
     @Override
@@ -128,6 +131,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 mTodoLists.remove(groupPosition);
+                mDeletedLists.add(mTodoLists.get(groupPosition));
                 notifyDataSetChanged();
             }
         });

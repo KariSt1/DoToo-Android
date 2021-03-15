@@ -36,6 +36,7 @@ public class TodoListActivity extends AppCompatActivity {
     ExpandableListView mTodoListView;
     List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
+    List<TodoList> mDeletedLists;
     private static final String TAG = "TodoListActivity";
 
     @Override
@@ -49,7 +50,7 @@ public class TodoListActivity extends AppCompatActivity {
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
 
-                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mTodoListView);
+                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
             }
@@ -132,5 +133,13 @@ public class TodoListActivity extends AppCompatActivity {
         }
         System.out.println("TodoListar voru búnir til");
         System.out.println("Fyrsti listi: " + mTodoLists.get(0).getName());
+    }
+
+    @Override
+    protected void onStop() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.deleteTodolist(mDeletedLists);
+
+        super.onStop();
     }
 }
