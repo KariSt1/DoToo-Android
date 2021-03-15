@@ -14,7 +14,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_todolists">TodoLists</string>
     <string name="menu_calendar">Calendar</string>
-    <string name="welcome_user">\"Welcome %1$s\"</string>
+    <string name="welcome_user">Welcome %1$s</string>
     <string name="event_title">Title</string>
     <string name="save_event">Save event</string>
     <string name="cancel">Cancel</string>

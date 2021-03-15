@@ -52,7 +52,6 @@ public class TodoListActivity extends AppCompatActivity {
                 mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
-
             }
 
             @Override
