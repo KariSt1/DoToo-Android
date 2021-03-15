@@ -38,9 +38,9 @@ import is.hi.hbv601g.dotoo.Model.User;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+    //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
-    // private static final String BASE_URL = "http://10.0.2.2:8080/";
+     private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;
     private static RequestQueue mQueue;
@@ -67,28 +67,7 @@ public class NetworkManager {
     }
 
     public void getTodolist(boolean isFavorite, final NetworkCallback<List<TodoList>> callback) {
-/*
-        StringRequest request = new StringRequest(
-                Request.Method.GET, BASE_URL + "todolist",  new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-            // getum hér vitnað í widged í viðmótinu okkar
-                Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
-                Type listType = new TypeToken<List<TodoList>>(){}.getType();
-                List<TodoList> todoListBank = gson.fromJson(response, listType);
-                System.out.println("Fyrsti todolisti: " + todoListBank.get(0).getName());
-                callback.onSuccess(todoListBank);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onFailure(error.toString());
 
-            }
-        }
-        );
-        mQueue.add(request); // volley sér um að keyra þetta request
-        */
         JSONObject json = new JSONObject();
         try {
             json.put("username", mUser.getUsername());
@@ -114,18 +93,7 @@ public class NetworkManager {
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
-                /*for(int i=0;i<response.length(); i++) {
-                    Type itemListType = new TypeToken<List<TodoListItem>>(){}.getType();
-                    JSONObject list;
-                    try {
-                        list = (JSONObject) response.get(i);
-                        JSONArray items = list.getJSONArray("items");
-                        List<TodoListItem> itemBank = gson.fromJson(list.getJSONArray("items").toString(), itemListType);
-                        todoListBank.get(i).setItems(itemBank);
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-                } */
+
                 System.out.println("Todolistbank: " + todoListBank);
                 System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
                 callback.onSuccess(todoListBank);
@@ -134,6 +102,39 @@ public class NetworkManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að fá todo lista");
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(request); // volley sér um að keyra þetta request
+
+    }
+
+    public void deleteTodolist(List<TodoList> deletedLists) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", mUser.getUsername());
+            json.put("password", mUser.getPassword());
+            json.put("todolists", deletedLists);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + "deletelist", json, response -> {
+
+           /* List<TodoList> todoLists = new ArrayList<TodoList>();
+            Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
+            Type listType = new TypeToken<List<TodoList>>(){}.getType();
+            List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
+
+            System.out.println("Todolistbank: " + todoListBank);
+            System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
+            callback.onSuccess(todoListBank);*/
+
+            System.out.println("delete response " + response.toString());
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að deleta todo lista");
                 error.printStackTrace();
             }
         });
