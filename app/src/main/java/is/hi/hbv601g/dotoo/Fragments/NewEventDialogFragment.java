@@ -97,8 +97,9 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                        sd.set(Calendar.HOUR_OF_DAY, hour);
-                        sd.set(Calendar.MINUTE, minute);
+                       // sd.set(Calendar.HOUR_OF_DAY, hour);
+                       // sd.set(Calendar.MINUTE, minute);
+                        sd.set(hour,minute);
                         mStartTime.setText(hour + ":" + minute);
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
@@ -140,8 +141,9 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                        ed.set(Calendar.HOUR_OF_DAY, hour);
-                        ed.set(Calendar.MINUTE, minute);
+                      //  ed.set(Calendar.HOUR_OF_DAY, hour);
+                      //  ed.set(Calendar.MINUTE, minute);
+                        ed.set(hour,minute);
                         mEndTime.setText(hour + ":" + minute);
 
                     }
