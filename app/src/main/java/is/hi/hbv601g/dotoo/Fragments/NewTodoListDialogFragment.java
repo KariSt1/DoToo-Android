@@ -62,18 +62,16 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
        final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
 
-       System.out.println("Titill á nýja todolistanum er:" + mTitle);
 
         //get the spinner from the xml.
         Spinner dropdown = (Spinner)view.findViewById(R.id.color_list);
-        //dropdown.setOnItemSelectedListener(getActivity());
-        //create a list of items for the spinner.
 
         //create an adapter to describe how the items are displayed
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colors);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
         dropdown.setAdapter(adapter);
 
+        // default item on spinner
         dropdown.setSelection(0);
 
         String selectedColor = dropdown.getSelectedItem().toString();
@@ -87,12 +85,9 @@ public class NewTodoListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String title = mTitle.getText().toString();
-                        String color = "purple_lighter";
-                        System.out.println("Titill er: " + title );
-                        System.out.println("Valinn litur er: " + selectedColor);
+                        String color = selectedColor;
 
                         mListener.onDialogPositiveClick(title, color);
-
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
