@@ -30,15 +30,17 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private Context mContext;
     private List<TodoList> mTodoLists;
     private List<TodoList> mDeletedLists;
+    private List<TodoList> mChangedTodoLists;
     private TodoListItem mNewItem;
     private ExpandableListView mListView;
 
     public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<TodoList> deletedLists,
-                                 ExpandableListView listView) {
+                                 List<TodoList> changedTodoLists, ExpandableListView listView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
         this.mListView = listView;
         this.mDeletedLists = deletedLists;
+        this.mChangedTodoLists = changedTodoLists;
     }
 
     @Override
@@ -124,6 +126,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 todoList.setFavorite(!todoList.isFavorite());
+                todoListChanged(todoList);
                 if(todoList.isFavorite()) {
                     favoriteList.setBackgroundResource(R.drawable.ic_baseline_star_not_favorite);
                 } else {
@@ -169,6 +172,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 System.out.println("Erum í onCheckedChanged");
                 if(buttonView.isPressed()) {
                     todoListItem.setChecked(!todoListItem.getChecked());
+                    todoListChanged(mTodoLists.get(groupPosition));
                 }
 
             }
@@ -191,6 +195,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                         todoListItem.setDescription(text);
                         mNewItem = null;
                     }
+                    todoListChanged(mTodoLists.get(groupPosition));
                     itemText.clearFocus();
 //                    InputMethodManager imm =
 //                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
@@ -208,6 +213,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 mTodoLists.get(groupPosition).getItems().remove(childPosition);
+                todoListChanged(mTodoLists.get(groupPosition));
                 notifyDataSetChanged();
             }
         });
@@ -274,5 +280,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 view.setBackgroundColor(mContext.getResources().getColor(R.color.purple_lighter));
                 break;
         }
+    }
+
+    public void todoListChanged(TodoList changedTodoList) {
+        System.out.println("Erum í todoListChanged");
+        for(TodoList list: mChangedTodoLists) {
+            if (list == changedTodoList) {
+                return;
+            }
+        }
+        mChangedTodoLists.add(changedTodoList);
+        System.out.println("Todolista breytt, fjöldi breyttra: " + mChangedTodoLists.size());
     }
 }
