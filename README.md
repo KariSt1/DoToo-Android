@@ -13,4 +13,4 @@ username: nonni
 password: 1234
 ```
 
-Client grunnvirknin fyrir todo-lista og events er nánast komin en POST og GET á server í NetworkManager er enn í vinnslu.
+Client grunnvirknin fyrir todo-lista og events er nánast komin en POST og GET á server í NetworkManager er enn í vinnslu. Hægt að ná í todolista í Home og TodoLists.
