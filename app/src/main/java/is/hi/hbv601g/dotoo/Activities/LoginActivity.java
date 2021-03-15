@@ -4,27 +4,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Parcelable;
+
 import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.android.volley.Request;
-import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
-import com.android.volley.toolbox.JsonObjectRequest;
-import com.android.volley.toolbox.Volley;
-
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.util.ArrayList;
-import java.util.List;
-
-import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
@@ -37,7 +22,7 @@ public class LoginActivity extends AppCompatActivity {
     private Button mLoginButton;
 
     //networking
-    User userPrufa; // prufa fyrir network
+    User userNetworking;
     private static final String TAG = "LoginActivity";
 
     @Override
@@ -55,14 +40,11 @@ public class LoginActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.print("Ýtt á login");
-
 
                 networkManager.postLogin(new NetworkCallback<User>() {
                     @Override
                     public void onSuccess(User result) {
-                        userPrufa = result;
-                        Log.d(TAG, "texti í todolista"+ userPrufa.getName());
+                        userNetworking = result;
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         User user = networkManager.getUser();
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());

@@ -33,7 +33,7 @@ import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
-
+    
 
 /** Communicates with the server and returns responses through callback **/
 public class NetworkManager {
