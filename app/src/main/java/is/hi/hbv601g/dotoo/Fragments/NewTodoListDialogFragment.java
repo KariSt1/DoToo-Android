@@ -30,7 +30,7 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(String name, String color, boolean favorite);
+        public void onDialogPositiveClick(String name, String color);
     }
 
     NewTodoListDialogFragment.NoticeDialogListener mListener;
@@ -76,9 +76,9 @@ public class NewTodoListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String title = mTitle.getText().toString();
-                        String color = "blue";
+                        String color = "purple_darker";
                         boolean favorite = false;
-                        mListener.onDialogPositiveClick(title, color, favorite);
+                        mListener.onDialogPositiveClick(title, color);
 
                     }
                 })

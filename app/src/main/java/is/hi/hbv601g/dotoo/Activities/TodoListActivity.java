@@ -166,11 +166,14 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     }
 
     @Override
-    public void onDialogPositiveClick(String name, String color, boolean favorite) {
+    public void onDialogPositiveClick(String name, String color) {
 
         System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
-        //WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
-        //mNewEvents.add(event);
+        TodoList list = new TodoList();
+        list.setId(666); // athuga með id-ið
+        list.setName(name);
+        list.setColor(color);
+        mTodoLists.add(list);
         // Refresh the week view. onMonthChange will be called again.
         //mWeekView.notifyDatasetChanged();
 

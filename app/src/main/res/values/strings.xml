@@ -18,7 +18,7 @@
     <string name="welcome_user">Welcome %1$s</string>
     <string name="event_title">Title</string>
     <string name="save_event">Save event</string>
-    <string name="save_todo_list">Save todo list</string>
+    <string name="save_todo_list">Save Todo list</string>
     <string name="cancel">Cancel</string>
     <string name="button_newEvent">New event</string>
     <string name="dialog_newEvent">New Event</string>
@@ -29,6 +29,6 @@
     <string name="todolists">TODOLISTS</string>
     <string name="home">HOME</string>
     <string name="dialog_newTodolist">New todo list</string>
-    <string name="to_do_title">todo list title</string>
+    <string name="to_do_title">Title</string>
 
 </resources>
