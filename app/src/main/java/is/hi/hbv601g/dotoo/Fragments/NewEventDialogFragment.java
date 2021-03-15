@@ -56,10 +56,11 @@ public class NewEventDialogFragment extends DialogFragment {
         View view = inflater.inflate(R.layout.fragment_new_event_dialog, null);
 
         final EditText mTitle = (EditText)view.findViewById(R.id.new_event_title);
-        final EditText mStartDate = (EditText) view.findViewById(R.id.new_event_startDate);
+        final Button mStartDate = (Button) view.findViewById(R.id.new_event_startDate);
         final Button mStartTime = (Button) view.findViewById(R.id.new_event_startTime);
         final Button mEndDate = (Button) view.findViewById(R.id.new_event_endDate);
         final Button mEndTime = (Button)view.findViewById(R.id.new_event_endTime);
+
         Calendar sd = Calendar.getInstance();
         Calendar ed = Calendar.getInstance();
 

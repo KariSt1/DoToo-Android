@@ -119,16 +119,7 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + "deletelist", json, response -> {
-
-           /* List<TodoList> todoLists = new ArrayList<TodoList>();
-            Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
-            Type listType = new TypeToken<List<TodoList>>(){}.getType();
-            List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
-
-            System.out.println("Todolistbank: " + todoListBank);
-            System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
-            callback.onSuccess(todoListBank);*/
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deletelists", json, response -> {
 
             System.out.println("delete response " + response.toString());
         }, new Response.ErrorListener() {
