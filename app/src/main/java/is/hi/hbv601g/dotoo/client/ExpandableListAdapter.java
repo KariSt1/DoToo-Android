@@ -76,6 +76,14 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return false;
     }
 
+    public List<TodoList> getDeletedLists() {
+        return this.mDeletedLists;
+    }
+
+    public void setDeletedLists(List<TodoList> mDeletedLists) {
+        this.mDeletedLists = mDeletedLists;
+    }
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TodoList todoList = (TodoList) getGroup(groupPosition);
@@ -127,11 +135,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
         Button deleteList = (Button) convertView.findViewById(R.id.todolist_delete);
         deleteList.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
+                List<TodoList> currentDeleted = getDeletedLists();
+                currentDeleted.add(mTodoLists.get(groupPosition));
+                setDeletedLists(currentDeleted);
                 mTodoLists.remove(groupPosition);
-                mDeletedLists.add(mTodoLists.get(groupPosition));
+                System.out.println("currently deleted" + getDeletedLists());
                 notifyDataSetChanged();
             }
         });

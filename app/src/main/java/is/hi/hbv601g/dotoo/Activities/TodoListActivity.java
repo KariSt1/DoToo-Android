@@ -50,6 +50,8 @@ public class TodoListActivity extends AppCompatActivity {
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.todolist_expandableList);
 
+                mDeletedLists = new ArrayList<TodoList>();
+
                 mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
@@ -138,6 +140,7 @@ public class TodoListActivity extends AppCompatActivity {
     @Override
     protected void onStop() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
+        mDeletedLists = mListAdapter.getDeletedLists();
         networkManager.deleteTodolist(mDeletedLists);
 
         super.onStop();
