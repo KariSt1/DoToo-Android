@@ -10,6 +10,7 @@ import android.util.Log;
 import android.view.MenuItem;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
@@ -63,6 +64,17 @@ public class TodoListActivity extends AppCompatActivity {
         System.out.println("Er í TodoListActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
+
+
+        // floating action button
+
+        FloatingActionButton fab = findViewById(R.id.fab);
+        fab.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                System.out.println("Notandi ýtti á floating action button.");
+            }
+        });
 
         /**
          * Navigation bar logic
