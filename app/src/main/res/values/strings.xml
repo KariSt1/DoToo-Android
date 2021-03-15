@@ -20,5 +20,9 @@
     <string name="cancel">Cancel</string>
     <string name="button_newEvent">New event</string>
     <string name="dialog_newEvent">New Event</string>
+    <string name="event_startTime">Start time</string>
+    <string name="event_endTime">End time</string>
+    <string name="event_startDate">Start date</string>
+    <string name="event_endDate">End date</string>
 
 </resources>
