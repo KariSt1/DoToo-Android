@@ -2,8 +2,10 @@
 
 # Code Review
 
-Notið branchið DoTooCodeReview \\
-Við erum að keyra serverinn á dotoo2.herokuapp.com \\
+Notið branchið DoTooCodeReview
+
+Við erum að keyra serverinn á dotoo2.herokuapp.com
+
 GitHub repo fyrir server: https://github.com/KariSt1/DoToo-Server 
 
 Það er hægt að sign up en það er einnig til notandi:
