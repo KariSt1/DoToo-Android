@@ -65,7 +65,8 @@
         android:src="@drawable/ic_plus"
         android:layout_margin="16dp"
         android:contentDescription="@string/fab"
-        app:backgroundTint="@color/white"/>
+        app:backgroundTint="@color/white"
+        />
 
 
     <include

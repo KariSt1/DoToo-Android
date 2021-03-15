@@ -2,6 +2,7 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.icu.util.Calendar;
@@ -12,6 +13,8 @@ import android.view.MenuItem;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
+import is.hi.hbv601g.dotoo.Fragments.NewTodoListDialogFragment;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
@@ -77,6 +80,8 @@ public class TodoListActivity extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 System.out.println("Notandi ýtti á floating action button.");
+                DialogFragment dialog = new NewTodoListDialogFragment();
+                dialog.show(getSupportFragmentManager(),"newTodoList");
             }
         });
 

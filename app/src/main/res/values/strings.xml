@@ -25,5 +25,6 @@
     <string name="event_endTime">End time</string>
     <string name="event_startDate">Start date</string>
     <string name="event_endDate">End date</string>
+    <string name="dialog_newTodolist">New todo list</string>
 
 </resources>
