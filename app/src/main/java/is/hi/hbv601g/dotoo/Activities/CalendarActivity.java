@@ -56,7 +56,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
             @Override
             public void onClick(View v) {
-                System.out.println("Ýtt á new event");
                 DialogFragment dialog = new NewEventDialogFragment();
                 dialog.show(getSupportFragmentManager(),"newEvent");
 
