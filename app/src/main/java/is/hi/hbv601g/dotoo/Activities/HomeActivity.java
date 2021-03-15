@@ -30,7 +30,7 @@ public class HomeActivity extends AppCompatActivity {
     ExpandableListView mTodoListView;
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
-    List<TodoList> mDeletedLists;
+    List<Long> mDeletedListIds;
     List<TodoList> mChangedTodoLists;
 
     @Override
@@ -49,7 +49,7 @@ public class HomeActivity extends AppCompatActivity {
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.home_expandableList);
 
-                mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedLists, mChangedTodoLists, mTodoListView);
+                mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
 
