@@ -74,10 +74,10 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        //sd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        //sd.set(Calendar.MONTH, month+1);
-                        //sd.set(Calendar.YEAR, year);
-                        sd.set(year,month,dayOfMonth);
+                        sd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        sd.set(Calendar.MONTH, month);
+                        sd.set(Calendar.YEAR, year);
+                        //sd.set(year,month,dayOfMonth);
                         mStartDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
 
                     }
@@ -97,9 +97,9 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                       // sd.set(Calendar.HOUR_OF_DAY, hour);
-                       // sd.set(Calendar.MINUTE, minute);
-                        sd.set(hour,minute);
+                        sd.set(Calendar.HOUR_OF_DAY, hour);
+                        sd.set(Calendar.MINUTE, minute);
+                        //sd.set(hour,minute);
                         mStartTime.setText(hour + ":" + minute);
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
@@ -118,10 +118,10 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-                        //ed.set(Calendar.DAY_OF_MONTH, dayOfMonth);
-                        //ed.set(Calendar.MONTH, month+1);
-                        //ed.set(Calendar.YEAR, year);
-                        ed.set(year,month-1,dayOfMonth);
+                        ed.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        ed.set(Calendar.MONTH, month);
+                        ed.set(Calendar.YEAR, year);
+                       // ed.set(year,month,dayOfMonth);
                         mEndDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
 
                     }
@@ -141,9 +141,9 @@ public class NewEventDialogFragment extends DialogFragment {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
-                      //  ed.set(Calendar.HOUR_OF_DAY, hour);
-                      //  ed.set(Calendar.MINUTE, minute);
-                        ed.set(hour,minute);
+                        ed.set(Calendar.HOUR_OF_DAY, hour);
+                        ed.set(Calendar.MINUTE, minute);
+                      //  ed.set(hour,minute);
                         mEndTime.setText(hour + ":" + minute);
 
                     }

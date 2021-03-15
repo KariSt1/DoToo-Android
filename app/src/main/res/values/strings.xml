@@ -27,5 +27,6 @@
     <string name="event_endDate">End date</string>
     <string name="todolists">TODOLISTS</string>
     <string name="home">HOME</string>
+    <string name="dialog_newTodolist">New todo list</string>
 
 </resources>
