@@ -39,6 +39,7 @@ import is.hi.hbv601g.dotoo.Model.User;
 public class NetworkManager {
 
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+
     // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;

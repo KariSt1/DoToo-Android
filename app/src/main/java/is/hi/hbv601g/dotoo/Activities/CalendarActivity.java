@@ -21,6 +21,7 @@ import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
@@ -220,9 +221,8 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     }
 
     @Override
-    public void onDialogPositiveClick(String title) {
-        System.out.println("title: " + title);
-
+    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
+        /*
         Calendar startTime = Calendar.getInstance();
         startTime.set(Calendar.HOUR_OF_DAY, 3);
         startTime.set(Calendar.MINUTE, 0);
@@ -231,10 +231,10 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         Calendar endTime = (Calendar) startTime.clone();
         endTime.add(Calendar.HOUR, 1);
         endTime.set(Calendar.MONTH, 3 - 1);
+         */
 
-        WeekViewEvent event = new WeekViewEvent(20, title, startTime, endTime);
+        WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
         mNewEvents.add(event);
-
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
 
