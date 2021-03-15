@@ -33,14 +33,14 @@ import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
+    
 
-
-// sækir hluti frá networkinu og skilar til baka í gegnum callback
+/** Communicates with the server and returns responses through callback **/
 public class NetworkManager {
 
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
-    // URL for developing
+    /** Development server **/
     // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
     private static NetworkManager mInstance;
@@ -58,7 +58,6 @@ public class NetworkManager {
     private NetworkManager(Context context){
         mContext = context;
         mQueue = getRequestQueue();
-
     }
 
     public RequestQueue getRequestQueue() {
@@ -67,6 +66,11 @@ public class NetworkManager {
         return mQueue;
     }
 
+    /**
+     * Gets todolists from server
+     * @param isFavorite Should the method get all todolists or only favorite lists
+     * @param callback
+     */
     public void getTodolist(boolean isFavorite, final NetworkCallback<List<TodoList>> callback) {
 
         JSONObject json = new JSONObject();
@@ -76,27 +80,19 @@ public class NetworkManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println(json);
 
         String requestURL = "todolist";
         if(isFavorite) requestURL = "favoritetodolists";
 
+        /** Custom request that sends JsonObject request and returns JsonArray response **/
         CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + requestURL, json, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                try {
-                    JSONObject test = (JSONObject) response.get(0);
-                    System.out.println("Response" +  response.get(0));
-                } catch(JSONException e) {
-                    e.printStackTrace();
-                }
-                List<TodoList> todoLists = new ArrayList<TodoList>();
+
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
 
-                System.out.println("Todolistbank: " + todoListBank);
-                System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
@@ -110,6 +106,10 @@ public class NetworkManager {
 
     }
 
+    /**
+     * TODO: Wait for todolist post method to be implemented to get correct IDs
+     * @param deletedLists List of IDs of todolists to delete
+     */
     public void deleteTodolist(List<Long> deletedLists) {
         JSONObject json = new JSONObject();
         try {
@@ -122,7 +122,6 @@ public class NetworkManager {
 
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deletelists", json, response -> {
 
-            System.out.println("delete response " + response.toString());
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
@@ -143,8 +142,6 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        System.out.println(json);
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "login", json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -161,7 +158,7 @@ public class NetworkManager {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Fengum error í login");
+                System.out.println("Error í login");
                 error.printStackTrace();
             }
         });
@@ -172,34 +169,6 @@ public class NetworkManager {
     public User getUser() {
         return mUser;
     }
-
-
-    /*
-    public void getEvents(final NetworkCallback<List<Event>> callback) {
-
-        StringRequest request = new StringRequest(
-                Request.Method.GET, BASE_URL + "events",  new Response.Listener<String>() {
-            @Override
-            public void onResponse(String response) {
-                System.out.println(response);
-                Gson gson = new Gson();
-                Type listType = new TypeToken<List<Event>>(){}.getType();
-                List<Event> eventBank = gson.fromJson(response, listType);
-                System.out.println("Fyrsti event: " + eventBank.get(0).getTitle());
-                callback.onSuccess(eventBank);
-            }
-        }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                callback.onFailure(error.toString());
-
-            }
-        }
-        );
-        mQueue.add(request); // volley sér um að keyra þetta request
-    }
-
-     */
 
     private class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
         public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {

@@ -2,13 +2,8 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.speech.tts.TextToSpeech;
-import android.util.Log;
 import android.view.MenuItem;
-import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -18,11 +13,10 @@ import com.google.android.material.bottomnavigation.BottomNavigationView;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
-import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
-import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
