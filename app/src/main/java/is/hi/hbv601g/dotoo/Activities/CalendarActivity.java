@@ -4,16 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.DialogFragment;
 
-import android.app.Dialog;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
-import android.widget.EditText;
-import android.widget.Toast;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -21,19 +19,14 @@ import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
-import is.hi.hbv601g.dotoo.Model.Event;
-import is.hi.hbv601g.dotoo.Model.TodoList;
-import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
-import is.hi.hbv601g.dotoo.Networking.NetworkManager;
+
 import is.hi.hbv601g.dotoo.R;
 
 public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, NewEventDialogFragment.NoticeDialogListener {
@@ -41,13 +34,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
     private ArrayList<WeekViewEvent> mNewEvents;
-    List<Event> mEvent; // prufa fyrir network
     private static final String TAG = "CalendarActivity";
     private Button mEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
@@ -85,6 +76,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
+
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
 
@@ -98,6 +90,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         //Format date and time
         setupDateTimeInterpreter(false);
 
+
         // Initially, there will be no events on the week view because the user has not tapped on
         // it yet.
         mNewEvents = new ArrayList<WeekViewEvent>();
@@ -106,7 +99,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public List<WeekViewEvent> onMonthChange(int newYear, int newMonth) {
-        // Populate the week view with the events that was added by tapping on empty view.
+        // Populate the week view with the events that was added.
         List<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
         ArrayList<WeekViewEvent> newEvents = getNewEvents(newYear, newMonth);
         events.addAll(newEvents);
@@ -137,7 +130,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         endOfMonth.set(Calendar.MINUTE, 59);
         endOfMonth.set(Calendar.SECOND, 59);
 
-        // Find the events that were added by tapping on empty view and that occurs in the given
+        // Find the events that were added and that occurs in the given
         // time frame.
         ArrayList<WeekViewEvent> events = new ArrayList<WeekViewEvent>();
         for (WeekViewEvent event : mNewEvents) {
@@ -149,6 +142,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         return events;
     }
 
+    /**
+     * Changes the date format on the calendar
+     * @param shortDate false if the date needs to be formatted
+     * @return formatted date
+     */
     private void setupDateTimeInterpreter(final boolean shortDate) {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
             @Override
@@ -162,6 +160,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                 return weekday.toUpperCase() + format.format(date.getTime());
             }
 
+            /**
+             * Changes the time format on the calendar
+             * @param hour the hour that is being formatted
+             * @return formatted time
+             */
             @Override
             public String interpretTime(int hour) {
                 if (hour == 24) hour = 0;
@@ -171,19 +174,51 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         });
     }
 
+    /**
+     * Delete event if clicked on it
+     * @param event, the event that was clicked on
+     * @param eventRect coordinates of the event
+     */
     @Override
     public void onEventClick(WeekViewEvent event, RectF eventRect) {
-        Toast.makeText(this, "Clicked " + event.getName(), Toast.LENGTH_SHORT).show();
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                this);
+        alertDialogBuilder.setTitle("Delete event");
+        alertDialogBuilder
+                .setMessage("Are you sure you want to delete this event ?");
+        alertDialogBuilder.setCancelable(false);
+        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                mNewEvents.remove(event);
+                mWeekView.notifyDatasetChanged();
+            }
+        });
+        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+            public void onClick(DialogInterface dialog, int id) {
+                // if this button is clicked, just close
+                // the dialog box and do nothing
+                dialog.cancel();
+            }
+        });
+        // create alert dialog
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        // show it
+        alertDialog.show();
     }
 
+    /**
+     * Makes new event with the data that the user
+     * puts in the dialog to make a new event
+     * @param title the title of the new event
+     * @param startDate the startdate and time of the new event
+     * @param endDate the enddate and time of the new event
+     */
     @Override
     public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
-
+        // Make event
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
         mNewEvents.add(event);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
-
     }
-
 }
