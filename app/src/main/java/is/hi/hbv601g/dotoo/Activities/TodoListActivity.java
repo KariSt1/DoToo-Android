@@ -18,16 +18,12 @@ import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ExpandableListView;
 
 import java.util.ArrayList;
 import java.util.List;
 
-import is.hi.hbv601g.dotoo.Model.TodoList;
-import is.hi.hbv601g.dotoo.Model.TodoListItem;
-import is.hi.hbv601g.dotoo.R;
-import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 
 public class TodoListActivity extends AppCompatActivity implements NewTodoListDialogFragment.NoticeDialogListener{
     protected BottomNavigationView navigationView;

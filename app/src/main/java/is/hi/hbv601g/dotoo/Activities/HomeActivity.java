@@ -16,7 +16,7 @@ import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
-import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
