@@ -26,7 +26,6 @@ import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
 
 public class HomeActivity extends AppCompatActivity {
 
-    private TextView mWelcomeText;
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
     protected BottomNavigationView navigationView;
@@ -39,10 +38,6 @@ public class HomeActivity extends AppCompatActivity {
         System.out.println("home activity on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
-
-        mWelcomeText = (TextView) findViewById(R.id.welcomeUser);
-        String user = getIntent().getStringExtra("is.hi.hbv601g.dotoo.user_result");
-        mWelcomeText.setText(getString(R.string.welcome_user, user));
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getTodolist(true, new NetworkCallback<List<TodoList>>() {
