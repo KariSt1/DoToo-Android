@@ -24,5 +24,7 @@
     <string name="event_endTime">End time</string>
     <string name="event_startDate">Start date</string>
     <string name="event_endDate">End date</string>
+    <string name="todolists">TODOLISTS</string>
+    <string name="home">HOME</string>
 
 </resources>

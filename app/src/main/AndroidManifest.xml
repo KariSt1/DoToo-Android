@@ -15,9 +15,12 @@
         android:largeHeap="true"
         android:theme="@style/Theme.AppCompat.Light.NoActionBar">
         android:usesCleartextTraffic="true"
-        <activity android:name=".Activities.TodoListActivity"/>
-        <activity android:name=".Activities.CalendarActivity"/>
-        <activity android:name=".Activities.HomeActivity" />
+        <activity android:name=".Activities.TodoListActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activities.CalendarActivity"
+            android:windowSoftInputMode="adjustPan"/>
+        <activity android:name=".Activities.HomeActivity"
+            android:windowSoftInputMode="adjustPan"/>
         <activity android:name=".Activities.SignupActivity" />
         <activity android:name=".Activities.StartupActivity">
             <intent-filter>

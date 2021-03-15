@@ -5,7 +5,6 @@
     android:layout_width="fill_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    android:windowSoftInputMode="adjustPan"
     tools:context=".Activities.TodoListActivity"
     android:background="@color/dark_blue">
 
@@ -48,7 +47,7 @@
             android:layout_marginStart="80dp"
             android:layout_marginTop="11.5dp"
             android:fontFamily="@font/montserrat_regular"
-            android:text="TODOLISTS"
+            android:text="@string/todolists"
             android:textColor="@color/white"
             android:textSize="30sp" />
     </RelativeLayout>
