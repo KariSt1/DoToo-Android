@@ -34,7 +34,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
-    List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
     List<Long> mDeletedListIds;
     List<TodoList> mChangedTodoLists = new ArrayList<TodoList>();
@@ -64,7 +63,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
             }
         });
 
-        System.out.println("Er í TodoListActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
 
@@ -118,7 +116,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     }
 
     /**
-     * Create new todolist
+     * Create new todolist using a dialog
      * @param name name of todolist
      * @param color color of todolist
      */
@@ -126,7 +124,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     public void onDialogPositiveClick(String name, String color) {
 
         TodoList list = new TodoList();
-        list.setId(666); // athuga með id-ið
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);
