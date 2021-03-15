@@ -63,15 +63,14 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
-                /**
-                 * Navigation bar logic
-                 */
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_calendar);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                System.out.println("on navigation item selected");
                 switch(item.getItemId()) {
                     case R.id.nav_calendar:
                         return true;
@@ -87,28 +86,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
-        /*
-        NetworkManager networkManager = NetworkManager.getInstance(this);
-        networkManager.getEvents(new NetworkCallback<List<Event>>() {
-            @Override
-            public void onSuccess(List<Event> result) {
-                mEvent = result;
-                Log.d(TAG, "titill Events "+ mEvent.get(0).getTitle());
-
-            }
-
-            @Override
-            public void onFailure(String errorString) {
-                Log.d(TAG, "Failed to get events: " + errorString);
-                System.out.println("Network failaði í event");
-            }
-        });
-
-        */
-
-        System.out.println("Er í CalendarActivity");
-
-
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
 
@@ -121,8 +98,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         //Format date and time
         setupDateTimeInterpreter(false);
-
-     //   mWeekView.setEmptyViewClickListener(this);
 
         // Initially, there will be no events on the week view because the user has not tapped on
         // it yet.
@@ -175,24 +150,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         return events;
     }
 
-/*
-    @Override
-    public void onEmptyViewClicked(Calendar time) {
-        // Set the new event with duration one hour.
-        Calendar endTime = (Calendar) time.clone();
-        endTime.add(Calendar.HOUR, 1);
-
-        // Create a new event.
-        WeekViewEvent event = new WeekViewEvent(20, "New event", time, endTime);
-        mNewEvents.add(event);
-
-        // Refresh the week view. onMonthChange will be called again.
-        mWeekView.notifyDatasetChanged();
-    }
-
- */
-
-
     private void setupDateTimeInterpreter(final boolean shortDate) {
         mWeekView.setDateTimeInterpreter(new DateTimeInterpreter() {
             @Override
@@ -222,16 +179,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
-        /*
-        Calendar startTime = Calendar.getInstance();
-        startTime.set(Calendar.HOUR_OF_DAY, 3);
-        startTime.set(Calendar.MINUTE, 0);
-        startTime.set(Calendar.MONTH, 3 - 1);
-        startTime.set(Calendar.YEAR, 2021);
-        Calendar endTime = (Calendar) startTime.clone();
-        endTime.add(Calendar.HOUR, 1);
-        endTime.set(Calendar.MONTH, 3 - 1);
-         */
 
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
         mNewEvents.add(event);

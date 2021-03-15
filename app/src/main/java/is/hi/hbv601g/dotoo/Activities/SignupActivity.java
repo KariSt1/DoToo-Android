@@ -44,11 +44,9 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                System.out.print("Ýtt á signup");
 
                 RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
                 String url = "https://dotoo2.herokuapp.com/signup";
-                //Gson gson = new Gson();
                 if(mPassword.getText().toString().equals("")) {
                     mPassword.setError(getString(R.string.signup_no_password));
                     mPassword.requestFocus();

@@ -35,7 +35,6 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("home activity on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -44,8 +43,6 @@ public class HomeActivity extends AppCompatActivity {
             @Override
             public void onSuccess(List<TodoList> result) {
                 mFavouriteLists = result;
-
-                System.out.print("Home activity on successs");
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.home_expandableList);
 

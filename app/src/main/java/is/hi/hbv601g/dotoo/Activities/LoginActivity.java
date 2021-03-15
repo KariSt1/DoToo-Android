@@ -45,11 +45,8 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-
         // networking
-
         NetworkManager networkManager = NetworkManager.getInstance(this);
-
 
         mUsername = (EditText) findViewById(R.id.login_username);
         mPassword = (EditText) findViewById(R.id.login_password);
@@ -68,7 +65,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "texti í todolista"+ userPrufa.getName());
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         User user = networkManager.getUser();
-                        System.out.println("User í onSuccess: " + user.getName());
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());
                         startActivity(i);
                     }
@@ -78,45 +74,6 @@ public class LoginActivity extends AppCompatActivity {
                         Log.d(TAG, "Failed to get todolists: " + errorString);
                     }
                 }, mUsername.getText().toString(), mPassword.getText().toString());
-
-                /*
-                RequestQueue queue = Volley.newRequestQueue(LoginActivity.this);
-                String url = "https://dotoo2.herokuapp.com/login";
-
-
-                JSONObject json = new JSONObject();
-                try {
-                    json.put("username", mUsername.getText().toString());
-                    json.put("password", mPassword.getText().toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-               JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
-                    @Override
-                    public void onResponse(JSONObject response) {
-                        System.out.println(response);
-
-                        Intent i = new Intent(LoginActivity.this, HomeActivity.class);
-                        String user = "Vitlaust nafn";
-                         try {
-                            user = response.getString("name");
-                        } catch (JSONException e) {
-                            e.printStackTrace();
-                        }
-                        i.putExtra("is.hi.hbv601g.dotoo.user_result", user);
-                        startActivity(i);
-                    }
-                }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        System.out.println("Fengum error í login");
-                        error.printStackTrace();
-                    }
-                });
-
-                queue.add(jsonObjectRequest);
-*/
 
 
             }
