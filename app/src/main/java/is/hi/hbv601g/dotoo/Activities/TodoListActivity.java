@@ -174,10 +174,11 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
         System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
         TodoList list = new TodoList();
-        list.setId(666); // athuga með id-ið
+        //list.setId(666); // athuga með id-ið
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);
+        mChangedTodoLists.add(list);
         // Refresh the week view. onMonthChange will be called again.
         //mWeekView.notifyDatasetChanged();
 

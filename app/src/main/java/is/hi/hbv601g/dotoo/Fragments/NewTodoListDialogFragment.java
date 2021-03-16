@@ -87,7 +87,7 @@ public class NewTodoListDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
 
                         String title = mTitle.getText().toString();
-                        String color = "purple_lighter";
+                        String color = dropdown.getSelectedItem().toString();
                         System.out.println("Titill er: " + title );
                         System.out.println("Valinn litur er: " + selectedColor);
 
