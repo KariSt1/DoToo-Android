@@ -18,6 +18,7 @@ import com.alamkanak.weekview.MonthLoader;
 import com.alamkanak.weekview.WeekView;
 import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -35,21 +36,19 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     private WeekView mWeekView;
     private ArrayList<WeekViewEvent> mNewEvents;
     private static final String TAG = "CalendarActivity";
-    private Button mEventButton;
+    FloatingActionButton mEventButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        mEventButton = (Button) findViewById(R.id.button_newEvent);
+        mEventButton = (FloatingActionButton) findViewById(R.id.button_newEvent);
         mEventButton.setOnClickListener(new View.OnClickListener() {
-
             @Override
             public void onClick(View v) {
                 DialogFragment dialog = new NewEventDialogFragment();
                 dialog.show(getSupportFragmentManager(),"newEvent");
-
             }
         });
 
