@@ -171,6 +171,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);
+        mChangedTodoLists.add(list);
         // Refresh the week view. onMonthChange will be called again.
         //mWeekView.notifyDatasetChanged();
 
