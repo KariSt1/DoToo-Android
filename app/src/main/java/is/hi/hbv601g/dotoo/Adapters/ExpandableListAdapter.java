@@ -1,7 +1,6 @@
-package is.hi.hbv601g.dotoo.client;
+package is.hi.hbv601g.dotoo.Adapters;
 
 import android.content.Context;
-import android.text.Layout;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,15 +11,10 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 
-import org.w3c.dom.Text;
-
-import java.util.HashMap;
 import java.util.List;
 
-import is.hi.hbv601g.dotoo.Activities.TodoListActivity;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.R;
@@ -231,6 +225,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public void setHeaderColor(View view, TodoList list) {
+        System.out.println("Color2: " + list.getColor());
         switch (list.getColor()) {
             case "yellow":
                 view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_darker));

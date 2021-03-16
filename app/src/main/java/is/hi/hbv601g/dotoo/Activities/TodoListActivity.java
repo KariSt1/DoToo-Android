@@ -9,11 +9,9 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 
-import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 import is.hi.hbv601g.dotoo.Fragments.NewTodoListDialogFragment;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
@@ -22,17 +20,12 @@ import is.hi.hbv601g.dotoo.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
-import android.widget.ExpandableListView.OnChildClickListener;
 
 import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.HashMap;
 import java.util.List;
 
-import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
-import is.hi.hbv601g.dotoo.R;
-import is.hi.hbv601g.dotoo.client.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 
 public class TodoListActivity extends AppCompatActivity implements NewTodoListDialogFragment.NoticeDialogListener{
     protected BottomNavigationView navigationView;
@@ -174,7 +167,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
         System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
         TodoList list = new TodoList();
-        list.setId(666); // athuga með id-ið
+        //list.setId(666); // athuga með id-ið
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);

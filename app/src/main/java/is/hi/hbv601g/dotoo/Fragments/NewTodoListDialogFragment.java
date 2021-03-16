@@ -74,7 +74,7 @@ public class NewTodoListDialogFragment extends DialogFragment {
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
         dropdown.setAdapter(adapter);
 
-        dropdown.setSelection(0);
+        //dropdown.setSelection(0);
 
         String selectedColor = dropdown.getSelectedItem().toString();
 
@@ -85,11 +85,11 @@ public class NewTodoListDialogFragment extends DialogFragment {
                 .setPositiveButton(R.string.save_todo_list, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
-
+                        //selectedColor = dropdown.getSelectedItem().toString();
                         String title = mTitle.getText().toString();
-                        String color = "purple_lighter";
+                        String color = dropdown.getSelectedItem().toString();
                         System.out.println("Titill er: " + title );
-                        System.out.println("Valinn litur er: " + selectedColor);
+                        System.out.println("Valinn litur er: " + color);
 
                         mListener.onDialogPositiveClick(title, color);
 
