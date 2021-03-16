@@ -45,7 +45,7 @@ public class NewEventDialogFragment extends DialogFragment {
     }
 
     public Dialog onCreateDialog(Bundle savedInstanceState) {
-        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(),R.style.DialogTheme);
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_new_event_dialog, null);
 
@@ -64,7 +64,7 @@ public class NewEventDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 final Calendar cal = Calendar.getInstance();
 
-                DatePickerDialog dpd = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(), R.style.DialogTheme, new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -86,7 +86,7 @@ public class NewEventDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 final Calendar cal = Calendar.getInstance();
 
-                TimePickerDialog tpd = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(), R.style.DialogTheme, new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
@@ -106,7 +106,7 @@ public class NewEventDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 final Calendar cal = Calendar.getInstance();
 
-                DatePickerDialog dpd = new DatePickerDialog(getActivity(), new DatePickerDialog.OnDateSetListener() {
+                DatePickerDialog dpd = new DatePickerDialog(getActivity(), R.style.DialogTheme,new DatePickerDialog.OnDateSetListener() {
 
                     @Override
                     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
@@ -128,7 +128,7 @@ public class NewEventDialogFragment extends DialogFragment {
             public void onClick(View v) {
                 final Calendar cal = Calendar.getInstance();
 
-                TimePickerDialog tpd = new TimePickerDialog(getActivity(), new TimePickerDialog.OnTimeSetListener() {
+                TimePickerDialog tpd = new TimePickerDialog(getActivity(), R.style.DialogTheme,new TimePickerDialog.OnTimeSetListener() {
 
                     @Override
                     public void onTimeSet(TimePicker view, int hour, int minute) {
