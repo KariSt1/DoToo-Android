@@ -15,3 +15,5 @@ password: 1234
 ```
 
 Client grunnvirknin fyrir todo-lista og events er nánast komin en POST og GET á server í NetworkManager er enn í vinnslu.
+
+Eins og er virkar ekki að búa til nýjan todo lista.
