@@ -1,33 +1,43 @@
 package is.hi.hbv601g.dotoo.Model;
 
+import android.annotation.SuppressLint;
+
+import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
 import java.util.Calendar;
 
 public class Event {
 
+    @Expose
     @SerializedName("id")
     private long mId;
 
+    @Expose
     @SerializedName("startDate")
-    private Calendar mStartDate;
+    private String mStartDate;
 
+    @Expose
     @SerializedName("endDate")
-    private Calendar mEndDate;
+    private String mEndDate;
 
+    @Expose
     @SerializedName("tile")
     private String mTitle;
 
+    @Expose
     @SerializedName("category")
     private String mCategory;
 
+    @Expose
     @SerializedName("color")
     private String mColor;
 
+    @Expose
     @SerializedName("user")
     private User mUser;
 
-    public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
+    public Event(String startDate, String endDate, String title, String category, String color, User user) {
         mStartDate = startDate;
         mEndDate = endDate;
         mTitle = title;
@@ -48,19 +58,19 @@ public class Event {
         mId = id;
     }
 
-    public Calendar getStartDate() {
+    public String getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(Calendar startDate) {
+    public void setStartDate(String startDate) {
         mStartDate = startDate;
     }
 
-    public Calendar getEndDate() {
+    public String getEndDate() {
         return mEndDate;
     }
 
-    public void setEndDate(Calendar endDate) {
+    public void setEndDate(String endDate) {
         mEndDate = endDate;
     }
 
@@ -87,4 +97,5 @@ public class Event {
     public void setColor(String color) {
         mColor = color;
     }
+
 }

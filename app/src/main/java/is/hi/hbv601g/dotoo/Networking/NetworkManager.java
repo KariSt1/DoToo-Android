@@ -16,6 +16,11 @@ import com.android.volley.toolbox.JsonRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
+import com.google.gson.JsonDeserializationContext;
+import com.google.gson.JsonDeserializer;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonParseException;
 import com.google.gson.reflect.TypeToken;
 
 import org.json.JSONArray;
@@ -25,6 +30,7 @@ import org.json.JSONObject;
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
@@ -41,7 +47,7 @@ public class NetworkManager {
      private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-    //private static final String BASE_URL = "http://10.0.2.2:8080/";
+   // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -91,6 +97,7 @@ public class NetworkManager {
                 } catch(JSONException e) {
                     e.printStackTrace();
                 }
+
                 List<TodoList> todoLists = new ArrayList<TodoList>();
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
@@ -174,33 +181,43 @@ public class NetworkManager {
         return mUser;
     }
 
-
-    /*
+    
     public void getEvents(final NetworkCallback<List<Event>> callback) {
 
-        StringRequest request = new StringRequest(
-                Request.Method.GET, BASE_URL + "events",  new Response.Listener<String>() {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", mUser.getUsername());
+            json.put("password", mUser.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println(json);
+
+        String requestURL = "events";
+
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + requestURL, json, new Response.Listener<JSONArray>() {
             @Override
-            public void onResponse(String response) {
-                System.out.println(response);
-                Gson gson = new Gson();
+            public void onResponse(JSONArray response) {
+                try {
+                    System.out.println("Response" +  response.get(0));
+                } catch(JSONException e) {
+                    e.printStackTrace();
+                }
+
+                Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<Event>>(){}.getType();
-                List<Event> eventBank = gson.fromJson(response, listType);
-                System.out.println("Fyrsti event: " + eventBank.get(0).getTitle());
+                List<Event> eventBank = gson.fromJson(response.toString(), listType);
                 callback.onSuccess(eventBank);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                callback.onFailure(error.toString());
-
+                error.printStackTrace();
             }
-        }
-        );
+        });
         mQueue.add(request); // volley sér um að keyra þetta request
-    }
 
-     */
+    }
 
     private class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
         public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {

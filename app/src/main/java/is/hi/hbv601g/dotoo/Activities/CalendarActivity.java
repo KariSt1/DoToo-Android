@@ -9,9 +9,11 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ExpandableListView;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -26,11 +28,16 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
+import is.hi.hbv601g.dotoo.Model.Event;
+import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 
-public class CalendarActivity extends AppCompatActivity implements WeekView.EventClickListener, MonthLoader.MonthChangeListener, NewEventDialogFragment.NoticeDialogListener {
+public class CalendarActivity extends AppCompatActivity implements WeekView.EventLongPressListener, MonthLoader.MonthChangeListener, NewEventDialogFragment.NoticeDialogListener {
 
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
@@ -40,6 +47,19 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getEvents(new NetworkCallback<List<Event>>() {
+            @Override
+            public void onSuccess(List<Event> result) {
+                System.out.println("Virkaði að ná í eventa");
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Log.d(TAG, "Failed to get events: " + errorString);
+            }
+        });
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
@@ -80,11 +100,13 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mWeekView = (WeekView) findViewById(R.id.weekView);
 
         // Set an action when any event is clicked.
-        mWeekView.setOnEventClickListener(this);
+      //  mWeekView.setOnEventClickListener(this);
 
         // The week view has infinite scrolling horizontally. We have to provide the events of a
         // month every time the month changes on the week view.
         mWeekView.setMonthChangeListener(this);
+
+        mWeekView.setEventLongPressListener(this);
 
         //Format date and time
         setupDateTimeInterpreter(false);
@@ -179,7 +201,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
      * @param eventRect coordinates of the event
      */
     @Override
-    public void onEventClick(WeekViewEvent event, RectF eventRect) {
+    public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
         alertDialogBuilder.setTitle("Delete event");
