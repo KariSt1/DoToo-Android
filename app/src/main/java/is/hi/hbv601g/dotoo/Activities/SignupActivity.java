@@ -69,7 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.println(response);
-                            Toast.makeText(SignupActivity.this,"Thank you for signing up " + user.getName() + "!",Toast.LENGTH_SHORT).show();
+                            Toast.makeText(SignupActivity.this,R.string.thank_you_sign_up + user.getName() + "!",Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                         @Override
