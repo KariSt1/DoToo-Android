@@ -62,7 +62,6 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
        final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
 
-       System.out.println("Titill á nýja todolistanum er:" + mTitle);
 
         //get the spinner from the xml.
         Spinner dropdown = (Spinner)view.findViewById(R.id.color_list);
