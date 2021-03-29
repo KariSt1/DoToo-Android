@@ -30,5 +30,6 @@
     <string name="home">HOME</string>
     <string name="dialog_newTodolist">New Todo List</string>
     <string name="to_do_title">Title</string>
+    <string name="thank_you_sign_up">Thank you for signing up </string>
 
 </resources>

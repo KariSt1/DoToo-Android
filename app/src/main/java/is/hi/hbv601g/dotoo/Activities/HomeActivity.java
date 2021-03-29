@@ -10,6 +10,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
@@ -25,7 +26,7 @@ public class HomeActivity extends AppCompatActivity {
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
     List<Long> mDeletedListIds;
-    List<TodoList> mChangedTodoLists;
+    List<TodoList> mChangedTodoLists = new ArrayList<TodoList>();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,6 +43,8 @@ public class HomeActivity extends AppCompatActivity {
                 System.out.print("Home activity on successs");
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.home_expandableList);
+
+                mDeletedListIds = new ArrayList<Long>();
 
                 mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
 

@@ -6,6 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -68,6 +69,7 @@ public class SignupActivity extends AppCompatActivity {
                         @Override
                         public void onResponse(JSONObject response) {
                             System.out.println(response);
+                            Toast.makeText(SignupActivity.this,R.string.thank_you_sign_up + user.getName() + "!",Toast.LENGTH_SHORT).show();
                         }
                     }, new Response.ErrorListener() {
                         @Override
