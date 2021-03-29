@@ -1,11 +1,15 @@
 package is.hi.hbv601g.dotoo.Model;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 
+import com.alamkanak.weekview.WeekViewEvent;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Event {
 
@@ -96,6 +100,20 @@ public class Event {
 
     public void setColor(String color) {
         mColor = color;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public WeekViewEvent toWeekViewEvent(){
+
+
+        // Create an week view event.
+        WeekViewEvent weekViewEvent = new WeekViewEvent();
+        weekViewEvent.setName(getTitle());
+        weekViewEvent.setStartTime(getStartDate());
+        weekViewEvent.setEndTime(getEndDate());
+        weekViewEvent.setColor(Color.parseColor(getColor()));
+
+        return weekViewEvent;
     }
 
 }

@@ -38,7 +38,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
-    private ArrayList<WeekViewEvent> mNewEvents;
+    ArrayList<WeekViewEvent> mNewEvents;
     List<Event> mEvents;
     private static final String TAG = "CalendarActivity";
     FloatingActionButton mEventButton;
@@ -49,8 +49,14 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         networkManager.getEvents(new NetworkCallback<List<Event>>() {
             @Override
             public void onSuccess(List<Event> result) {
-                System.out.println("Virkaði að ná í eventa");
+                System.out.println("virkaði að ná í eventa" + result);
                 mEvents = result;
+
+                for (Event event : mEvents) {
+                    mNewEvents.add(event.toWeekViewEvent());
+                }
+
+                mWeekView.notifyDatasetChanged();
             }
 
             @Override
@@ -62,6 +68,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
+        System.out.println("mEvents: " + mEvents);
         mEventButton = (FloatingActionButton) findViewById(R.id.button_newEvent);
         mEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -238,9 +245,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         // Make event
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
         User user = new User("nonni","Nonni","1234");
-       // Event event1 = new Event(startDate,endDate, title,"vinna","red",user);
+        //Event event1 = new Event(startDate,endDate, title,"vinna","red",user);
         mNewEvents.add(event);
-     //   mEvents.add(event1);
+        //mEvents.add(event1);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
     }
