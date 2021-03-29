@@ -12,8 +12,6 @@ import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.Button;
-import android.widget.ExpandableListView;
 
 import com.alamkanak.weekview.DateTimeInterpreter;
 import com.alamkanak.weekview.MonthLoader;
@@ -28,11 +26,10 @@ import java.util.Calendar;
 import java.util.List;
 import java.util.Locale;
 
-import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
 import is.hi.hbv601g.dotoo.Model.Event;
-import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
@@ -42,6 +39,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
     private ArrayList<WeekViewEvent> mNewEvents;
+    List<Event> mEvents;
     private static final String TAG = "CalendarActivity";
     FloatingActionButton mEventButton;
 
@@ -52,6 +50,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             @Override
             public void onSuccess(List<Event> result) {
                 System.out.println("Virkaði að ná í eventa");
+                mEvents = result;
             }
 
             @Override
@@ -238,7 +237,10 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
         // Make event
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
+        User user = new User("nonni","Nonni","1234");
+       // Event event1 = new Event(startDate,endDate, title,"vinna","red",user);
         mNewEvents.add(event);
+     //   mEvents.add(event1);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
     }

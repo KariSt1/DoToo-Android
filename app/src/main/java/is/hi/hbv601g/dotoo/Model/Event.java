@@ -15,11 +15,11 @@ public class Event {
 
     @Expose
     @SerializedName("startDate")
-    private String mStartDate;
+    private Calendar mStartDate;
 
     @Expose
     @SerializedName("endDate")
-    private String mEndDate;
+    private Calendar mEndDate;
 
     @Expose
     @SerializedName("tile")
@@ -37,7 +37,7 @@ public class Event {
     @SerializedName("user")
     private User mUser;
 
-    public Event(String startDate, String endDate, String title, String category, String color, User user) {
+    public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
         mStartDate = startDate;
         mEndDate = endDate;
         mTitle = title;
@@ -58,19 +58,19 @@ public class Event {
         mId = id;
     }
 
-    public String getStartDate() {
+    public Calendar getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Calendar startDate) {
         mStartDate = startDate;
     }
 
-    public String getEndDate() {
+    public Calendar getEndDate() {
         return mEndDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Calendar endDate) {
         mEndDate = endDate;
     }
 
