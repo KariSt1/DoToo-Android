@@ -30,7 +30,7 @@ import is.hi.hbv601g.dotoo.R;
 
 public class NewTodoListDialogFragment extends DialogFragment {
 
-    String[] colors = new String[]{"Choose your color", "yellow", "orange", "red", "green", "blue", "pink", "purple"};
+    String[] colors = new String[]{"yellow", "orange", "red", "green", "blue", "pink", "purple"};
 
     public interface NoticeDialogListener {
         public void onDialogPositiveClick(String name, String color);
