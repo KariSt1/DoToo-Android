@@ -7,6 +7,8 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
+
 import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
@@ -44,7 +46,7 @@ public class LoginActivity extends AppCompatActivity {
                 }
 
                 if(mPassword.getText().toString().equals("")) {
-                    mPassword.setError("Please enter password.");
+                    mPassword.setError("Please enter a password.");
                     mPassword.requestFocus();
                 }
 
@@ -75,9 +77,10 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(String errorString) {
-                        mPassword.setError("Username and/or password incorrect.");
+                        networkManager.setContext(LoginActivity.this);
+                        //Toast.makeText(LoginActivity.this,"Username and or password incorrect.", Toast.LENGTH_SHORT).show();
                         mPassword.requestFocus();
-                        mUsername.requestFocus();
+
                         Log.d(TAG, "Failed to get todolists: " + errorString);
                     }
                 }, mUsername.getText().toString(), mPassword.getText().toString());
