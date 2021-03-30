@@ -76,6 +76,8 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         return this.mDeletedListIds;
     }
 
+    public List<TodoList> getChangedLists() { return this.mChangedTodoLists; }
+
     public void setDeletedLists(List<Long> mDeletedLists) {
         this.mDeletedListIds = mDeletedLists;
     }
@@ -286,5 +288,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
         mChangedTodoLists.add(changedTodoList);
         System.out.println("Todolista breytt, fjöldi breyttra: " + mChangedTodoLists.size());
+    }
+
+    public void newTodoList(String name, String color) {
+        TodoList list = new TodoList();
+        //list.setId(666); // athuga með id-ið
+        list.setName(name);
+        list.setColor(color);
+        mTodoLists.add(list);
+        mChangedTodoLists.add(list);
+        //System.out.println("New todolist id: " + list.getId());
+        notifyDataSetChanged();
     }
 }
