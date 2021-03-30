@@ -10,6 +10,12 @@
     <string name="signup_password_incorrect_length">Password must be at least 8 characters</string>
     <string name="signup_no_password">Please enter a password</string>
     <string name="fab">floating action button</string>
+
+
+
+    <string name="no_username">Username is missing.</string>
+    <string name="no_password">Please enter a password.</string>
+    <string name="inc_pass_usern">Username and/or password is incorrect.</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Home</string>

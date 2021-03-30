@@ -41,12 +41,12 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
 
                 if(mUsername.getText().toString().equals("")) {
-                    mUsername.setError("Username is missing.");
+                    mUsername.setError(getString(R.string.no_username));
                     mUsername.requestFocus();
                 }
 
                 if(mPassword.getText().toString().equals("")) {
-                    mPassword.setError("Please enter a password.");
+                    mPassword.setError(getString(R.string.no_password));
                     mPassword.requestFocus();
                 }
 
@@ -60,16 +60,6 @@ public class LoginActivity extends AppCompatActivity {
                         userNetwork = result;
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         User user = networkManager.getUser();
-
-                        /*
-                        if(user == null || !user.getPassword().equals(mPassword)) {
-                            mPassword.setError("Username and/or password incorrect.");
-                            mPassword.requestFocus();
-                            mUsername.requestFocus();
-                        }
-
-                        */
-
                         System.out.println("User í onSuccess: " + user.getName());
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());
                         startActivity(i);
@@ -78,7 +68,6 @@ public class LoginActivity extends AppCompatActivity {
                     @Override
                     public void onFailure(String errorString) {
                         networkManager.setContext(LoginActivity.this);
-                        //Toast.makeText(LoginActivity.this,"Username and or password incorrect.", Toast.LENGTH_SHORT).show();
                         mPassword.requestFocus();
 
                         Log.d(TAG, "Failed to get todolists: " + errorString);

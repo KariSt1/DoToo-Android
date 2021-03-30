@@ -42,6 +42,7 @@ import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
+import is.hi.hbv601g.dotoo.R;
 
 
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
@@ -214,7 +215,7 @@ public class NetworkManager {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                Toast.makeText(mContext,"Username and or password incorrect.", Toast.LENGTH_SHORT).show();
+                Toast.makeText(mContext, R.string.inc_pass_usern, Toast.LENGTH_SHORT).show();
                 System.out.println("Fengum error í login");
                 error.printStackTrace();
             }
