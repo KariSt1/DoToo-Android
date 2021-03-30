@@ -243,9 +243,10 @@ public class NetworkManager {
                     e.printStackTrace();
                 }
 
-                Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
-                Type listType = new TypeToken<List<Event>>(){}.getType();
-                List<Event> eventBank = gson.fromJson(response.toString(), listType);
+                GsonBuilder builder = new GsonBuilder();
+                builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
+                Gson gson = builder.create();
+                List<Event> eventBank = gson.fromJson(response.toString(), new TypeToken<List<Event>>(){}.getType());
                 callback.onSuccess(eventBank);
             }
         }, new Response.ErrorListener() {

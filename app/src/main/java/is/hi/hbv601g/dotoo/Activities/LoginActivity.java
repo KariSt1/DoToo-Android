@@ -38,13 +38,36 @@ public class LoginActivity extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if(mUsername.getText().toString().equals("")) {
+                    mUsername.setError("Username is missing.");
+                    mUsername.requestFocus();
+                }
+
+                if(mPassword.getText().toString().equals("")) {
+                    mPassword.setError("Please enter password.");
+                    mPassword.requestFocus();
+                }
+
+
+
                 networkManager.postLogin(new NetworkCallback<User>() {
                     @Override
                     public void onSuccess(User result) {
+
+                        System.out.println("results í success "+ result);
                         userNetwork = result;
-                        Log.d(TAG, "texti í todolista"+ userNetwork.getName());
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         User user = networkManager.getUser();
+
+                        /*
+                        if(user == null || !user.getPassword().equals(mPassword)) {
+                            mPassword.setError("Username and/or password incorrect.");
+                            mPassword.requestFocus();
+                            mUsername.requestFocus();
+                        }
+
+                        */
+
                         System.out.println("User í onSuccess: " + user.getName());
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());
                         startActivity(i);
@@ -52,6 +75,9 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(String errorString) {
+                        mPassword.setError("Username and/or password incorrect.");
+                        mPassword.requestFocus();
+                        mUsername.requestFocus();
                         Log.d(TAG, "Failed to get todolists: " + errorString);
                     }
                 }, mUsername.getText().toString(), mPassword.getText().toString());
