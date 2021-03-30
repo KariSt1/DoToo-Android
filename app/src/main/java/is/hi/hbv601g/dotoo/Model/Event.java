@@ -1,11 +1,15 @@
 package is.hi.hbv601g.dotoo.Model;
 
 import android.annotation.SuppressLint;
+import android.graphics.Color;
 
+import com.alamkanak.weekview.WeekViewEvent;
 import com.google.gson.annotations.Expose;
 import com.google.gson.annotations.SerializedName;
 
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
 
 public class Event {
 
@@ -15,11 +19,11 @@ public class Event {
 
     @Expose
     @SerializedName("startDate")
-    private String mStartDate;
+    private Calendar mStartDate;
 
     @Expose
     @SerializedName("endDate")
-    private String mEndDate;
+    private Calendar mEndDate;
 
     @Expose
     @SerializedName("tile")
@@ -37,7 +41,7 @@ public class Event {
     @SerializedName("user")
     private User mUser;
 
-    public Event(String startDate, String endDate, String title, String category, String color, User user) {
+    public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
         mStartDate = startDate;
         mEndDate = endDate;
         mTitle = title;
@@ -58,19 +62,19 @@ public class Event {
         mId = id;
     }
 
-    public String getStartDate() {
+    public Calendar getStartDate() {
         return mStartDate;
     }
 
-    public void setStartDate(String startDate) {
+    public void setStartDate(Calendar startDate) {
         mStartDate = startDate;
     }
 
-    public String getEndDate() {
+    public Calendar getEndDate() {
         return mEndDate;
     }
 
-    public void setEndDate(String endDate) {
+    public void setEndDate(Calendar endDate) {
         mEndDate = endDate;
     }
 
@@ -96,6 +100,20 @@ public class Event {
 
     public void setColor(String color) {
         mColor = color;
+    }
+
+    @SuppressLint("SimpleDateFormat")
+    public WeekViewEvent toWeekViewEvent(){
+
+
+        // Create an week view event.
+        WeekViewEvent weekViewEvent = new WeekViewEvent();
+        weekViewEvent.setName(getTitle());
+        weekViewEvent.setStartTime(getStartDate());
+        weekViewEvent.setEndTime(getEndDate());
+        weekViewEvent.setColor(Color.parseColor(getColor()));
+
+        return weekViewEvent;
     }
 
 }

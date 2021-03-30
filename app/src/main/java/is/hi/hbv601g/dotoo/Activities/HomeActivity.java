@@ -86,4 +86,28 @@ public class HomeActivity extends AppCompatActivity {
         });
 
     }
+
+    @Override
+    protected void onStop() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        mDeletedListIds = mListAdapter.getDeletedLists();
+        if(mDeletedListIds.size() > 0) {
+            System.out.println("Eyði listum");
+            try {
+                networkManager.deleteTodolist(mDeletedListIds);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        mChangedTodoLists = mListAdapter.getChangedLists();
+        if(mChangedTodoLists.size() > 0) {
+            System.out.println("Sendi breytta lista");
+            try {
+                networkManager.postTodolists(mChangedTodoLists);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        super.onStop();
+    }
 }

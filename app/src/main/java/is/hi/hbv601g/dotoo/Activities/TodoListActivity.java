@@ -153,12 +153,23 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     protected void onStop() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
         mDeletedListIds = mListAdapter.getDeletedLists();
-        try {
-            networkManager.deleteTodolist(mDeletedListIds);
-        } catch (Exception e) {
-            System.out.println(e.toString());
+        if(mDeletedListIds.size() > 0) {
+            System.out.println("Eyði listum");
+            try {
+                networkManager.deleteTodolist(mDeletedListIds);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
         }
-
+        mChangedTodoLists = mListAdapter.getChangedLists();
+        if(mChangedTodoLists.size() > 0) {
+            System.out.println("Sendi breytta lista");
+            try {
+                networkManager.postTodolists(mChangedTodoLists);
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
         super.onStop();
     }
 
@@ -166,12 +177,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     public void onDialogPositiveClick(String name, String color) {
 
         System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
-        TodoList list = new TodoList();
-        //list.setId(666); // athuga með id-ið
-        list.setName(name);
-        list.setColor(color);
-        mTodoLists.add(list);
-        mChangedTodoLists.add(list);
+        mListAdapter.newTodoList(name, color);
         // Refresh the week view. onMonthChange will be called again.
         //mWeekView.notifyDatasetChanged();
 
