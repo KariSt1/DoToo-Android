@@ -138,9 +138,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         deleteList.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                List<Long> currentDeleted = getDeletedLists();
-                currentDeleted.add(mTodoLists.get(groupPosition).getId());
-                setDeletedLists(currentDeleted);
+                mDeletedListIds.add(mTodoLists.get(groupPosition).getId());
+                //List<Long> currentDeleted = getDeletedLists();
+                //currentDeleted.add(mTodoLists.get(groupPosition).getId());
+                //setDeletedLists(currentDeleted);
+                mChangedTodoLists.remove(mTodoLists.get(groupPosition));
                 mTodoLists.remove(groupPosition);
                 System.out.println("currently deleted" + getDeletedLists());
                 notifyDataSetChanged();
