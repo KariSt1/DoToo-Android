@@ -13,10 +13,12 @@ import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 
 public class ExpandableListAdapter extends BaseExpandableListAdapter {
@@ -299,5 +301,26 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         mChangedTodoLists.add(list);
         //System.out.println("New todolist id: " + list.getId());
         notifyDataSetChanged();
+    }
+
+    public void sendChanges(NetworkManager networkManager) {
+        if(mDeletedListIds.size() > 0) {
+            System.out.println("Eyði listum");
+            try {
+                networkManager.deleteTodolist(mDeletedListIds);
+                mDeletedListIds = new ArrayList<Long>();
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
+        if(mChangedTodoLists.size() > 0) {
+            System.out.println("Sendi breytta lista");
+            try {
+                networkManager.postTodolists(mChangedTodoLists);
+                mChangedTodoLists = new ArrayList<TodoList>();
+            } catch (Exception e) {
+                System.out.println(e.toString());
+            }
+        }
     }
 }

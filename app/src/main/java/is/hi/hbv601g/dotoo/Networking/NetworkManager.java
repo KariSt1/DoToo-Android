@@ -48,10 +48,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+   //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-   //private static final String BASE_URL = "http://10.0.2.2:8080/";
+   private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -84,17 +84,7 @@ public class NetworkManager {
 
     public void getTodolist(boolean isFavorite, final NetworkCallback<List<TodoList>> callback) {
 
-        /*JSONObject json = new JSONObject();
-        try {
-            json.put("username", mUser.getUsername());
-            json.put("password", mUser.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println(json);
-*/
         String requestURL = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
-        //String requestURL = "todolist";
         if(isFavorite) requestURL = String.format(BASE_URL + "favoritetodolists?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
 
         CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
@@ -111,9 +101,6 @@ public class NetworkManager {
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
-
-                System.out.println("Todolistbank: " + todoListBank);
-                System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
@@ -139,15 +126,23 @@ public class NetworkManager {
         }
         System.out.println("Delete todolists body: " + json.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deletelists", json, response -> {
-
-            System.out.println("delete response " + response.toString());
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að deleta todo lista");
                 error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 
@@ -162,29 +157,31 @@ public class NetworkManager {
         try {
             json = new JSONArray(jsonString);
         } catch (JSONException e) {
+            System.out.println("Villa við að búa til JSON array í post todolist");
             e.printStackTrace();
         }
-        /*try {
-            json.put("username", mUser.getUsername());
-            json.put("password", mUser.getPassword());
-            json.put("todolists", changedTodoLists);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         System.out.println("Changed todolists body: " + json.toString());
 
         String uri = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         System.out.println(uri);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
-
-            System.out.println("post response " + response.toString());
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að posta todo listum");
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 

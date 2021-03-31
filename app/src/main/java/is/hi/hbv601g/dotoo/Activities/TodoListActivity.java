@@ -96,6 +96,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
                     case R.id.nav_todolists:
                         return true;
                     case R.id.nav_home:
+                        mListAdapter.sendChanges(networkManager);
                         Intent home = new Intent(TodoListActivity.this, HomeActivity.class);
                         startActivity(home);
                 }
@@ -152,6 +153,22 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     @Override
     protected void onStop() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
+        mListAdapter.sendChanges(networkManager);
+        super.onStop();
+    }
+
+    @Override
+    public void onDialogPositiveClick(String name, String color) {
+
+        System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
+        mListAdapter.newTodoList(name, color);
+        // Refresh the week view. onMonthChange will be called again.
+        //mWeekView.notifyDatasetChanged();
+
+    }
+
+    public void sendChanges() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
         mDeletedListIds = mListAdapter.getDeletedLists();
         if(mDeletedListIds.size() > 0) {
             System.out.println("Eyði listum");
@@ -170,16 +187,5 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
                 System.out.println(e.toString());
             }
         }
-        super.onStop();
-    }
-
-    @Override
-    public void onDialogPositiveClick(String name, String color) {
-
-        System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
-        mListAdapter.newTodoList(name, color);
-        // Refresh the week view. onMonthChange will be called again.
-        //mWeekView.notifyDatasetChanged();
-
     }
 }

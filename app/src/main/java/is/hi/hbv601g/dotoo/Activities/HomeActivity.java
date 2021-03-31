@@ -73,6 +73,7 @@ public class HomeActivity extends AppCompatActivity {
                         startActivity(cal);
                         return true;
                     case R.id.nav_todolists:
+                        mListAdapter.sendChanges(networkManager);
                         System.out.println("Test");
                         Intent todo = new Intent(HomeActivity.this, TodoListActivity.class);
                         startActivity(todo);
@@ -89,6 +90,12 @@ public class HomeActivity extends AppCompatActivity {
 
     @Override
     protected void onStop() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        mListAdapter.sendChanges(networkManager);
+        super.onStop();
+    }
+
+    public void sendChanges() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
         mDeletedListIds = mListAdapter.getDeletedLists();
         if(mDeletedListIds.size() > 0) {
@@ -108,6 +115,5 @@ public class HomeActivity extends AppCompatActivity {
                 System.out.println(e.toString());
             }
         }
-        super.onStop();
     }
 }
