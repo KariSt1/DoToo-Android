@@ -48,10 +48,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+  // private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-   //private static final String BASE_URL = "http://10.0.2.2:8080/";
+   private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -261,6 +261,46 @@ public class NetworkManager {
                 error.printStackTrace();
             }
         });
+        mQueue.add(request); // volley sér um að keyra þetta request
+
+    }
+
+    public void postEvents(Event newEvent) {
+        GsonBuilder builder = new GsonBuilder();
+        builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
+        Gson gson = builder.create();
+        String jsonString = gson.toJson(newEvent.toString(), new TypeToken<Event>(){}.getType());
+        System.out.println("GSON newEvent: "+ jsonString);
+
+        JSONArray json = new JSONArray();
+        try {
+            json = new JSONArray(jsonString);
+        } catch (JSONException e) {
+            System.out.println("Villa við að búa til JSON array í post event");
+            e.printStackTrace();
+        }
+        System.out.println("New event body: " + json.toString());
+
+        String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        System.out.println(uri);
+        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að posta event");
+                error.printStackTrace();
+            }
+        }) {
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
 
     }

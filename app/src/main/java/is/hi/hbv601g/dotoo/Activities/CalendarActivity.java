@@ -243,11 +243,17 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     @Override
     public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
         // Make event
+        Event mainEvent = new Event();
+        mainEvent.setTitle(title);
+        mainEvent.setStartDate(startDate);
+        mainEvent.setEndDate(endDate);
+        mEvents.add(mainEvent);
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.postEvents(mainEvent);
+
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
-        User user = new User("nonni","Nonni","1234");
-        //Event event1 = new Event(startDate,endDate, title,"vinna","red",user);
+
         mNewEvents.add(event);
-        //mEvents.add(event1);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
     }
