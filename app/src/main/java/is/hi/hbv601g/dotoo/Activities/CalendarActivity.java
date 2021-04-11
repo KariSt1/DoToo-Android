@@ -30,8 +30,6 @@ import java.util.Locale;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
 import is.hi.hbv601g.dotoo.Model.Event;
-import is.hi.hbv601g.dotoo.Model.TodoList;
-import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
@@ -247,6 +245,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mainEvent.setTitle(title);
         mainEvent.setStartDate(startDate);
         mainEvent.setEndDate(endDate);
+        mainEvent.setCategory("skóli");
+        mainEvent.setColor("blue");
+
         mEvents.add(mainEvent);
         NetworkManager networkManager = NetworkManager.getInstance(this);
         try {

@@ -25,7 +25,7 @@ import is.hi.hbv601g.dotoo.R;
 public class NewEventDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime);
+        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime, boolean notifications);
     }
 
     NoticeDialogListener mListener;
