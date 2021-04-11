@@ -2,6 +2,7 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
@@ -240,7 +241,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
      * @param endDate the enddate and time of the new event
      */
     @Override
-    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
+    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate, boolean giveNotification) {
         // Make event
         Event mainEvent = new Event();
         mainEvent.setTitle(title);
@@ -261,5 +262,13 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mNewEvents.add(event);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
+
+        if(giveNotification) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                    .setSmallIcon(R.drawable.ic_calendar)
+                    .setContentTitle("Upcoming event!")
+                    .setContentText("You have an event coming up in an hour.")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        }
     }
 }

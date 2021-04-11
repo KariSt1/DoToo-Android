@@ -152,13 +152,15 @@ public class NewEventDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String title = mTitle.getText().toString();
+                        boolean giveNotification = false;
                         if(mNotification.isChecked()){
                             System.out.println("Notification was checked.");
+                            giveNotification=true;
                         }
                         else{
                             System.out.println("Notification wasnt checked.");
                         }
-                        mListener.onDialogPositiveClick(title, sd, ed);
+                        mListener.onDialogPositiveClick(title, sd, ed, giveNotification);
 
                     }
                 })
