@@ -29,6 +29,7 @@ import java.util.Locale;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
 import is.hi.hbv601g.dotoo.Model.Event;
+import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
@@ -39,7 +40,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
     ArrayList<WeekViewEvent> mNewEvents;
-    List<Event> mEvents;
+    List<Event> mEvents = new ArrayList<Event>();
     private static final String TAG = "CalendarActivity";
     FloatingActionButton mEventButton;
 
@@ -49,7 +50,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         networkManager.getEvents(new NetworkCallback<List<Event>>() {
             @Override
             public void onSuccess(List<Event> result) {
-                System.out.println("virkaði að ná í eventa" + result);
                 mEvents = result;
 
                 for (Event event : mEvents) {
@@ -68,7 +68,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        System.out.println("mEvents: " + mEvents);
         mEventButton = (FloatingActionButton) findViewById(R.id.button_newEvent);
         mEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -249,7 +248,13 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mainEvent.setEndDate(endDate);
         mEvents.add(mainEvent);
         NetworkManager networkManager = NetworkManager.getInstance(this);
-        networkManager.postEvents(mainEvent);
+        try {
+            networkManager.newEvent(mainEvent);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+
 
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
 

@@ -254,6 +254,8 @@ public class NetworkManager {
                 Gson gson = builder.create();
                 List<Event> eventBank = gson.fromJson(response.toString(), new TypeToken<List<Event>>(){}.getType());
                 callback.onSuccess(eventBank);
+                System.out.println("Eventbank " + eventBank );
+                System.out.println(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -265,45 +267,35 @@ public class NetworkManager {
 
     }
 
-    public void postEvents(Event newEvent) {
+    public void newEvent(Event newEvent) {
         GsonBuilder builder = new GsonBuilder();
         builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
         Gson gson = builder.create();
-        String jsonString = gson.toJson(newEvent.toString(), new TypeToken<Event>(){}.getType());
-        System.out.println("GSON newEvent: "+ jsonString);
+        String jsonString = gson.toJson(newEvent, new TypeToken<Event>() {}.getType());
+        System.out.println("GSON newEvent: " + jsonString);
 
-        JSONArray json = new JSONArray();
+        JSONObject json = new JSONObject();
         try {
-            json = new JSONArray(jsonString);
+            json = new JSONObject(jsonString);
         } catch (JSONException e) {
             System.out.println("Villa við að búa til JSON array í post event");
             e.printStackTrace();
         }
-        System.out.println("New event body: " + json.toString());
 
-        String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        String uri = String.format(BASE_URL + "makenewevent?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         System.out.println(uri);
-        JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, json, response -> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að posta event");
                 error.printStackTrace();
             }
-        }) {
-            @Override
-            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
 
-                if (response.data == null || response.data.length == 0) {
-                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
-                } else {
-                    return super.parseNetworkResponse(response);
-                }
-            }
-        };
+        });
         mQueue.add(request); // volley sér um að keyra þetta request
-
     }
+
 
     private class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
         public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {
