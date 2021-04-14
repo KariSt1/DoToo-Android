@@ -16,6 +16,7 @@ import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.TimePicker;
+import android.widget.CheckBox;
 
 import java.util.Calendar;
 
@@ -24,7 +25,7 @@ import is.hi.hbv601g.dotoo.R;
 public class NewEventDialogFragment extends DialogFragment {
 
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime);
+        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime, boolean notifications);
     }
 
     NoticeDialogListener mListener;
@@ -54,6 +55,7 @@ public class NewEventDialogFragment extends DialogFragment {
         final Button mStartTime = (Button) view.findViewById(R.id.new_event_startTime);
         final Button mEndDate = (Button) view.findViewById(R.id.new_event_endDate);
         final Button mEndTime = (Button)view.findViewById(R.id.new_event_endTime);
+        final CheckBox mNotification = (CheckBox)view.findViewById(R.id.checkBox);
 
         Calendar sd = Calendar.getInstance();
         Calendar ed = Calendar.getInstance();
@@ -150,7 +152,15 @@ public class NewEventDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String title = mTitle.getText().toString();
-                        mListener.onDialogPositiveClick(title, sd, ed);
+                        boolean giveNotification = false;
+                        if(mNotification.isChecked()){
+                            System.out.println("Notification was checked.");
+                            giveNotification=true;
+                        }
+                        else{
+                            System.out.println("Notification wasnt checked.");
+                        }
+                        mListener.onDialogPositiveClick(title, sd, ed, giveNotification);
 
                     }
                 })

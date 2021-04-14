@@ -26,7 +26,7 @@ public class Event {
     private Calendar mEndDate;
 
     @Expose
-    @SerializedName("tile")
+    @SerializedName("title")
     private String mTitle;
 
     @Expose
