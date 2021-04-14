@@ -53,9 +53,11 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_weight="1"
-        android:descendantFocusability="afterDescendants"
+        android:descendantFocusability="beforeDescendants"
         android:childDivider="#FFDBB9"
-        android:divider="#FFC895"/>
+        android:divider="#FFC895"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
     <RelativeLayout
         android:layout_width="wrap_content"
