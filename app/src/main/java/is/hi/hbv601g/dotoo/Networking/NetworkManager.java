@@ -32,9 +32,13 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
 import is.hi.hbv601g.dotoo.Activities.LoginActivity;
@@ -48,10 +52,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+  // private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-  // private static final String BASE_URL = "http://10.0.2.2:8080/";
+   private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -260,10 +264,12 @@ public class NetworkManager {
     }
 
     public void newEvent(Event newEvent) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
-        Gson gson = builder.create();
-        String jsonString = gson.toJson(newEvent, new TypeToken<Event>() {}.getType());
+      //  GsonBuilder builder = new GsonBuilder();
+      //  builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
+      //  Gson gson = builder.create();
+        /*
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(newEvent);
         System.out.println("GSON newEvent: " + jsonString);
 
         JSONObject json = new JSONObject();
@@ -273,6 +279,28 @@ public class NetworkManager {
             System.out.println("Villa við að búa til JSON array í post event");
             e.printStackTrace();
         }
+
+         */
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date sd = newEvent.getStartDate().getTime();
+        String strStartDate = dateFormat.format(sd);
+
+        Date ed = newEvent.getEndDate().getTime();
+        String strEndDate = dateFormat.format(ed);
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id",newEvent.getId() );
+            json.put("startDate",strStartDate );
+            json.put("endDate",strEndDate );
+            json.put("title",newEvent.getTitle() );
+            json.put("category",newEvent.getCategory() );
+            json.put("color",newEvent.getColor() );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Json newEvent: " + json);
 
         String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         System.out.println(uri);

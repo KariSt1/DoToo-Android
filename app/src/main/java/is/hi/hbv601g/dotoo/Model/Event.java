@@ -102,6 +102,12 @@ public class Event {
         mColor = color;
     }
 
+    public User getUser() {return mUser;}
+
+    public void setUser(User user) {mUser = user;}
+
+
+
     @SuppressLint("SimpleDateFormat")
     public WeekViewEvent toWeekViewEvent(){
 
