@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -8,48 +8,78 @@
     tools:context=".Activities.FriendListActivity"
     android:background="@color/dark_blue">
 
-    <RelativeLayout
+    <View
+        android:layout_width="79.445dp"
+        android:layout_height="63dp"
+        android:layout_marginBottom="10dp"
+        android:background="@drawable/ic_triangles"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        />
+
+    <ImageView
+        android:layout_width="37.5dp"
+        android:layout_height="25.275dp"
+        android:layout_marginStart="5dp"
+        android:layout_marginTop="5dp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentStart="true"
+        android:src="@drawable/ic_dotoo_blue"
+        android:contentDescription="@string/logo" />
+
+    <TextView
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginStart="80dp"
+        android:layout_marginTop="11.5dp"
+        android:fontFamily="@font/montserrat_regular"
+        android:text="@string/friendList"
+        android:textColor="@color/white"
+        android:textSize="30sp" />
 
-        <View
-            android:layout_width="79.445dp"
-            android:layout_height="63dp"
-            android:layout_marginBottom="10dp"
-            android:background="@drawable/ic_triangles"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            />
+    <ListView
+        android:layout_marginTop="63dp"
+        android:layout_marginBottom="57dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
-        <ImageView
-            android:layout_width="37.5dp"
-            android:layout_height="25.275dp"
-            android:layout_marginStart="5dp"
-            android:layout_marginTop="5dp"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentStart="true"
-            android:src="@drawable/ic_dotoo_blue"
-            android:contentDescription="@string/logo" />
+    <LinearLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_gravity="bottom|right"
+        android:layout_marginEnd="18dp"
+        android:layout_marginBottom="67dp"
+        android:orientation="horizontal">
 
-        <TextView
+        <com.google.android.material.floatingactionbutton.FloatingActionButton
+            android:id="@+id/button_addFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_marginStart="80dp"
-            android:layout_marginTop="11.5dp"
-            android:fontFamily="@font/montserrat_regular"
-            android:text="@string/friendList"
-            android:textColor="@color/white"
-            android:textSize="30sp" />
-    </RelativeLayout>
+            android:layout_gravity="end|bottom"
+            android:src="@drawable/ic_plus"
+            android:layout_margin="16dp"
+            android:contentDescription="@string/fab"
+            app:backgroundTint="@color/white"
+            />
+    </LinearLayout>
 
     <include
         layout="@layout/bottom_menu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="0"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
         android:layout_gravity="bottom"
+        android:layout_marginStart="-2dp"
+        android:layout_marginEnd="-1dp"
+        android:layout_marginBottom="-1dp"
+        android:layout_weight="0"
         app:layout_constraintTop_toBottomOf="parent"
-        app:layout_constraintVertical_bias="0.105"/>
-</LinearLayout>
+        app:layout_constraintVertical_bias="0.105" />
+</RelativeLayout>
