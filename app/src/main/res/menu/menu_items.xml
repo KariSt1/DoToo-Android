@@ -23,4 +23,11 @@
         android:visible="true"
         app:showAsAction="ifRoom"
         android:textSize="64dp"/>
+    <item
+        android:id="@+id/nav_friendList"
+        android:icon="@drawable/ic_friends"
+        android:title="@string/menu_friends"
+        android:visible="true"
+        app:showAsAction="ifRoom"
+        android:textSize="64dp"/>
 </menu>

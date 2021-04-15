@@ -32,9 +32,13 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
 import is.hi.hbv601g.dotoo.Activities.LoginActivity;
@@ -84,17 +88,7 @@ public class NetworkManager {
 
     public void getTodolist(boolean isFavorite, final NetworkCallback<List<TodoList>> callback) {
 
-        /*JSONObject json = new JSONObject();
-        try {
-            json.put("username", mUser.getUsername());
-            json.put("password", mUser.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println(json);
-*/
         String requestURL = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
-        //String requestURL = "todolist";
         if(isFavorite) requestURL = String.format(BASE_URL + "favoritetodolists?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
 
         CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
@@ -121,6 +115,7 @@ public class NetworkManager {
                 }
                 mUser.setmStreak(finishedLists);
                 System.out.println("finished lists: " + finishedLists);
+
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
@@ -146,15 +141,23 @@ public class NetworkManager {
         }
         System.out.println("Delete todolists body: " + json.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deletelists", json, response -> {
-
-            System.out.println("delete response " + response.toString());
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að deleta todo lista");
                 error.printStackTrace();
             }
-        });
+        }){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 
@@ -169,29 +172,31 @@ public class NetworkManager {
         try {
             json = new JSONArray(jsonString);
         } catch (JSONException e) {
+            System.out.println("Villa við að búa til JSON array í post todolist");
             e.printStackTrace();
         }
-        /*try {
-            json.put("username", mUser.getUsername());
-            json.put("password", mUser.getPassword());
-            json.put("todolists", changedTodoLists);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }*/
         System.out.println("Changed todolists body: " + json.toString());
 
         String uri = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         System.out.println(uri);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
-
-            System.out.println("post response " + response.toString());
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að posta todo listum");
                 error.printStackTrace();
             }
-        });
+        }) {
+            @Override
+            protected Response<JSONArray> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 
@@ -238,22 +243,13 @@ public class NetworkManager {
 
     
     public void getEvents(final NetworkCallback<List<Event>> callback) {
+        String requestURL = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
 
-        JSONObject json = new JSONObject();
-        try {
-            json.put("username", mUser.getUsername());
-            json.put("password", mUser.getPassword());
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        System.out.println(json);
-
-        String requestURL = "events";
-
-        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.POST, BASE_URL + requestURL, json, new Response.Listener<JSONArray>() {
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
                 try {
+                    JSONObject test = (JSONObject) response.get(0);
                     System.out.println("Response" +  response.get(0));
                 } catch(JSONException e) {
                     e.printStackTrace();
@@ -264,16 +260,83 @@ public class NetworkManager {
                 Gson gson = builder.create();
                 List<Event> eventBank = gson.fromJson(response.toString(), new TypeToken<List<Event>>(){}.getType());
                 callback.onSuccess(eventBank);
+                System.out.println("Eventbank " + eventBank );
+                System.out.println(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að fá todo lista");
                 error.printStackTrace();
             }
         });
         mQueue.add(request); // volley sér um að keyra þetta request
 
     }
+
+    public void newEvent(Event newEvent) {
+      //  GsonBuilder builder = new GsonBuilder();
+      //  builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
+      //  Gson gson = builder.create();
+        /*
+        Gson gson = new Gson();
+        String jsonString = gson.toJson(newEvent);
+        System.out.println("GSON newEvent: " + jsonString);
+
+        JSONObject json = new JSONObject();
+        try {
+            json = new JSONObject(jsonString);
+        } catch (JSONException e) {
+            System.out.println("Villa við að búa til JSON array í post event");
+            e.printStackTrace();
+        }
+
+         */
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date sd = newEvent.getStartDate().getTime();
+        String strStartDate = dateFormat.format(sd);
+
+        Date ed = newEvent.getEndDate().getTime();
+        String strEndDate = dateFormat.format(ed);
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("id",newEvent.getId() );
+            json.put("startDate",strStartDate );
+            json.put("endDate",strEndDate );
+            json.put("title",newEvent.getTitle() );
+            json.put("category",newEvent.getCategory() );
+            json.put("color",newEvent.getColor() );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        System.out.println("Json newEvent: " + json);
+
+        String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        System.out.println(uri);
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, json, response -> {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að posta event");
+                error.printStackTrace();
+            }
+
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };;
+        mQueue.add(request); // volley sér um að keyra þetta request
+    }
+
 
     private class CustomJsonArrayRequest extends JsonRequest<JSONArray> {
         public CustomJsonArrayRequest(int method, String url, JSONObject jsonRequest, Response.Listener<JSONArray> listener, Response.ErrorListener errorListener) {

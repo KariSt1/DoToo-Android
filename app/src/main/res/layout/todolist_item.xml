@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/todolist_item"
     android:layout_width="match_parent"
     android:layout_height="100dp"
     android:orientation="horizontal"
@@ -29,7 +30,8 @@
         android:paddingTop="5dp"
         android:paddingStart="6dp"
         android:paddingEnd="6dp"
-        android:paddingBottom="5dp"/>
+        android:paddingBottom="5dp"
+        android:focusableInTouchMode="true"/>
 
     <Button
         android:id="@+id/todolist_item_delete"

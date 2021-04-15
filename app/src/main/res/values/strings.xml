@@ -12,7 +12,6 @@
     <string name="fab">floating action button</string>
 
 
-
     <string name="no_username">Username is missing.</string>
     <string name="no_password">Please enter a password.</string>
     <string name="inc_pass_usern">Username and/or password is incorrect.</string>
@@ -21,6 +20,7 @@
     <string name="menu_home">Home</string>
     <string name="menu_todolists">TodoLists</string>
     <string name="menu_calendar">Calendar</string>
+    <string name="menu_friends">Friends</string>
     <string name="welcome_user">Welcome %1$s</string>
     <string name="event_title">Title</string>
     <string name="save_event">Save event</string>
@@ -34,6 +34,7 @@
     <string name="event_endDate">End date</string>
     <string name="todolists">TODOLISTS</string>
     <string name="home">HOME</string>
+    <string name="friendList">FRIENDS</string>
     <string name="dialog_newTodolist">New Todo List</string>
     <string name="to_do_title">Title</string>
     <string name="thank_you_sign_up">Thank you for signing up </string>

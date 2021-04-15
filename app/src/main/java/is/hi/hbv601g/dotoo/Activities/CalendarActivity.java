@@ -2,12 +2,16 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlertDialog;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.RectF;
+import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
@@ -29,7 +33,6 @@ import java.util.Locale;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
 import is.hi.hbv601g.dotoo.Model.Event;
-import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
@@ -39,7 +42,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     protected BottomNavigationView navigationView;
     private WeekView mWeekView;
     ArrayList<WeekViewEvent> mNewEvents;
-    List<Event> mEvents;
+    List<Event> mEvents = new ArrayList<Event>();
     private static final String TAG = "CalendarActivity";
     FloatingActionButton mEventButton;
 
@@ -49,7 +52,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         networkManager.getEvents(new NetworkCallback<List<Event>>() {
             @Override
             public void onSuccess(List<Event> result) {
-                System.out.println("virkaði að ná í eventa" + result);
                 mEvents = result;
 
                 for (Event event : mEvents) {
@@ -68,7 +70,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
 
-        System.out.println("mEvents: " + mEvents);
         mEventButton = (FloatingActionButton) findViewById(R.id.button_newEvent);
         mEventButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -78,9 +79,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
-                /**
-                 * Navigation bar logic
-                 */
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_calendar);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -96,6 +97,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                     case R.id.nav_home:
                         Intent home = new Intent(CalendarActivity.this, HomeActivity.class);
                         startActivity(home);
+                        return true;
+                    case R.id.nav_friendList:
+                        Intent friends = new Intent(CalendarActivity.this, FriendListActivity.class);
+                        startActivity(friends);
+                        return true;
                 }
                 return false;
             }
@@ -241,14 +247,53 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
      * @param endDate the enddate and time of the new event
      */
     @Override
-    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate) {
+    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate, boolean giveNotification) {
         // Make event
+        Event mainEvent = new Event();
+        mainEvent.setTitle(title);
+        mainEvent.setStartDate(startDate);
+        mainEvent.setEndDate(endDate);
+        mainEvent.setCategory("skóli");
+        mainEvent.setColor("blue");
+
+        mEvents.add(mainEvent);
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        try {
+            networkManager.newEvent(mainEvent);
+        } catch (Exception e) {
+            System.out.println(e.toString());
+        }
+
+
+
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
-        User user = new User("nonni","Nonni","1234");
-        //Event event1 = new Event(startDate,endDate, title,"vinna","red",user);
+
         mNewEvents.add(event);
-        //mEvents.add(event1);
         // Refresh the week view. onMonthChange will be called again.
         mWeekView.notifyDatasetChanged();
+
+        if(giveNotification) {
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                    .setSmallIcon(R.drawable.ic_calendar)
+                    .setContentTitle("Upcoming event!")
+                    .setContentText("You have an event coming up in an hour.")
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
+        }
+    }
+
+    private void createNotificationChannel() {
+        // Create the NotificationChannel, but only on API 26+ because
+        // the NotificationChannel class is new and not in the support library
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            CharSequence name = "name";
+            String description = "description";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("CHANNEL_ID", name, importance);
+            //channel.setDescription(description);
+            // Register the channel with the system; you can't change the importance
+            // or other notification behaviors after this
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 }

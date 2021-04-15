@@ -26,7 +26,7 @@ public class Event {
     private Calendar mEndDate;
 
     @Expose
-    @SerializedName("tile")
+    @SerializedName("title")
     private String mTitle;
 
     @Expose
@@ -101,6 +101,12 @@ public class Event {
     public void setColor(String color) {
         mColor = color;
     }
+
+    public User getUser() {return mUser;}
+
+    public void setUser(User user) {mUser = user;}
+
+
 
     @SuppressLint("SimpleDateFormat")
     public WeekViewEvent toWeekViewEvent(){
