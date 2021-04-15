@@ -48,10 +48,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+   //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-   //private static final String BASE_URL = "http://10.0.2.2:8080/";
+   private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -114,6 +114,13 @@ public class NetworkManager {
 
                 System.out.println("Todolistbank: " + todoListBank);
                 System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
+                System.out.println("Todolistbank isfinished: " + todoListBank.get(0).isFinished());
+                int finishedLists = 0;
+                for(int i = 0; i < todoListBank.size(); i++) {
+                    if(todoListBank.get(i).isFinished()) finishedLists++;
+                }
+                mUser.setmStreak(finishedLists);
+                System.out.println("finished lists: " + finishedLists);
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {

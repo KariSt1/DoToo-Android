@@ -3,6 +3,7 @@ package is.hi.hbv601g.dotoo.Activities;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.EditText;
 import android.widget.ExpandableListView;
 
 import androidx.annotation.NonNull;
@@ -14,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
@@ -23,6 +25,7 @@ public class HomeActivity extends AppCompatActivity {
 
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
+    EditText mStreakView;
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
     List<Long> mDeletedListIds;
@@ -35,6 +38,7 @@ public class HomeActivity extends AppCompatActivity {
         setContentView(R.layout.activity_home);
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
+        User user = networkManager.getUser();
         networkManager.getTodolist(true, new NetworkCallback<List<TodoList>>() {
             @Override
             public void onSuccess(List<TodoList> result) {
@@ -49,6 +53,9 @@ public class HomeActivity extends AppCompatActivity {
                 mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
+
+                mStreakView = (EditText) findViewById(R.id.list_streak);
+                mStreakView.setText(Integer.toString(user.getmStreak()));
 
             }
 
