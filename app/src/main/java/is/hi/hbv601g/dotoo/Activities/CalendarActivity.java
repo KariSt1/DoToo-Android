@@ -79,9 +79,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
-                /**
-                 * Navigation bar logic
-                 */
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_calendar);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -97,6 +97,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                     case R.id.nav_home:
                         Intent home = new Intent(CalendarActivity.this, HomeActivity.class);
                         startActivity(home);
+                        return true;
+                    case R.id.nav_friendList:
+                        Intent friends = new Intent(CalendarActivity.this, FriendListActivity.class);
+                        startActivity(friends);
+                        return true;
                 }
                 return false;
             }

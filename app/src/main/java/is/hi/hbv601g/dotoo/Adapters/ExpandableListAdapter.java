@@ -1,9 +1,11 @@
 package is.hi.hbv601g.dotoo.Adapters;
 
 import android.content.Context;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.BaseExpandableListAdapter;
 import android.widget.Button;
@@ -11,6 +13,7 @@ import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import java.util.ArrayList;
@@ -28,6 +31,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private List<Long> mDeletedListIds;
     private List<TodoList> mChangedTodoLists;
     private TodoListItem mNewItem;
+    private EditText mNewItemEditText;
     private ExpandableListView mListView;
 
     public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<Long> deletedLists,
@@ -103,12 +107,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                mNewItem = new TodoListItem();
-                mTodoLists.get(groupPosition).addItem(mNewItem);
-                InputMethodManager imm =
-                        (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-                imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
                 mListView.expandGroup(groupPosition);
+                mListView.setSelectedGroup(groupPosition);
+                mNewItem = new TodoListItem();
+                todoList.addItem(mNewItem);
                 notifyDataSetChanged();
             }
         });
@@ -139,9 +141,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             @Override
             public void onClick(View v) {
                 mDeletedListIds.add(mTodoLists.get(groupPosition).getId());
-                //List<Long> currentDeleted = getDeletedLists();
-                //currentDeleted.add(mTodoLists.get(groupPosition).getId());
-                //setDeletedLists(currentDeleted);
                 mChangedTodoLists.remove(mTodoLists.get(groupPosition));
                 mTodoLists.remove(groupPosition);
                 System.out.println("currently deleted" + getDeletedLists());
@@ -162,6 +161,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             convertView = infalInflater.inflate(R.layout.todolist_item, null);
         }
 
+        System.out.println("Group: " + groupPosition + " child: " + childPosition);
         setItemColor(convertView, (TodoList) getGroup(groupPosition));
 
         CheckBox itemCheckBox = (CheckBox) convertView.findViewById(R.id.todolist_item_checkbox);
@@ -169,7 +169,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         itemCheckBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                System.out.println("Erum í onCheckedChanged");
                 if(buttonView.isPressed()) {
                     todoListItem.setChecked(!todoListItem.getChecked());
                     todoListChanged(mTodoLists.get(groupPosition));
@@ -178,32 +177,53 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-
         EditText itemText = (EditText) convertView.findViewById(R.id.todolist_item_text);
         itemText.setText(todoListItem.getDescription());
         itemText.setOnFocusChangeListener(new View.OnFocusChangeListener() {
             @Override
             public void onFocusChange(View v, boolean hasFocus) {
-                System.out.println("Erum í onFocusChange");
                 if(!hasFocus) {
-                    System.out.println("Erum í if-setningu í onFocusChange");
                     String text = itemText.getText().toString();
-                    if(text.length() == 0 && todoListItem != mNewItem) {
+                    if(text.length() == 0) {
                         mTodoLists.get(groupPosition).getItems().remove(childPosition);
                         notifyDataSetChanged();
                     } else {
                         todoListItem.setDescription(text);
-                        mNewItem = null;
+                        if(todoListItem == mNewItem) {
+                            mNewItemEditText = null;
+                            mNewItem = null;
+                        }
                     }
                     todoListChanged(mTodoLists.get(groupPosition));
-                    itemText.clearFocus();
-//                    InputMethodManager imm =
-//                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
-//                    imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+                    if(mListView.hasFocus()) {
+                        InputMethodManager imm =
+                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+                    }
                 } else {
-                    itemText.requestFocus();
+                    InputMethodManager imm =
+                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.toggleSoftInput(InputMethodManager.SHOW_FORCED, InputMethodManager.HIDE_IMPLICIT_ONLY);
+                    imm.showSoftInput(mListView, InputMethodManager.SHOW_IMPLICIT);
                     itemText.setSelection(itemText.getText().length());
                 }
+            }
+        });
+        itemText.setOnEditorActionListener(new TextView.OnEditorActionListener() {
+            @Override
+            public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+                if(actionId == EditorInfo.IME_ACTION_NEXT || actionId == EditorInfo.IME_ACTION_DONE) {
+                    mListView.requestFocus();
+                    if(todoListItem == mNewItem) {
+                        mNewItemEditText = null;
+                        mNewItem = null;
+                    }
+                    InputMethodManager imm =
+                            (InputMethodManager)mContext.getSystemService(Context.INPUT_METHOD_SERVICE);
+                    imm.hideSoftInputFromWindow(itemText.getWindowToken(), 0);
+                    return true;
+                }
+                return false;
             }
         });
 
@@ -218,8 +238,13 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         });
 
-        if(todoListItem == mNewItem) {
-            itemText.requestFocus();
+        if(mNewItem != null) {
+            if(todoListItem == mNewItem) {
+                mNewItemEditText = itemText;
+                itemText.requestFocus();
+            } else if(mNewItemEditText != null) {
+                mNewItemEditText.requestFocus();
+            }
         }
 
         return convertView;
@@ -231,7 +256,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public void setHeaderColor(View view, TodoList list) {
-        System.out.println("Color2: " + list.getColor());
         switch (list.getColor()) {
             case "yellow":
                 view.setBackgroundColor(mContext.getResources().getColor(R.color.yellow_darker));
@@ -296,12 +320,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public void newTodoList(String name, String color) {
         TodoList list = new TodoList();
-        //list.setId(666); // athuga með id-ið
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);
         mChangedTodoLists.add(list);
-        //System.out.println("New todolist id: " + list.getId());
         notifyDataSetChanged();
     }
 

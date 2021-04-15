@@ -81,6 +81,11 @@ public class HomeActivity extends AppCompatActivity {
                         return true;
                     case R.id.nav_home:
                         return true;
+                    case R.id.nav_friendList:
+                        mListAdapter.sendChanges(networkManager);
+                        Intent friends = new Intent(HomeActivity.this, FriendListActivity.class);
+                        startActivity(friends);
+                        return true;
                 }
                 return false;
             }

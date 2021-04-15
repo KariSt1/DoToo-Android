@@ -1,12 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
-
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:layout_width="fill_parent"
+    android:layout_width="match_parent"
     android:layout_height="fill_parent"
     android:orientation="vertical"
-    tools:context=".Activities.TodoListActivity"
+    tools:context=".Activities.FriendListActivity"
     android:background="@color/dark_blue">
 
     <View
@@ -36,21 +35,15 @@
         android:layout_marginStart="80dp"
         android:layout_marginTop="11.5dp"
         android:fontFamily="@font/montserrat_regular"
-        android:text="@string/todolists"
+        android:text="@string/friendList"
         android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <ExpandableListView
-        android:id="@+id/todolist_expandableList"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+    <ListView
         android:layout_marginTop="63dp"
-        android:layout_marginBottom="56dp"
-        android:descendantFocusability="beforeDescendants"
-        android:childDivider="#FFDBB9"
-        android:divider="#FFC895"
-        android:focusable="true"
-        android:focusableInTouchMode="true"/>
+        android:layout_marginBottom="57dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
 
     <LinearLayout
         android:layout_width="wrap_content"
@@ -63,7 +56,7 @@
         android:orientation="horizontal">
 
         <com.google.android.material.floatingactionbutton.FloatingActionButton
-            android:id="@+id/fab"
+            android:id="@+id/button_addFriend"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="end|bottom"
@@ -73,7 +66,6 @@
             app:backgroundTint="@color/white"
             />
     </LinearLayout>
-
 
     <include
         layout="@layout/bottom_menu"
@@ -90,6 +82,4 @@
         android:layout_weight="0"
         app:layout_constraintTop_toBottomOf="parent"
         app:layout_constraintVertical_bias="0.105" />
-
-
 </RelativeLayout>
