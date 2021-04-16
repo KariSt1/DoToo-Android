@@ -62,7 +62,7 @@ public class NewEventDialogFragment extends DialogFragment {
         Spinner dropdown = (Spinner)view.findViewById(R.id.choose_color);
         CheckBox mNotification = (CheckBox)view.findViewById(R.id.checkBox);
 
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colors);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_custom_textcolor, colors);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
         dropdown.setAdapter(adapter);
 
