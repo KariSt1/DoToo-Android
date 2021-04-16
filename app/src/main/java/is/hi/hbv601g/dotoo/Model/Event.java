@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import is.hi.hbv601g.dotoo.R;
+
 public class Event {
 
     @Expose
@@ -105,21 +107,5 @@ public class Event {
     public User getUser() {return mUser;}
 
     public void setUser(User user) {mUser = user;}
-
-
-
-    @SuppressLint("SimpleDateFormat")
-    public WeekViewEvent toWeekViewEvent(){
-
-
-        // Create an week view event.
-        WeekViewEvent weekViewEvent = new WeekViewEvent();
-        weekViewEvent.setName(getTitle());
-        weekViewEvent.setStartTime(getStartDate());
-        weekViewEvent.setEndTime(getEndDate());
-        weekViewEvent.setColor(Color.parseColor(getColor()));
-
-        return weekViewEvent;
-    }
 
 }
