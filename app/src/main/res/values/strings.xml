@@ -36,16 +36,13 @@
     <string name="dialog_newTodolist">New Todo List</string>
     <string name="to_do_title">Title</string>
     <string name="thank_you_sign_up">Thank you for signing up </string>
-<<<<<<< HEAD
     <string name="end_date_greater">End date should be greater than start date </string>
     <string name="delete_event">Delete event</string>
     <string name="delete_event_confirm">Are you sure you want to delete this event ?</string>
     <string name="yes">Yes</string>
     <string name="no">No</string>
-=======
     <string name="dialog_newFriend">Add friend</string>
     <string name="dialog_newFriendUsername">Username</string>
     <string name="expand_icon">Expand icon</string>
->>>>>>> dd2ed4a2cc557b590b06c3bfdabc4184ab70395e
 
 </resources>

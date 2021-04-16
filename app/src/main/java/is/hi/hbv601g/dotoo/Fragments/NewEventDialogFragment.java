@@ -21,6 +21,8 @@ import android.widget.TimePicker;
 import android.widget.CheckBox;
 import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -108,7 +110,10 @@ public class NewEventDialogFragment extends DialogFragment {
                         //Put selected time into startdate variable
                         sd.set(Calendar.HOUR_OF_DAY, hour);
                         sd.set(Calendar.MINUTE, minute);
-                        mStartTime.setText(hour + ":" + minute);
+                        Date date = sd.getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                        String strStartDate = dateFormat.format(date);
+                        mStartTime.setText(strStartDate);
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
                 tpd.show();
@@ -149,7 +154,10 @@ public class NewEventDialogFragment extends DialogFragment {
                     public void onTimeSet(TimePicker view, int hour, int minute) {
                         ed.set(Calendar.HOUR_OF_DAY, hour);
                         ed.set(Calendar.MINUTE, minute);
-                        mEndTime.setText(hour + ":" + minute);
+                        Date date = ed.getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                        String strEndDate = dateFormat.format(date);
+                        mEndTime.setText(strEndDate);
 
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
