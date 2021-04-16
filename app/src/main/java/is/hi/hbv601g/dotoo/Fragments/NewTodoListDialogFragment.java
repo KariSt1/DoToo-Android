@@ -69,7 +69,7 @@ public class NewTodoListDialogFragment extends DialogFragment {
         //create a list of items for the spinner.
 
         //create an adapter to describe how the items are displayed
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), android.R.layout.simple_spinner_dropdown_item, colors);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_custom_textcolor, colors);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
         dropdown.setAdapter(adapter);
 

@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".Fragments.NewFriendDialogFragment">
+
+    <EditText
+        android:id="@+id/new_friend_username"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="16dp"
+        android:layout_marginTop="16dp"
+        android:layout_marginRight="16dp"
+        android:layout_marginBottom="4dp"
+        android:hint="@string/dialog_newFriendUsername"
+        android:backgroundTint="@color/light_blue"
+        android:fontFamily="@font/montserrat_regular"
+        android:inputType="text" />
+
+</FrameLayout>
