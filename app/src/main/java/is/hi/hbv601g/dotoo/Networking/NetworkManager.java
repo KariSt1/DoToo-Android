@@ -275,23 +275,6 @@ public class NetworkManager {
     }
 
     public void newEvent(Event newEvent) {
-      //  GsonBuilder builder = new GsonBuilder();
-      //  builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
-      //  Gson gson = builder.create();
-        /*
-        Gson gson = new Gson();
-        String jsonString = gson.toJson(newEvent);
-        System.out.println("GSON newEvent: " + jsonString);
-
-        JSONObject json = new JSONObject();
-        try {
-            json = new JSONObject(jsonString);
-        } catch (JSONException e) {
-            System.out.println("Villa við að búa til JSON array í post event");
-            e.printStackTrace();
-        }
-
-         */
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date sd = newEvent.getStartDate().getTime();
         String strStartDate = dateFormat.format(sd);
@@ -334,6 +317,38 @@ public class NetworkManager {
                 }
             }
         };;
+        mQueue.add(request); // volley sér um að keyra þetta request
+    }
+
+    public void deleteEvent(Long id) {
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", mUser.getUsername());
+            json.put("password", mUser.getPassword());
+            json.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Delete event body: " + json.toString());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deleteEvent", json, response -> {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að deleta event");
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 

@@ -61,6 +61,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                     weekViewEvent.setName(event.getTitle());
                     weekViewEvent.setStartTime(event.getStartDate());
                     weekViewEvent.setEndTime(event.getEndDate());
+                    weekViewEvent.setId(event.getId());
                     setEventColor(event,weekViewEvent);
 
                     mNewEvents.add(weekViewEvent);
@@ -224,17 +225,23 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
-        alertDialogBuilder.setTitle("Delete event");
+        alertDialogBuilder.setTitle(R.string.delete_event);
         alertDialogBuilder
-                .setMessage("Are you sure you want to delete this event ?");
+                .setMessage(R.string.delete_event_confirm);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mNewEvents.remove(event);
+                NetworkManager networkManager = NetworkManager.getInstance(CalendarActivity.this);
+                try {
+                    networkManager.deleteEvent(event.getId());
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
                 mWeekView.notifyDatasetChanged();
             }
         });
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // if this button is clicked, just close
                 // the dialog box and do nothing

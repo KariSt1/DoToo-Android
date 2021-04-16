@@ -19,9 +19,13 @@ import android.widget.EditText;
 import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
 import java.util.Calendar;
+import java.util.Date;
 
+import is.hi.hbv601g.dotoo.Activities.CalendarActivity;
+import is.hi.hbv601g.dotoo.Activities.SignupActivity;
 import is.hi.hbv601g.dotoo.R;
 
 public class NewEventDialogFragment extends DialogFragment {
@@ -162,6 +166,11 @@ public class NewEventDialogFragment extends DialogFragment {
                     public void onClick(DialogInterface dialog, int id) {
                         String title = mTitle.getText().toString();
                         String color = dropdown.getSelectedItem().toString();
+                        if (ed.getTime().before(sd.getTime()) || ed.getTime().equals(sd.getTime())) {
+                            Toast.makeText(getContext(), R.string.end_date_greater,Toast.LENGTH_SHORT).show();
+                            NewEventDialogFragment.this.getDialog().cancel();
+                        }
+
                         boolean giveNotification = false;
                         if(mNotification.isChecked()){
                             System.out.println("Notification was checked.");
