@@ -25,6 +25,7 @@ import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Locale;
 
 import is.hi.hbv601g.dotoo.Activities.CalendarActivity;
 import is.hi.hbv601g.dotoo.Activities.SignupActivity;
@@ -111,7 +112,7 @@ public class NewEventDialogFragment extends DialogFragment {
                         sd.set(Calendar.HOUR_OF_DAY, hour);
                         sd.set(Calendar.MINUTE, minute);
                         Date date = sd.getTime();
-                        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
                         String strStartDate = dateFormat.format(date);
                         mStartTime.setText(strStartDate);
                     }
@@ -155,7 +156,7 @@ public class NewEventDialogFragment extends DialogFragment {
                         ed.set(Calendar.HOUR_OF_DAY, hour);
                         ed.set(Calendar.MINUTE, minute);
                         Date date = ed.getTime();
-                        DateFormat dateFormat = new SimpleDateFormat("hh:mm");
+                        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
                         String strEndDate = dateFormat.format(date);
                         mEndTime.setText(strEndDate);
 
