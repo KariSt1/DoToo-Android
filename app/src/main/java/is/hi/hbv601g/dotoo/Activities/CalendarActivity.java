@@ -323,17 +323,19 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                     .setSmallIcon(icon)
                     .setContentTitle(appname)
                     .setContentText(message);
+
+            Intent resultIntent = new Intent(context, CalendarActivity.class);
+            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+            stackBuilder.addParentStack(CalendarActivity.class);
+            stackBuilder.addNextIntent(resultIntent);
+            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+            builder.setContentIntent(resultPendingIntent);
+            notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
 
 
 
-        Intent resultIntent = new Intent(context, CalendarActivity.class);
-        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-        stackBuilder.addParentStack(CalendarActivity.class);
-        stackBuilder.addNextIntent(resultIntent);
-        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-        builder.setContentIntent(resultPendingIntent);
-        notificationManager.notify(NOTIFICATION_ID, builder.build());
+
 
     }
 
