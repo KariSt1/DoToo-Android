@@ -60,44 +60,45 @@
             android:inputType="number" />
     </RelativeLayout>
 
+
+    <com.alamkanak.weekview.WeekView
+        android:id="@+id/weekViewHome"
+        android:layout_width="match_parent"
+        android:layout_height="345dp"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="9dp"
+        android:layout_marginEnd="0dp"
+        android:layout_marginBottom="0dp"
+        android:layout_weight="1"
+        android:background="#ffffffff"
+        app:columnGap="4dp"
+        app:dayBackgroundColor="#05000000"
+        app:eventTextColor="@android:color/white"
+        app:headerColumnBackground="#ffffffff"
+        app:headerColumnPadding="8dp"
+        app:headerColumnTextColor="#8f000000"
+        app:headerRowBackgroundColor="#ffefefef"
+        app:headerRowPadding="12dp"
+        app:hourHeight="60dp"
+        app:noOfVisibleDays="3"
+        app:showNowLine="false"
+        app:textSize="12sp"
+        app:todayBackgroundColor="#1848adff" />
+
+
     <ExpandableListView
         android:id="@+id/home_expandableList"
         android:layout_width="wrap_content"
-        android:layout_height="299dp"
+        android:layout_height="345dp"
         android:layout_weight="1"
         android:childDivider="#FFDBB9"
         android:descendantFocusability="afterDescendants"
         android:divider="#FFC895" />
-
-
-        <com.alamkanak.weekview.WeekView
-            android:background="#ffffffff"
-            android:id="@+id/weekViewHome"
-            android:layout_width="match_parent"
-            android:layout_height="280dp"
-            android:layout_alignParentStart="true"
-            android:layout_alignParentTop="true"
-            android:layout_alignParentEnd="true"
-            android:layout_alignParentBottom="true"
-            android:layout_centerHorizontal="true"
-            android:layout_marginStart="0dp"
-            android:layout_marginTop="9dp"
-            android:layout_marginEnd="0dp"
-            android:layout_marginBottom="9dp"
-            android:layout_weight="1"
-            app:columnGap="4dp"
-            app:dayBackgroundColor="#05000000"
-            app:eventTextColor="@android:color/white"
-            app:headerColumnBackground="#ffffffff"
-            app:headerColumnPadding="8dp"
-            app:headerColumnTextColor="#8f000000"
-            app:headerRowBackgroundColor="#ffefefef"
-            app:headerRowPadding="12dp"
-            app:hourHeight="60dp"
-            app:noOfVisibleDays="3"
-            app:showNowLine="false"
-            app:textSize="12sp"
-            app:todayBackgroundColor="#1848adff" />
 
 
     <include
