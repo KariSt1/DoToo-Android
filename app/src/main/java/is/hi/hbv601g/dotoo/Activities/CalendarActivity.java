@@ -11,6 +11,7 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
@@ -293,31 +294,47 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         if(giveNotification) {
             System.out.println("Erum að fara að setja hér á notification.");
-            addNotification(this,"My Notification");
+            addNotification(this,"My Notification", startDate);
 
         }
     }
-    private void addNotification(Context context, String message) {
+    private void addNotification(Context context, String message, Calendar startDate) {
 
         int icon = R.drawable.ic_dotoo_blue;
         long when = System.currentTimeMillis();
+
+        System.out.println("Notificationið á að koma klukkutíma fyrir: " + startDate);
         String appname = context.getResources().getString(R.string.app_name);
-        NotificationManager notificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
+        int NOTIFICATION_ID = 234;
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
-        Notification notification;
-        PendingIntent contentIntent = PendingIntent.getActivity(context, 0,
-                new Intent(context, CalendarActivity.class), 0);
+        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
+            String CHANNEL_ID = "my_channel_01";
+            CharSequence name = "my_channel";
+            String Description = "This is my channel";
+            int importance = NotificationManager.IMPORTANCE_HIGH;
+            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            mChannel.setDescription(Description);
+            mChannel.enableLights(true);
+            mChannel.setLightColor(Color.RED);
+            mChannel.enableVibration(true);
+            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            mChannel.setShowBadge(false);
+            notificationManager.createNotificationChannel(mChannel);
+        }
 
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_dotoo_blue)
+                .setContentTitle(appname)
+                .setContentText(message);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,  "channel_id");
-        notification = builder.setContentIntent(contentIntent)
-                .setSmallIcon(icon)
-                .setTicker(appname).setWhen(0)
-                .setAutoCancel(true).setContentTitle(appname)
-                .setContentText(message).build();
-
-        notificationManager.notify(0, notification);
+        Intent resultIntent = new Intent(context, CalendarActivity.class);
+        TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
+        stackBuilder.addParentStack(CalendarActivity.class);
+        stackBuilder.addNextIntent(resultIntent);
+        PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+        builder.setContentIntent(resultPendingIntent);
+        notificationManager.notify(NOTIFICATION_ID, builder.build());
 
     }
 
