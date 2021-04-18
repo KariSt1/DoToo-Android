@@ -305,26 +305,23 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         System.out.println("Notificationið á að koma klukkutíma fyrir: " + startDate);
         String appname = context.getResources().getString(R.string.app_name);
-        int NOTIFICATION_ID = 234;
+        int NOTIFICATION_ID = 23;
         NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
             String CHANNEL_ID = "my_channel_01";
             CharSequence name = "my_channel";
-            String Description = "This is my channel";
-            int importance = NotificationManager.IMPORTANCE_HIGH;
-            NotificationChannel mChannel = new NotificationChannel(CHANNEL_ID, name, importance);
-            mChannel.setDescription(Description);
-            mChannel.enableLights(true);
-            mChannel.setLightColor(Color.RED);
-            mChannel.enableVibration(true);
-            mChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            mChannel.setShowBadge(false);
-            notificationManager.createNotificationChannel(mChannel);
+            int importance = NotificationManager.IMPORTANCE_LOW;
+            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            notificationChannel.enableLights(true);
+            notificationChannel.setLightColor(Color.RED);
+            notificationChannel.enableVibration(true);
+            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+            notificationManager.createNotificationChannel(notificationChannel);
         }
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-                .setSmallIcon(R.drawable.ic_dotoo_blue)
+                .setSmallIcon(icon)
                 .setContentTitle(appname)
                 .setContentText(message);
 
