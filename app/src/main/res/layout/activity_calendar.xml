@@ -21,7 +21,7 @@
         android:layout_weight="1"
         app:columnGap="2dp"
         app:dayBackgroundColor="#05000000"
-        app:eventTextColor="@android:color/white"
+        app:eventTextColor="@color/text_blue"
         app:headerColumnBackground="#ffffffff"
         app:headerColumnPadding="4dp"
         app:headerColumnTextColor="#8f000000"
