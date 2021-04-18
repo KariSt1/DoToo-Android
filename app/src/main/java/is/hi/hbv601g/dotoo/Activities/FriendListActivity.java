@@ -6,24 +6,47 @@ import androidx.fragment.app.DialogFragment;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.ArrayAdapter;
+import android.widget.ExpandableListView;
+import android.widget.ListView;
+import android.widget.Toast;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.lang.reflect.Array;
+import java.util.ArrayList;
+import java.util.List;
+
+import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
 import is.hi.hbv601g.dotoo.Fragments.NewFriendDialogFragment;
-import is.hi.hbv601g.dotoo.Fragments.NewTodoListDialogFragment;
+import is.hi.hbv601g.dotoo.Model.Friend;
+import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 
 public class FriendListActivity extends AppCompatActivity implements NewFriendDialogFragment.NoticeDialogListener {
 
     protected BottomNavigationView navigationView;
+    private ListView friendList;
+    private ArrayList<String> friends;
+    private ArrayAdapter<String> adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_friend_list);
+
+        friendList = findViewById(R.id.friend_list);
+        friends = new ArrayList<>();
+        friends.add("Jonni");
+        friends.add("Konni");
+        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
+        friendList.setAdapter(adapter);
 
         // floating action button
         FloatingActionButton fab = findViewById(R.id.button_addFriend);
@@ -65,7 +88,23 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
     }
 
     @Override
-    public void onDialogPositiveClick(String name) {
-        System.out.println("Ýtt á add friend");
+    public void onDialogPositiveClick(String username) {
+        addFriend(username);
+    }
+
+    public void addFriend(String username) {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.postAddFriend(username, new NetworkCallback<Friend>() {
+            @Override
+            public void onSuccess(Friend result) {
+                friends.add(result.getName());
+                friendList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Toast.makeText(FriendListActivity.this, errorString, Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }
