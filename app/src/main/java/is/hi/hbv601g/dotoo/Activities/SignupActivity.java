@@ -2,7 +2,9 @@ package is.hi.hbv601g.dotoo.Activities;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -18,6 +20,8 @@ import com.android.volley.toolbox.Volley;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
+import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 import is.hi.hbv601g.dotoo.Model.User;
 
@@ -33,6 +37,8 @@ public class SignupActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
 
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+
         mName = (EditText) findViewById(R.id.signup_name) ;
         mUsername = (EditText) findViewById(R.id.signup_username);
         mPassword =  (EditText) findViewById(R.id.signup_password);
@@ -41,11 +47,6 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void onClick(View v) {
-                //TODO: Move to NetworkManager
-
-                RequestQueue queue = Volley.newRequestQueue(SignupActivity.this);
-                String url = "https://dotoo2.herokuapp.com/signup";
-
                 if(mPassword.getText().toString().equals("")) {
                     mPassword.setError(getString(R.string.signup_no_password));
                     mPassword.requestFocus();
@@ -55,31 +56,20 @@ public class SignupActivity extends AppCompatActivity {
                     mPassword.requestFocus();
                 } else {
                     User user = new User(mUsername.getText().toString(), mName.getText().toString(), mPassword.getText().toString());
-                    //String json = gson.toJson(user);
-                    JSONObject json = new JSONObject();
-                    try {
-                        json.put("username", user.getUsername());
-                        json.put("name", user.getName());
-                        json.put("password", user.getPassword());
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                    }
-
-                    JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, url, json, new Response.Listener<JSONObject>() {
+                    networkManager.postSignup(new NetworkCallback<User>() {
                         @Override
-                        public void onResponse(JSONObject response) {
-                            System.out.println(response);
-                            Toast.makeText(SignupActivity.this,R.string.thank_you_sign_up + user.getName() + "!",Toast.LENGTH_SHORT).show();
+                        public void onSuccess(User result) {
+                            Toast.makeText(SignupActivity.this,"Thank you for signing up " + result.getName() + "!",Toast.LENGTH_SHORT).show();
+                            Intent i = new Intent(SignupActivity.this, HomeActivity.class);
+                            startActivity(i);
                         }
-                    }, new Response.ErrorListener() {
+
                         @Override
-                        public void onErrorResponse(VolleyError error) {
+                        public void onFailure(String errorString) {
                             mUsername.setError(getString(R.string.toast_signup_username_taken));
                             mUsername.requestFocus();
-                            error.printStackTrace();
                         }
-                    });
-                    queue.add(jsonObjectRequest);
+                    }, user);
                 }
             }
         });

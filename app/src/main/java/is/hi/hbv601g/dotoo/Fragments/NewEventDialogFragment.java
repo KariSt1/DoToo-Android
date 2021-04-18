@@ -12,20 +12,31 @@ import androidx.fragment.app.DialogFragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.Spinner;
 import android.widget.TimePicker;
 import android.widget.CheckBox;
+import android.widget.Toast;
 
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
 
+import is.hi.hbv601g.dotoo.Activities.CalendarActivity;
+import is.hi.hbv601g.dotoo.Activities.SignupActivity;
 import is.hi.hbv601g.dotoo.R;
 
 public class NewEventDialogFragment extends DialogFragment {
 
+    String[] colors = new String[]{"yellow", "orange", "red", "green", "blue", "pink", "purple"};
+
     public interface NoticeDialogListener {
-        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime, boolean notifications);
+        public void onDialogPositiveClick(String title, Calendar startTime, Calendar endTime, String color, boolean notifications);
     }
 
     NoticeDialogListener mListener;
@@ -50,12 +61,17 @@ public class NewEventDialogFragment extends DialogFragment {
         LayoutInflater inflater = getActivity().getLayoutInflater();
         View view = inflater.inflate(R.layout.fragment_new_event_dialog, null);
 
-        final EditText mTitle = (EditText)view.findViewById(R.id.new_event_title);
-        final Button mStartDate = (Button) view.findViewById(R.id.new_event_startDate);
-        final Button mStartTime = (Button) view.findViewById(R.id.new_event_startTime);
-        final Button mEndDate = (Button) view.findViewById(R.id.new_event_endDate);
-        final Button mEndTime = (Button)view.findViewById(R.id.new_event_endTime);
-        final CheckBox mNotification = (CheckBox)view.findViewById(R.id.checkBox);
+        EditText mTitle = (EditText)view.findViewById(R.id.new_event_title);
+        Button mStartDate = (Button) view.findViewById(R.id.new_event_startDate);
+        Button mStartTime = (Button) view.findViewById(R.id.new_event_startTime);
+        Button mEndDate = (Button) view.findViewById(R.id.new_event_endDate);
+        Button mEndTime = (Button)view.findViewById(R.id.new_event_endTime);
+        Spinner dropdown = (Spinner)view.findViewById(R.id.choose_color);
+        CheckBox mNotification = (CheckBox)view.findViewById(R.id.checkBox);
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_custom_textcolor, colors);
+        adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
+        dropdown.setAdapter(adapter);
 
         Calendar sd = Calendar.getInstance();
         Calendar ed = Calendar.getInstance();
@@ -95,7 +111,10 @@ public class NewEventDialogFragment extends DialogFragment {
                         //Put selected time into startdate variable
                         sd.set(Calendar.HOUR_OF_DAY, hour);
                         sd.set(Calendar.MINUTE, minute);
-                        mStartTime.setText(hour + ":" + minute);
+                        Date date = sd.getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                        String strStartDate = dateFormat.format(date);
+                        mStartTime.setText(strStartDate);
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
                 tpd.show();
@@ -136,7 +155,10 @@ public class NewEventDialogFragment extends DialogFragment {
                     public void onTimeSet(TimePicker view, int hour, int minute) {
                         ed.set(Calendar.HOUR_OF_DAY, hour);
                         ed.set(Calendar.MINUTE, minute);
-                        mEndTime.setText(hour + ":" + minute);
+                        Date date = ed.getTime();
+                        DateFormat dateFormat = new SimpleDateFormat("HH:mm");
+                        String strEndDate = dateFormat.format(date);
+                        mEndTime.setText(strEndDate);
 
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
@@ -152,6 +174,12 @@ public class NewEventDialogFragment extends DialogFragment {
                     @Override
                     public void onClick(DialogInterface dialog, int id) {
                         String title = mTitle.getText().toString();
+                        String color = dropdown.getSelectedItem().toString();
+                        if (ed.getTime().before(sd.getTime()) || ed.getTime().equals(sd.getTime())) {
+                            Toast.makeText(getContext(), R.string.end_date_greater,Toast.LENGTH_SHORT).show();
+                            NewEventDialogFragment.this.getDialog().cancel();
+                        }
+
                         boolean giveNotification = false;
                         if(mNotification.isChecked()){
                             System.out.println("Notification was checked.");
@@ -160,7 +188,7 @@ public class NewEventDialogFragment extends DialogFragment {
                         else{
                             System.out.println("Notification wasnt checked.");
                         }
-                        mListener.onDialogPositiveClick(title, sd, ed, giveNotification);
+                        mListener.onDialogPositiveClick(title, sd, ed, color, giveNotification);
 
                     }
                 })

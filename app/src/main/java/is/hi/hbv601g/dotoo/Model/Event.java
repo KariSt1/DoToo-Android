@@ -11,6 +11,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
+import is.hi.hbv601g.dotoo.R;
+
 public class Event {
 
     @Expose
@@ -30,10 +32,6 @@ public class Event {
     private String mTitle;
 
     @Expose
-    @SerializedName("category")
-    private String mCategory;
-
-    @Expose
     @SerializedName("color")
     private String mColor;
 
@@ -41,11 +39,10 @@ public class Event {
     @SerializedName("user")
     private User mUser;
 
-    public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
+    public Event(Calendar startDate, Calendar endDate, String title, String color, User user) {
         mStartDate = startDate;
         mEndDate = endDate;
         mTitle = title;
-        mCategory = category;
         mColor = color;
         mUser = user;
     }
@@ -86,14 +83,6 @@ public class Event {
         mTitle = title;
     }
 
-    public String getCategory() {
-        return mCategory;
-    }
-
-    public void setCategory(String category) {
-        mCategory = category;
-    }
-
     public String getColor() {
         return mColor;
     }
@@ -102,18 +91,8 @@ public class Event {
         mColor = color;
     }
 
-    @SuppressLint("SimpleDateFormat")
-    public WeekViewEvent toWeekViewEvent(){
+    public User getUser() {return mUser;}
 
-
-        // Create an week view event.
-        WeekViewEvent weekViewEvent = new WeekViewEvent();
-        weekViewEvent.setName(getTitle());
-        weekViewEvent.setStartTime(getStartDate());
-        weekViewEvent.setEndTime(getEndDate());
-        weekViewEvent.setColor(Color.parseColor(getColor()));
-
-        return weekViewEvent;
-    }
+    public void setUser(User user) {mUser = user;}
 
 }

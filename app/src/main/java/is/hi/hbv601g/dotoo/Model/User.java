@@ -11,6 +11,7 @@
             public String mPassword;
             private List<TodoList> mTodoLists = new ArrayList<>();
             private List<Event> mEvents = new ArrayList<>();
+            private int mStreak;
 
             public String getUsername() {
             return mUsername;
@@ -34,6 +35,14 @@
 
             public void setPassword(String password) {
             mPassword = password;
+            }
+
+            public int getmStreak() {
+                return mStreak;
+            }
+
+            public void setmStreak(int mStreak) {
+                this.mStreak = mStreak;
             }
 
             public User(String username, String name, String password) {

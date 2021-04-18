@@ -32,13 +32,19 @@ import org.json.JSONObject;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 import is.hi.hbv601g.dotoo.Activities.HomeActivity;
 import is.hi.hbv601g.dotoo.Activities.LoginActivity;
+import is.hi.hbv601g.dotoo.Activities.SignupActivity;
 import is.hi.hbv601g.dotoo.Model.Event;
+import is.hi.hbv601g.dotoo.Model.Friend;
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
@@ -51,7 +57,7 @@ public class NetworkManager {
    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-  // private static final String BASE_URL = "http://10.0.2.2:8080/";
+   //private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -101,6 +107,17 @@ public class NetworkManager {
                 Gson gson = new Gson (); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
+
+                //System.out.println("Todolistbank: " + todoListBank);
+                //System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
+                //System.out.println("Todolistbank isfinished: " + todoListBank.get(0).isFinished());
+                int finishedLists = 0;
+                for(int i = 0; i < todoListBank.size(); i++) {
+                    if(todoListBank.get(i).isFinished()) finishedLists++;
+                }
+                mUser.setmStreak(finishedLists);
+                System.out.println("finished lists: " + finishedLists);
+
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
@@ -185,6 +202,39 @@ public class NetworkManager {
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 
+    public void postSignup(final NetworkCallback<User> callback, User user) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", user.getUsername());
+            json.put("name", user.getName());
+            json.put("password", user.getPassword());
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, BASE_URL + "/signup", json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                mUser = new User();
+                try {
+                    mUser.setName(response.getString("name"));
+                    mUser.setPassword(response.getString("password"));
+                    mUser.setUsername(response.getString("username"));
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                callback.onSuccess(mUser);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                callback.onFailure("Username taken");
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonObjectRequest);
+    }
+
     public void postLogin(final NetworkCallback<User> callback, String username, String password) {
         JSONObject json = new JSONObject();
         try {
@@ -260,19 +310,25 @@ public class NetworkManager {
     }
 
     public void newEvent(Event newEvent) {
-        GsonBuilder builder = new GsonBuilder();
-        builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
-        Gson gson = builder.create();
-        String jsonString = gson.toJson(newEvent, new TypeToken<Event>() {}.getType());
-        System.out.println("GSON newEvent: " + jsonString);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date sd = newEvent.getStartDate().getTime();
+        String strStartDate = dateFormat.format(sd);
+
+        Date ed = newEvent.getEndDate().getTime();
+        String strEndDate = dateFormat.format(ed);
 
         JSONObject json = new JSONObject();
         try {
-            json = new JSONObject(jsonString);
+            json.put("id",newEvent.getId() );
+            json.put("startDate",strStartDate );
+            json.put("endDate",strEndDate );
+            json.put("title",newEvent.getTitle() );
+            json.put("color",newEvent.getColor() );
         } catch (JSONException e) {
-            System.out.println("Villa við að búa til JSON array í post event");
             e.printStackTrace();
         }
+
+        System.out.println("Json newEvent: " + json);
 
         String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         System.out.println(uri);
@@ -284,7 +340,49 @@ public class NetworkManager {
                 error.printStackTrace();
             }
 
-        });
+        }) {
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };;
+        mQueue.add(request); // volley sér um að keyra þetta request
+    }
+
+    public void deleteEvent(Long id) {
+
+        JSONObject json = new JSONObject();
+        try {
+            json.put("username", mUser.getUsername());
+            json.put("password", mUser.getPassword());
+            json.put("id", id);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        System.out.println("Delete event body: " + json.toString());
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deleteEvent", json, response -> {
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að deleta event");
+                error.printStackTrace();
+            }
+        }){
+            @Override
+            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
+
+                if (response.data == null || response.data.length == 0) {
+                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
+                } else {
+                    return super.parseNetworkResponse(response);
+                }
+            }
+        };
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 
@@ -307,6 +405,46 @@ public class NetworkManager {
                 return Response.error(new ParseError(je));
             }
         }
+    }
+
+    public void postAddFriend(String username, final NetworkCallback<Friend> callback) {
+        JSONObject json = new JSONObject();
+        try {
+            json.put("friendUsername", username );
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+
+        String uri = String.format(BASE_URL + "addFriend?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        System.out.println(uri);
+        JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, uri, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println(response);
+                if(response.has("error")) {
+                    try {
+                        callback.onFailure(response.getString("error"));
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    try {
+                        Friend newFriend = new Friend(response.getString("friendUsername"),
+                                                      response.getString("friendName"),
+                                                      response.getInt("streak"));
+                        callback.onSuccess(newFriend);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                error.printStackTrace();
+            }
+        });
+        mQueue.add(jsonObjectRequest);
     }
 
 }

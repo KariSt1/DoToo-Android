@@ -22,6 +22,9 @@ public class TodoList {
     @SerializedName("items")
     private List<TodoListItem> mItems = new ArrayList<>();
 
+    @SerializedName("isFinished")
+    private boolean mIsFinished;
+
     @SerializedName("user")
     private User mUser;
 
@@ -66,6 +69,14 @@ public class TodoList {
     }
 
     public void addItem(TodoListItem item) { mItems.add(item); }
+
+    public boolean isFinished() {
+        return mIsFinished;
+    }
+
+    public void setIsFinished(boolean mIsFinished) {
+        this.mIsFinished = mIsFinished;
+    }
 
     public User getUser() {
         return mUser;

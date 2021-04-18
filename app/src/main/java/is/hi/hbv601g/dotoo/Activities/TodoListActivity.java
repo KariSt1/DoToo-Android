@@ -99,6 +99,11 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
                         mListAdapter.sendChanges(networkManager);
                         Intent home = new Intent(TodoListActivity.this, HomeActivity.class);
                         startActivity(home);
+                        return true;
+                    case R.id.nav_friendList:
+                        Intent friends = new Intent(TodoListActivity.this, FriendListActivity.class);
+                        startActivity(friends);
+                        return true;
                 }
                 return false;
             }

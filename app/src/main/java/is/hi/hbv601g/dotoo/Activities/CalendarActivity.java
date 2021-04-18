@@ -13,6 +13,7 @@ import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.RectF;
 import android.os.Build;
 import android.os.Bundle;
@@ -60,7 +61,15 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                 mEvents = result;
 
                 for (Event event : mEvents) {
-                    mNewEvents.add(event.toWeekViewEvent());
+                    WeekViewEvent weekViewEvent = new WeekViewEvent();
+                    weekViewEvent.setName(event.getTitle());
+                    weekViewEvent.setStartTime(event.getStartDate());
+                    weekViewEvent.setEndTime(event.getEndDate());
+                    weekViewEvent.setId(event.getId());
+                    setEventColor(event,weekViewEvent);
+
+                    mNewEvents.add(weekViewEvent);
+
                 }
 
                 mWeekView.notifyDatasetChanged();
@@ -84,9 +93,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             }
         });
 
-                /**
-                 * Navigation bar logic
-                 */
+        /**
+         * Navigation bar logic
+         */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
         navigationView.setSelectedItemId(R.id.nav_calendar);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
@@ -102,11 +111,15 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                     case R.id.nav_home:
                         Intent home = new Intent(CalendarActivity.this, HomeActivity.class);
                         startActivity(home);
+                        return true;
+                    case R.id.nav_friendList:
+                        Intent friends = new Intent(CalendarActivity.this, FriendListActivity.class);
+                        startActivity(friends);
+                        return true;
                 }
                 return false;
             }
         });
-
 
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
@@ -216,17 +229,23 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     public void onEventLongPress(WeekViewEvent event, RectF eventRect) {
         AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
                 this);
-        alertDialogBuilder.setTitle("Delete event");
+        alertDialogBuilder.setTitle(R.string.delete_event);
         alertDialogBuilder
-                .setMessage("Are you sure you want to delete this event ?");
+                .setMessage(R.string.delete_event_confirm);
         alertDialogBuilder.setCancelable(false);
-        alertDialogBuilder.setPositiveButton("Yes", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 mNewEvents.remove(event);
+                NetworkManager networkManager = NetworkManager.getInstance(CalendarActivity.this);
+                try {
+                    networkManager.deleteEvent(event.getId());
+                } catch (Exception e) {
+                    System.out.println(e.toString());
+                }
                 mWeekView.notifyDatasetChanged();
             }
         });
-        alertDialogBuilder.setNegativeButton("No", new DialogInterface.OnClickListener() {
+        alertDialogBuilder.setNegativeButton(R.string.no, new DialogInterface.OnClickListener() {
             public void onClick(DialogInterface dialog, int id) {
                 // if this button is clicked, just close
                 // the dialog box and do nothing
@@ -247,14 +266,13 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
      * @param endDate the enddate and time of the new event
      */
     @Override
-    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate, boolean giveNotification) {
+    public void onDialogPositiveClick(String title, Calendar startDate, Calendar endDate, String color, boolean giveNotification) {
         // Make event
         Event mainEvent = new Event();
         mainEvent.setTitle(title);
         mainEvent.setStartDate(startDate);
         mainEvent.setEndDate(endDate);
-        mainEvent.setCategory("skóli");
-        mainEvent.setColor("blue");
+        mainEvent.setColor(color);
 
         mEvents.add(mainEvent);
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -267,6 +285,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
 
         WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
+        setEventColor(mainEvent,event);
 
         mNewEvents.add(event);
         // Refresh the week view. onMonthChange will be called again.
@@ -278,7 +297,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         }
     }
-
     private void addNotification(Context context, String message) {
 
         //int icon = R.drawable.ic_launcher;
@@ -300,9 +318,35 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                 .setAutoCancel(true).setContentTitle(appname)
                 .setContentText(message).build();
 
-        notificationManager.notify(0 , notification);
+        notificationManager.notify(0, notification);
 
     }
 
+
+    public void setEventColor(Event event, WeekViewEvent weekViewEvent) {
+        switch (event.getColor()) {
+            case "yellow":
+                weekViewEvent.setColor(getResources().getColor(R.color.yellow_darker));
+                break;
+            case "orange":
+                weekViewEvent.setColor(getResources().getColor(R.color.orange_darker));
+                break;
+            case "red":
+                weekViewEvent.setColor(getResources().getColor(R.color.red_darker));
+                break;
+            case "green":
+                weekViewEvent.setColor(getResources().getColor(R.color.green_darker));
+                break;
+            case "blue":
+                weekViewEvent.setColor(getResources().getColor(R.color.blue_darker));
+                break;
+            case "pink":
+                weekViewEvent.setColor(getResources().getColor(R.color.pink_darker));
+                break;
+            case "purple":
+                weekViewEvent.setColor(getResources().getColor(R.color.purple_darker));
+                break;
+        }
+    }
 
 }

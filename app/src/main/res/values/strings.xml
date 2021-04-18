@@ -12,15 +12,13 @@
     <string name="fab">floating action button</string>
 
 
-
     <string name="no_username">Username is missing.</string>
     <string name="no_password">Please enter a password.</string>
     <string name="inc_pass_usern">Username and/or password is incorrect.</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="menu_home">Home</string>
     <string name="menu_todolists">TodoLists</string>
     <string name="menu_calendar">Calendar</string>
+    <string name="menu_friends">Friends</string>
     <string name="welcome_user">Welcome %1$s</string>
     <string name="event_title">Title</string>
     <string name="save_event">Save event</string>
@@ -34,8 +32,17 @@
     <string name="event_endDate">End date</string>
     <string name="todolists">TODOLISTS</string>
     <string name="home">HOME</string>
+    <string name="friendList">FRIENDS</string>
     <string name="dialog_newTodolist">New Todo List</string>
     <string name="to_do_title">Title</string>
     <string name="thank_you_sign_up">Thank you for signing up </string>
-
+    <string name="end_date_greater">End date should be greater than start date </string>
+    <string name="delete_event">Delete event</string>
+    <string name="delete_event_confirm">Are you sure you want to delete this event ?</string>
+    <string name="yes">Yes</string>
+    <string name="no">No</string>
+    <string name="dialog_newFriend">Add friend</string>
+    <string name="dialog_newFriendUsername">Username</string>
+    <string name="expand_icon">Expand icon</string>
+    <string name="favorite_todolists">FAVORITE TODOLISTS</string>
 </resources>

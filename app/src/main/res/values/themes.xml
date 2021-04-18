@@ -27,6 +27,13 @@
     </style>
 
     <style name="DialogTheme" parent="Theme.AppCompat.Light.Dialog">
-        <item name="colorAccent">@color/light_blue</item>
+        <item name="colorAccent">@color/text_blue</item>
+        <item name="android:textColorPrimary">@color/text_blue</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
+    </style>
+
+    <style name="SpinnerTheme">
+        <item name="android:textColor">@color/text_blue</item>
+        <item name="android:fontFamily">@font/montserrat_regular</item>
     </style>
 </resources>
