@@ -269,7 +269,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mainEvent.setStartDate(startDate);
         mainEvent.setEndDate(endDate);
         mainEvent.setColor(color);
-        mainEvent.setCategory("skóli");
 
         mEvents.add(mainEvent);
         NetworkManager networkManager = NetworkManager.getInstance(this);

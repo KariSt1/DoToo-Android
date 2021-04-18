@@ -32,10 +32,6 @@ public class Event {
     private String mTitle;
 
     @Expose
-    @SerializedName("category")
-    private String mCategory;
-
-    @Expose
     @SerializedName("color")
     private String mColor;
 
@@ -43,11 +39,10 @@ public class Event {
     @SerializedName("user")
     private User mUser;
 
-    public Event(Calendar startDate, Calendar endDate, String title, String category, String color, User user) {
+    public Event(Calendar startDate, Calendar endDate, String title, String color, User user) {
         mStartDate = startDate;
         mEndDate = endDate;
         mTitle = title;
-        mCategory = category;
         mColor = color;
         mUser = user;
     }
@@ -86,14 +81,6 @@ public class Event {
 
     public void setTitle(String title) {
         mTitle = title;
-    }
-
-    public String getCategory() {
-        return mCategory;
-    }
-
-    public void setCategory(String category) {
-        mCategory = category;
     }
 
     public String getColor() {

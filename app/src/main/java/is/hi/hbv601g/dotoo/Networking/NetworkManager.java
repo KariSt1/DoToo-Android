@@ -52,10 +52,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+  // private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-   //private static final String BASE_URL = "http://10.0.2.2:8080/";
+   private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -288,7 +288,6 @@ public class NetworkManager {
             json.put("startDate",strStartDate );
             json.put("endDate",strEndDate );
             json.put("title",newEvent.getTitle() );
-            json.put("category",newEvent.getCategory() );
             json.put("color",newEvent.getColor() );
         } catch (JSONException e) {
             e.printStackTrace();
