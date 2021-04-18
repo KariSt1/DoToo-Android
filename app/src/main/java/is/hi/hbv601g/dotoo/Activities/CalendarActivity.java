@@ -310,8 +310,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                 new Intent(context, CalendarActivity.class), 0);
 
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(
-                context);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context,  "channel_id");
         notification = builder.setContentIntent(contentIntent)
                 .setSmallIcon(icon)
                 .setTicker(appname).setWhen(0)
