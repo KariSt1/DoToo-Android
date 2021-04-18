@@ -299,7 +299,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     }
     private void addNotification(Context context, String message) {
 
-        //int icon = R.drawable.ic_launcher;
+        int icon = R.drawable.ic_dotoo_blue;
         long when = System.currentTimeMillis();
         String appname = context.getResources().getString(R.string.app_name);
         NotificationManager notificationManager = (NotificationManager) context
@@ -313,7 +313,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         NotificationCompat.Builder builder = new NotificationCompat.Builder(
                 context);
         notification = builder.setContentIntent(contentIntent)
-                //.setSmallIcon(icon)
+                .setSmallIcon(icon)
                 .setTicker(appname).setWhen(0)
                 .setAutoCancel(true).setContentTitle(appname)
                 .setContentText(message).build();
