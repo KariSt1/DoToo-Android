@@ -34,7 +34,6 @@ import java.util.Locale;
 import is.hi.hbv601g.dotoo.Fragments.NewEventDialogFragment;
 
 import is.hi.hbv601g.dotoo.Model.Event;
-import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
