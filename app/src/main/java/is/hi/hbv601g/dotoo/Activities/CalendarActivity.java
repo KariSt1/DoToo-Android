@@ -318,12 +318,14 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             notificationChannel.enableVibration(true);
             notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
             notificationManager.createNotificationChannel(notificationChannel);
+
+            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+                    .setSmallIcon(icon)
+                    .setContentTitle(appname)
+                    .setContentText(message);
         }
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
-                .setSmallIcon(icon)
-                .setContentTitle(appname)
-                .setContentText(message);
+
 
         Intent resultIntent = new Intent(context, CalendarActivity.class);
         TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
