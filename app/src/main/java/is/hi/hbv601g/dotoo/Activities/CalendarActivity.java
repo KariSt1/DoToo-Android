@@ -317,9 +317,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
         long currTime = System.currentTimeMillis();
-        long tensec = 1000*10;
+        long tenSec = 1000*10;
 
-        alarmManager.set(alarmManager.RTC_WAKEUP, currTime + tensec, pendingIntent);
+        alarmManager.setExact(alarmManager.RTC_WAKEUP, currTime + tenSec, pendingIntent);
     }
 
     private void createNotificationChannel(){
