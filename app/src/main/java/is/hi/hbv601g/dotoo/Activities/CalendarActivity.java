@@ -31,9 +31,11 @@ import com.alamkanak.weekview.WeekViewEvent;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
+import java.text.DateFormat;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
@@ -303,37 +305,27 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         int icon = R.drawable.ic_dotoo_blue;
         long when = System.currentTimeMillis();
 
-        System.out.println("Notificationið á að koma klukkutíma fyrir: " + startDate.toString());
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+        Date sd = startDate.getTime();
+        String strStartDate = dateFormat.format(sd);
+
+        System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate;
         String appname = context.getResources().getString(R.string.app_name);
 
+        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "M_CH_ID");
 
-        if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            final String NOTIFICATION_CHANNEL_ID = "4655";
-            //Notification Channel
-            CharSequence NOTIFICATION_CHANNEL_NAME = "NOTIFICATION_CHANNEL_NAME";
-            int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.RED);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
+        notificationBuilder.setAutoCancel(true)
+                .setDefaults(Notification.DEFAULT_ALL)
+                .setWhen(System.currentTimeMillis())
+                .setSmallIcon(icon)
+                .setTicker("Hearty365")
+                .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
+                .setContentTitle(appname)
+                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
+                .setContentInfo("Info");
 
-
-            final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
-                    .setDefaults(Notification.DEFAULT_ALL)
-                    .setSmallIcon(icon)
-                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
-                    .setSound(null)
-                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
-
-            Intent resultIntent = new Intent(context, CalendarActivity.class);
-            TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
-            stackBuilder.addParentStack(CalendarActivity.class);
-            stackBuilder.addNextIntent(resultIntent);
-            PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
-            builder.setContentIntent(resultPendingIntent);
-        }
-
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        notificationManager.notify(1, notificationBuilder.build());
 
     }
 
