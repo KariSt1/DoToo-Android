@@ -3,6 +3,7 @@ package is.hi.hbv601g.dotoo.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlarmManager;
@@ -54,6 +55,8 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
     List<Event> mEvents = new ArrayList<Event>();
     private static final String TAG = "CalendarActivity";
     FloatingActionButton mEventButton;
+
+    public static final int NOTIFICATION_ID = 888;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -311,15 +314,32 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         String strStartDate = dateFormat.format(sd);
         System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate);
 
-        Intent intent = new Intent(CalendarActivity.this, ReminderBroadcast.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(CalendarActivity.this, 0, intent, 0);
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+                .setSmallIcon(R.drawable.ic_dotoo_blue)
+                .setContentTitle("Event reminder!")
+                .setContentText("You have an upcoming event.")
+                .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                // Set the intent that will fire when the user taps the notification
+                .setContentIntent(pendingIntent)
+                .setAutoCancel(true);
+
+        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+
+        // notificationId is a unique int for each notification that you must define
+        notificationManager.notify(200, builder.build());
 
         long currTime = System.currentTimeMillis();
         long tenSec = 1000*10;
 
-        alarmManager.setExact(alarmManager.RTC_WAKEUP, currTime + tenSec, pendingIntent);
+
+
+
+
     }
 
     private void createNotificationChannel(){
