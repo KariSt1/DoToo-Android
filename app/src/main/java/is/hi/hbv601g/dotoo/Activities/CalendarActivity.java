@@ -303,26 +303,28 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         int icon = R.drawable.ic_dotoo_blue;
         long when = System.currentTimeMillis();
 
-        System.out.println("Notificationið á að koma klukkutíma fyrir: " + startDate);
+        System.out.println("Notificationið á að koma klukkutíma fyrir: " + startDate.toString());
         String appname = context.getResources().getString(R.string.app_name);
-        int NOTIFICATION_ID = 23;
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+
 
         if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O) {
-            String CHANNEL_ID = "my_channel_01";
-            CharSequence name = "my_channel";
+            final String NOTIFICATION_CHANNEL_ID = "4655";
+            //Notification Channel
+            CharSequence NOTIFICATION_CHANNEL_NAME = "NOTIFICATION_CHANNEL_NAME";
             int importance = NotificationManager.IMPORTANCE_LOW;
-            NotificationChannel notificationChannel = new NotificationChannel(CHANNEL_ID, name, importance);
+            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, NOTIFICATION_CHANNEL_NAME, importance);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
             notificationChannel.setVibrationPattern(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400});
-            notificationManager.createNotificationChannel(notificationChannel);
 
-            NotificationCompat.Builder builder = new NotificationCompat.Builder(context, "CHANNEL_ID")
+
+            final NotificationCompat.Builder builder = new NotificationCompat.Builder(context, NOTIFICATION_CHANNEL_ID)
+                    .setDefaults(Notification.DEFAULT_ALL)
                     .setSmallIcon(icon)
-                    .setContentTitle(appname)
-                    .setContentText(message);
+                    .setVibrate(new long[]{100, 200, 300, 400, 500, 400, 300, 200, 400})
+                    .setSound(null)
+                    .setPriority(NotificationCompat.PRIORITY_DEFAULT);
 
             Intent resultIntent = new Intent(context, CalendarActivity.class);
             TaskStackBuilder stackBuilder = TaskStackBuilder.create(context);
@@ -330,11 +332,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             stackBuilder.addNextIntent(resultIntent);
             PendingIntent resultPendingIntent = stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
             builder.setContentIntent(resultPendingIntent);
-            notificationManager.notify(NOTIFICATION_ID, builder.build());
         }
-
-
-
 
 
     }
