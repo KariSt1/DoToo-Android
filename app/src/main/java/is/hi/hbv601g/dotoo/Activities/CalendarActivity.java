@@ -317,9 +317,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
         long currTime = System.currentTimeMillis();
-        long twentysec = 1000*10;
+        long tensec = 1000*10;
 
-        alarmManager.set(alarmManager.RTC_WAKEUP, currTime + twentysec, pendingIntent);
+        alarmManager.set(alarmManager.RTC_WAKEUP, currTime + tensec, pendingIntent);
     }
 
     private void createNotificationChannel(){
@@ -332,9 +332,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
-        }
-        else{
-            System.out.println("Virkar ekki því við erum með lollipop");
         }
     }
 
