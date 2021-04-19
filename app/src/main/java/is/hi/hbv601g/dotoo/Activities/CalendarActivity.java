@@ -333,6 +333,9 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
             NotificationManager notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
+        else{
+            System.out.println("Virkar ekki því við erum með lollipop");
+        }
     }
 
 
