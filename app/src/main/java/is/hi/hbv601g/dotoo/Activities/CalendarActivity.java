@@ -309,7 +309,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         Date sd = startDate.getTime();
         String strStartDate = dateFormat.format(sd);
 
-        System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate;
+        System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate);
         String appname = context.getResources().getString(R.string.app_name);
 
         NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "M_CH_ID");
