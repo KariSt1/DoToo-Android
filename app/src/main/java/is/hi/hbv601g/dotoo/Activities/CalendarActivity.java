@@ -57,6 +57,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         NetworkManager networkManager = NetworkManager.getInstance(this);
         networkManager.getEvents(new NetworkCallback<List<Event>>() {
             @Override
@@ -86,6 +87,10 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_calendar);
+
+        // fyrir notification á event
+        createNotificationChannel();
+
 
         mEventButton = (FloatingActionButton) findViewById(R.id.button_newEvent);
         mEventButton.setOnClickListener(new View.OnClickListener() {
@@ -296,37 +301,38 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         if(giveNotification) {
             System.out.println("Erum að fara að setja hér á notification.");
-            addNotification(this,"My Notification", startDate);
+            addNotification(startDate);
 
         }
     }
-    private void addNotification(Context context, String message, Calendar startDate) {
-
-        int icon = R.drawable.ic_dotoo_blue;
-        long when = System.currentTimeMillis();
-
-        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
+    private void addNotification(Calendar startDate) {
+        DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date sd = startDate.getTime();
         String strStartDate = dateFormat.format(sd);
-
         System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate);
-        String appname = context.getResources().getString(R.string.app_name);
 
-        NotificationCompat.Builder notificationBuilder = new NotificationCompat.Builder(context, "M_CH_ID");
+        Intent intent = new Intent(CalendarActivity.this, ReminderBroadcast.class);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(CalendarActivity.this, 0, intent, 0);
 
-        notificationBuilder.setAutoCancel(true)
-                .setDefaults(Notification.DEFAULT_ALL)
-                .setWhen(System.currentTimeMillis())
-                .setSmallIcon(icon)
-                .setTicker("Hearty365")
-                .setPriority(Notification.PRIORITY_MAX) // this is deprecated in API 26 but you can still use for below 26. check below update for 26 API
-                .setContentTitle(appname)
-                .setContentText("Lorem ipsum dolor sit amet, consectetur adipiscing elit.")
-                .setContentInfo("Info");
+        AlarmManager alarmManager = (AlarmManager)getSystemService(ALARM_SERVICE);
 
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
-        notificationManager.notify(1, notificationBuilder.build());
+        long currTime = System.currentTimeMillis();
+        long twentysec = 1000*10;
 
+        alarmManager.set(alarmManager.RTC_WAKEUP, currTime + twentysec, pendingIntent);
+    }
+
+    private void createNotificationChannel(){
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            CharSequence name = "ReminderChannel";
+            String description = "Channel for reminder";
+            int importance = NotificationManager.IMPORTANCE_DEFAULT;
+            NotificationChannel channel = new NotificationChannel("notify", name, importance);
+            channel.setDescription(description);
+
+            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager.createNotificationChannel(channel);
+        }
     }
 
 
