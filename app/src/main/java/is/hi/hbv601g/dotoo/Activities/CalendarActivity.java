@@ -335,11 +335,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         long currTime = System.currentTimeMillis();
         long tenSec = 1000*10;
-
-
-
-
-
     }
 
     private void createNotificationChannel(){
