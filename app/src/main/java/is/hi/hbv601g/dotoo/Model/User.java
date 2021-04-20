@@ -37,6 +37,22 @@
             mPassword = password;
             }
 
+            public List<TodoList> getmTodoLists() {
+                return mTodoLists;
+            }
+
+            public void setmTodoLists(List<TodoList> mTodoLists) {
+                this.mTodoLists = mTodoLists;
+            }
+
+            public List<Event> getmEvents() {
+                return mEvents;
+            }
+
+            public void setmEvents(List<Event> mEvents) {
+                this.mEvents = mEvents;
+            }
+
             public int getmStreak() {
                 return mStreak;
             }

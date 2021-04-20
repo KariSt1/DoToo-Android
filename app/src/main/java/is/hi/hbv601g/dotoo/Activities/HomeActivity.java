@@ -6,6 +6,7 @@ import android.util.Log;
 import android.view.MenuItem;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
@@ -34,7 +35,7 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
 
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
-    EditText mStreakView;
+    TextView mStreakView;
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
     List<Long> mDeletedListIds;
@@ -67,7 +68,7 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
 
                 mTodoListView.setAdapter(mListAdapter);
 
-                mStreakView = (EditText) findViewById(R.id.list_streak);
+                mStreakView = (TextView) findViewById(R.id.list_streak);
                 mStreakView.setText(Integer.toString(user.getmStreak()));
 
             }

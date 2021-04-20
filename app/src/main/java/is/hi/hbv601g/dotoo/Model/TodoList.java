@@ -22,7 +22,7 @@ public class TodoList {
     @SerializedName("items")
     private List<TodoListItem> mItems = new ArrayList<>();
 
-    @SerializedName("isFinished")
+    @SerializedName("finished")
     private boolean mIsFinished;
 
     @SerializedName("user")

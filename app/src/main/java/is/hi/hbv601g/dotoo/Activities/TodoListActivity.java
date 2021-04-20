@@ -14,12 +14,14 @@ import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import is.hi.hbv601g.dotoo.Fragments.NewTodoListDialogFragment;
 import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ExpandableListView;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -32,6 +34,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
+    TextView mStreakView;
     List<Button> mFavoriteButtons;
     List<TodoList> mTodoLists;
     List<Long> mDeletedListIds;
@@ -42,6 +45,7 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
     protected void onCreate(Bundle savedInstanceState) {
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
+        User user = networkManager.getUser();
         networkManager.getTodolist(false, new NetworkCallback<List<TodoList>>() {
             @Override
             public void onSuccess(List<TodoList> result) {
@@ -54,6 +58,9 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
                 mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
 
                 mTodoListView.setAdapter(mListAdapter);
+
+                mStreakView = (TextView) findViewById(R.id.list_streak);
+                mStreakView.setText(Integer.toString(user.getmStreak()));
             }
 
             @Override
@@ -109,15 +116,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
             }
         });
 
-       /** toggleFavorite.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                if(toggleFavorite.getBackground().equals(R.drawable.ic_baseline_star_favorite)) {
-                    toggleFavorite.setBackground(getResources().getDrawable(R.drawable.ic_baseline_star_not_favorite));
-                }
-                else toggleFavorite.setBackground(getResources().getDrawable(R.drawable.ic_baseline_star_favorite));
-            }
-        });*/
     }
 
     private void prepareListData() {

@@ -21,6 +21,7 @@ import java.util.List;
 
 import is.hi.hbv601g.dotoo.Model.TodoList;
 import is.hi.hbv601g.dotoo.Model.TodoListItem;
+import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
 
@@ -154,6 +155,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     @Override
     public View getChildView(int groupPosition, int childPosition, boolean isLastChild, View convertView, ViewGroup parent) {
         TodoListItem todoListItem = (TodoListItem) getChild(groupPosition, childPosition);
+        TodoList todoList = (TodoList) getGroup(groupPosition);
 
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
@@ -162,7 +164,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         }
 
         System.out.println("Group: " + groupPosition + " child: " + childPosition);
-        setItemColor(convertView, (TodoList) getGroup(groupPosition));
+        setItemColor(convertView, todoList);
 
         CheckBox itemCheckBox = (CheckBox) convertView.findViewById(R.id.todolist_item_checkbox);
         itemCheckBox.setChecked(todoListItem.getChecked());
@@ -172,6 +174,21 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 if(buttonView.isPressed()) {
                     todoListItem.setChecked(!todoListItem.getChecked());
                     todoListChanged(mTodoLists.get(groupPosition));
+
+                    boolean wasFinished = todoList.isFinished();
+                    boolean finished = true;
+                    for(TodoListItem item : todoList.getItems()) {
+                        if(!item.getChecked()) {
+                            finished = false;
+                            break;
+                        }
+                    }
+
+                    todoList.setIsFinished(finished);
+                    User user = todoList.getUser();
+                    int streak = finished ? 1 : 0;
+                    if(wasFinished) streak -= 1;
+                    user.setmStreak(user.getmStreak() + streak);
                 }
 
             }
