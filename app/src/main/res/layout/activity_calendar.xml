@@ -3,12 +3,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:background="#fff">
-
-    <RelativeLayout
-        android:layout_width="match_parent"
-        android:layout_height="70dp"
-        android:background="@color/dark_blue">
+    android:background="@color/dark_blue">
 
         <View
             android:layout_width="79.445dp"
@@ -39,21 +34,21 @@
             android:text="@string/calendar"
             android:textColor="@color/white"
             android:textSize="30sp" />
-    </RelativeLayout>
 
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
-        android:layout_width="409dp"
-        android:layout_height="524dp"
+        android:layout_width="match_parent"
+        android:layout_height="536dp"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="2dp"
-        android:layout_marginTop="70dp"
+        android:layout_marginStart="0dp"
+        android:layout_marginTop="67dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="-14dp"
         android:layout_weight="1"
+        android:background="#fff"
         app:columnGap="2dp"
         app:dayBackgroundColor="#05000000"
         app:eventTextColor="@color/text_blue"
