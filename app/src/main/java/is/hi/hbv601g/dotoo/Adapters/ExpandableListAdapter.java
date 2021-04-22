@@ -34,14 +34,19 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     private TodoListItem mNewItem;
     private EditText mNewItemEditText;
     private ExpandableListView mListView;
+    private User mUser;
+    private TextView mStreakView;
 
     public ExpandableListAdapter(Context context, List<TodoList> todoLists, List<Long> deletedLists,
-                                 List<TodoList> changedTodoLists, ExpandableListView listView) {
+                                 List<TodoList> changedTodoLists, ExpandableListView listView,
+                                 User user, TextView streakView) {
         this.mContext = context;
         this.mTodoLists = todoLists;
         this.mListView = listView;
         this.mDeletedListIds = deletedLists;
         this.mChangedTodoLists = changedTodoLists;
+        this.mUser = user;
+        this.mStreakView = streakView;
     }
 
     @Override
@@ -185,10 +190,11 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     }
 
                     todoList.setIsFinished(finished);
-                    User user = todoList.getUser();
+                    //User user = todoList.getUser();
                     int streak = finished ? 1 : 0;
-                    if(wasFinished) streak -= 1;
-                    user.setmStreak(user.getmStreak() + streak);
+                    if(wasFinished && !finished) streak -= 1;
+                    mUser.setmStreak(mUser.getmStreak() + streak);
+                    mStreakView.setText(Integer.toString(mUser.getmStreak()));
                 }
 
             }
@@ -337,6 +343,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public void newTodoList(String name, String color) {
         TodoList list = new TodoList();
+        //list.setUser(mUser);
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);

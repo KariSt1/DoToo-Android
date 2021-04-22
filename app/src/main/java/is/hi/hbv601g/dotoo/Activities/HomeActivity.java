@@ -64,12 +64,12 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
 
                 mDeletedListIds = new ArrayList<Long>();
 
-                mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
-
-                mTodoListView.setAdapter(mListAdapter);
-
                 mStreakView = (TextView) findViewById(R.id.list_streak);
                 mStreakView.setText(Integer.toString(user.getmStreak()));
+
+                mListAdapter = new ExpandableListAdapter(HomeActivity.this, mFavouriteLists, mDeletedListIds, mChangedTodoLists, mTodoListView, user, mStreakView);
+
+                mTodoListView.setAdapter(mListAdapter);
 
             }
 

@@ -55,12 +55,12 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
                 mDeletedListIds = new ArrayList<Long>();
 
-                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedListIds, mChangedTodoLists, mTodoListView);
-
-                mTodoListView.setAdapter(mListAdapter);
-
                 mStreakView = (TextView) findViewById(R.id.list_streak);
                 mStreakView.setText(Integer.toString(user.getmStreak()));
+
+                mListAdapter = new ExpandableListAdapter(TodoListActivity.this, mTodoLists, mDeletedListIds, mChangedTodoLists, mTodoListView, user, mStreakView);
+
+                mTodoListView.setAdapter(mListAdapter);
             }
 
             @Override

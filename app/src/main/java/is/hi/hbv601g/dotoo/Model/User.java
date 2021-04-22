@@ -1,6 +1,9 @@
 
         package is.hi.hbv601g.dotoo.Model;
 
+        import com.google.gson.annotations.Expose;
+        import com.google.gson.annotations.SerializedName;
+
         import java.util.ArrayList;
         import java.util.List;
 
@@ -11,6 +14,8 @@
             public String mPassword;
             private List<TodoList> mTodoLists = new ArrayList<>();
             private List<Event> mEvents = new ArrayList<>();
+
+            @SerializedName("finishedTodoLists")
             private int mStreak;
 
             public String getUsername() {

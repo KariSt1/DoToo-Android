@@ -54,7 +54,7 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-   // private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+   //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
    private static final String BASE_URL = "http://10.0.2.2:8080/";
@@ -107,18 +107,18 @@ public class NetworkManager {
                 Gson gson = new Gson(); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
-                mUser.setmTodoLists(todoListBank);
+                //mUser.setmTodoLists(todoListBank);
 
                 //System.out.println("Todolistbank: " + todoListBank);
                 //System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
                 //System.out.println("Todolistbank isfinished: " + todoListBank.get(0).isFinished());
-                int finishedLists = 0;
+                //int finishedLists = 0;
                 for(int i = 0; i < todoListBank.size(); i++) {
                     todoListBank.get(i).setUser(mUser);
-                    if(todoListBank.get(i).isFinished()) finishedLists++;
+                //    if(todoListBank.get(i).isFinished()) finishedLists++;
                 }
-                mUser.setmStreak(finishedLists);
-                System.out.println("finished lists: " + finishedLists);
+                //mUser.setmStreak(finishedLists);
+                //System.out.println("finished lists: " + finishedLists);
 
                 callback.onSuccess(todoListBank);
             }
@@ -181,7 +181,7 @@ public class NetworkManager {
         }
         System.out.println("Changed todolists body: " + json.toString());
 
-        String uri = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        String uri = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s&finishedTodoLists=%3$s", mUser.getUsername(), mUser.getPassword(), mUser.getmStreak());
         System.out.println(uri);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
         }, new Response.ErrorListener() {
@@ -256,6 +256,7 @@ public class NetworkManager {
                     mUser.setName(response.getString("name"));
                     mUser.setPassword(response.getString("password"));
                     mUser.setUsername(response.getString("username"));
+                    mUser.setmStreak(response.getInt("finishedTodoLists"));
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
