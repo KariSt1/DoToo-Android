@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.FriendListAdapter;
 import is.hi.hbv601g.dotoo.Fragments.NewFriendDialogFragment;
 import is.hi.hbv601g.dotoo.Model.Friend;
 import is.hi.hbv601g.dotoo.Model.TodoList;
@@ -33,8 +34,8 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
 
     protected BottomNavigationView navigationView;
     private ListView friendList;
-    private ArrayList<String> friends;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Friend> friends;
+    private FriendListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -93,7 +94,7 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
         networkManager.postAddFriend(username, new NetworkCallback<Friend>() {
             @Override
             public void onSuccess(Friend result) {
-                friends.add(result.getName());
+                friends.add(result);
                 friendList.setAdapter(adapter);
             }
 
@@ -110,13 +111,13 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
             @Override
             public void onSuccess(List<Friend> result) {
                 friends = new ArrayList<>();
-                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
+                //adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
                 for(Friend friend: result) {
                     System.out.println("Vinur: " + friend.getName());
                     System.out.println("Streak: " + friend.getHighestStreak());
-                    friends.add(friend.getName());
-
+                    friends.add(friend);
                 }
+                adapter = new FriendListAdapter(friends, FriendListActivity.this);
                 friendList.setAdapter(adapter);
             }
 
