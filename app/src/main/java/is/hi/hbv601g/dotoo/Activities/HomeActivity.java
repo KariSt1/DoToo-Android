@@ -36,6 +36,7 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
     TextView mStreakView;
+    TextView mQuoteView;
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
     List<Long> mDeletedListIds;
@@ -57,6 +58,8 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
             @Override
             public void onSuccess(String result) {
                 System.out.println("successfully got quote of day: " + result);
+                mQuoteView = (TextView) findViewById(R.id.quoteText);
+                mQuoteView.setText(result);
             }
 
             @Override

@@ -47,4 +47,5 @@
     <string name="expand_icon">Expand icon</string>
     <string name="favorite_todolists">FAVORITE TODOLISTS</string>
     <string name="friend_streak">Friend streak</string>
+    <string name="quote_header">Quote of the day</string>
 </resources>
