@@ -53,6 +53,17 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
         User user = networkManager.getUser();
+        networkManager.getQuoteOfDay(new NetworkCallback<String>() {
+            @Override
+            public void onSuccess(String result) {
+                System.out.println("successfully got quote of day: " + result);
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                System.out.println("failed to get quote of day");
+            }
+        });
         networkManager.getTodolist(true, new NetworkCallback<List<TodoList>>() {
             @Override
             public void onSuccess(List<TodoList> result) {
