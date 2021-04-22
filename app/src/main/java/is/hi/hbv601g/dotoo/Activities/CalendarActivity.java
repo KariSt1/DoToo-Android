@@ -319,7 +319,7 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "CHANNEL_ID")
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
                 .setSmallIcon(R.drawable.ic_dotoo_blue)
                 .setContentTitle("Event reminder!")
                 .setContentText("You have an upcoming event.")
