@@ -89,8 +89,10 @@
         android:layout_marginTop="393dp"
         android:layout_marginBottom="56dp"
         android:childDivider="#FFDBB9"
-        android:descendantFocusability="afterDescendants"
-        android:divider="#FFC895" />
+        android:descendantFocusability="beforeDescendants"
+        android:divider="#FFC895"
+        android:focusable="true"
+        android:focusableInTouchMode="true"/>
 
 
     <include
