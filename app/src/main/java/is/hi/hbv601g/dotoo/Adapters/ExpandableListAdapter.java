@@ -94,6 +94,22 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
         this.mDeletedListIds = mDeletedLists;
     }
 
+    public int updateStreak(TodoList list) {
+        boolean wasFinished = list.isFinished();
+        boolean finished = true;
+        for(TodoListItem item : list.getItems()) {
+            if(!item.getChecked()) {
+                finished = false;
+                break;
+            }
+        }
+
+        list.setIsFinished(finished);
+        int streak = finished ? 1 : 0;
+        if(wasFinished && !finished) streak -= 1;
+        return streak;
+    }
+
     @Override
     public View getGroupView(int groupPosition, boolean isExpanded, View convertView, ViewGroup parent) {
         TodoList todoList = (TodoList) getGroup(groupPosition);
@@ -117,6 +133,10 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                 mListView.setSelectedGroup(groupPosition);
                 mNewItem = new TodoListItem();
                 todoList.addItem(mNewItem);
+
+                int streak = updateStreak(todoList);
+                mUser.setmStreak(mUser.getmStreak() + streak);
+                mStreakView.setText(Integer.toString(mUser.getmStreak()));
                 notifyDataSetChanged();
             }
         });
@@ -180,19 +200,7 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
                     todoListItem.setChecked(!todoListItem.getChecked());
                     todoListChanged(mTodoLists.get(groupPosition));
 
-                    boolean wasFinished = todoList.isFinished();
-                    boolean finished = true;
-                    for(TodoListItem item : todoList.getItems()) {
-                        if(!item.getChecked()) {
-                            finished = false;
-                            break;
-                        }
-                    }
-
-                    todoList.setIsFinished(finished);
-                    //User user = todoList.getUser();
-                    int streak = finished ? 1 : 0;
-                    if(wasFinished && !finished) streak -= 1;
+                    int streak = updateStreak(todoList);
                     mUser.setmStreak(mUser.getmStreak() + streak);
                     mStreakView.setText(Integer.toString(mUser.getmStreak()));
                 }
@@ -255,7 +263,15 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
             @Override
             public void onClick(View v) {
-                mTodoLists.get(groupPosition).getItems().remove(childPosition);
+                TodoList list = mTodoLists.get(groupPosition);
+                TodoListItem item = list.getItems().get(childPosition);
+                boolean checked = item.getChecked();
+                list.getItems().remove(childPosition);
+
+                int streak = updateStreak(list);
+                if(checked && streak > 0) streak -= 1; // lazy fix for deletion
+                mUser.setmStreak(mUser.getmStreak() + streak);
+                mStreakView.setText(Integer.toString(mUser.getmStreak()));
                 todoListChanged(mTodoLists.get(groupPosition));
                 notifyDataSetChanged();
             }
