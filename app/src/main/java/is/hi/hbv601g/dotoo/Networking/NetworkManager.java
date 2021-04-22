@@ -22,6 +22,7 @@ import com.google.gson.GsonBuilder;
 import com.google.gson.JsonDeserializationContext;
 import com.google.gson.JsonDeserializer;
 import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
 import com.google.gson.JsonParseException;
 import com.google.gson.JsonParser;
 import com.google.gson.reflect.TypeToken;
@@ -29,6 +30,7 @@ import com.google.gson.reflect.TypeToken;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import org.json.JSONTokener;
 
 import java.io.UnsupportedEncodingException;
 import java.lang.reflect.Type;
@@ -56,8 +58,10 @@ public class NetworkManager {
 
   //  private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
+    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
-    private static final String BASE_URL = "http://10.0.2.2:8080/";
+
+    // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -454,6 +458,38 @@ public class NetworkManager {
                 System.out.println("Error við að fá vini");
                 error.printStackTrace();
                 callback.onFailure("Error getting friends");
+            }
+        });
+        mQueue.add(request); // volley sér um að keyra þetta request
+
+    }
+
+    public void getQuoteOfDay(final NetworkCallback<String> callback) {
+
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://quotes.rest/qod?language=en", null, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                System.out.println("getting quote of the day " + response);
+
+                String quote = "";
+                try {
+                    JSONArray quoteInfo = response.getJSONObject("contents").getJSONArray("quotes");
+                    quote = quoteInfo.getJSONObject(0).getString("quote");
+                    System.out.print("quote " + quote);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                callback.onSuccess(quote);
+
+            }
+
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að ná í quote");
+                error.printStackTrace();
+                callback.onFailure("Error getting quote of the day");
             }
         });
         mQueue.add(request); // volley sér um að keyra þetta request
