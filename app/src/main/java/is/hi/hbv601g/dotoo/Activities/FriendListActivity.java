@@ -42,11 +42,7 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
         setContentView(R.layout.activity_friend_list);
 
         friendList = findViewById(R.id.friend_list);
-        friends = new ArrayList<>();
-        friends.add("Jonni");
-        friends.add("Konni");
-        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
-        friendList.setAdapter(adapter);
+        getFriends();
 
         // floating action button
         FloatingActionButton fab = findViewById(R.id.button_addFriend);
@@ -98,6 +94,29 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
             @Override
             public void onSuccess(Friend result) {
                 friends.add(result.getName());
+                friendList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Toast.makeText(FriendListActivity.this, errorString, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getFriends() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getFriends(new NetworkCallback<List<Friend>>() {
+            @Override
+            public void onSuccess(List<Friend> result) {
+                friends = new ArrayList<>();
+                adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
+                for(Friend friend: result) {
+                    System.out.println("Vinur: " + friend.getName());
+                    System.out.println("Streak: " + friend.getHighestStreak());
+                    friends.add(friend.getName());
+
+                }
                 friendList.setAdapter(adapter);
             }
 
