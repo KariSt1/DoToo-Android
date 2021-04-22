@@ -56,6 +56,8 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
+  //  private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
@@ -288,20 +290,12 @@ public class NetworkManager {
         CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                //try {
-                    //JSONObject test = (JSONObject) response.get(0);
-                    //System.out.println("Response" +  response.get(0));
-                //} catch(JSONException e) {
-                //    e.printStackTrace();
-                //}
 
                 GsonBuilder builder = new GsonBuilder();
                 builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
                 Gson gson = builder.create();
                 List<Event> eventBank = gson.fromJson(response.toString(), new TypeToken<List<Event>>(){}.getType());
                 callback.onSuccess(eventBank);
-                System.out.println("Eventbank " + eventBank );
-                System.out.println(response.toString());
             }
         }, new Response.ErrorListener() {
             @Override
@@ -314,7 +308,7 @@ public class NetworkManager {
 
     }
 
-    public void newEvent(Event newEvent) {
+    public void newEvent(Event newEvent, NetworkCallback<Event> callback) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss");
         Date sd = newEvent.getStartDate().getTime();
         String strStartDate = dateFormat.format(sd);
@@ -324,7 +318,6 @@ public class NetworkManager {
 
         JSONObject json = new JSONObject();
         try {
-            json.put("id",newEvent.getId() );
             json.put("startDate",strStartDate );
             json.put("endDate",strEndDate );
             json.put("title",newEvent.getTitle() );
@@ -336,26 +329,22 @@ public class NetworkManager {
         System.out.println("Json newEvent: " + json);
 
         String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
-        System.out.println(uri);
-        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, json, response -> {
-        }, new Response.ErrorListener() {
+        JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, json, new Response.Listener<JSONObject>() {
+            @Override
+            public void onResponse(JSONObject response) {
+                GsonBuilder builder = new GsonBuilder();
+                builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
+                Gson gson = builder.create();
+                Event eventBank = gson.fromJson(response.toString(), new TypeToken<Event>(){}.getType());
+                callback.onSuccess(eventBank);
+            }}, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
                 System.out.println("Error við að posta event");
                 error.printStackTrace();
             }
 
-        }) {
-            @Override
-            protected Response<JSONObject> parseNetworkResponse(NetworkResponse response) {
-
-                if (response.data == null || response.data.length == 0) {
-                    return Response.success(null, HttpHeaderParser.parseCacheHeaders(response));
-                } else {
-                    return super.parseNetworkResponse(response);
-                }
-            }
-        };;
+        });
         mQueue.add(request); // volley sér um að keyra þetta request
     }
 

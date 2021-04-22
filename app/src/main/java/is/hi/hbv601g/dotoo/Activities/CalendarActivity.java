@@ -285,22 +285,39 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         mainEvent.setEndDate(endDate);
         mainEvent.setColor(color);
 
-        mEvents.add(mainEvent);
+
+
+
         NetworkManager networkManager = NetworkManager.getInstance(this);
+        /*
         try {
             networkManager.newEvent(mainEvent);
         } catch (Exception e) {
             System.out.println(e.toString());
         }
+         */
 
+        networkManager.newEvent(mainEvent, new NetworkCallback<Event>() {
+            @Override
+            public void onSuccess(Event result) {
+                Event idEvent = result;
+                mainEvent.setId(idEvent.getId());
+                System.out.println("id " + mainEvent.getId());
+                mEvents.add(mainEvent);
 
+                WeekViewEvent event = new WeekViewEvent(mainEvent.getId(),title, startDate, endDate);
+                setEventColor(mainEvent,event);
 
-        WeekViewEvent event = new WeekViewEvent(5,title, startDate, endDate);
-        setEventColor(mainEvent,event);
+                mNewEvents.add(event);
+                // Refresh the week view. onMonthChange will be called again.
+                mWeekView.notifyDatasetChanged();
+            }
 
-        mNewEvents.add(event);
-        // Refresh the week view. onMonthChange will be called again.
-        mWeekView.notifyDatasetChanged();
+            @Override
+            public void onFailure(String errorString) {
+                Log.d(TAG, "Failed to get events: " + errorString);
+            }
+        });
 
         if(giveNotification) {
             System.out.println("Erum að fara að setja hér á notification.");
