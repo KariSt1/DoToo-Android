@@ -38,7 +38,7 @@
     <com.alamkanak.weekview.WeekView
         android:id="@+id/weekView"
         android:layout_width="match_parent"
-        android:layout_height="536dp"
+        android:layout_height="match_parent"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
         android:layout_alignParentEnd="true"
@@ -46,7 +46,7 @@
         android:layout_marginStart="0dp"
         android:layout_marginTop="67dp"
         android:layout_marginEnd="0dp"
-        android:layout_marginBottom="-14dp"
+        android:layout_marginBottom="56dp"
         android:layout_weight="1"
         android:background="#fff"
         app:columnGap="2dp"
