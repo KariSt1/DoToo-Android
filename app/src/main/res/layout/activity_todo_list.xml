@@ -40,11 +40,21 @@
         android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <include
-        layout="@layout/streak_number"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_marginTop="2dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/ic_streak"
+        android:id="@+id/list_streak"
+        android:padding="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="11.5dp"
+        android:textSize="30sp"
+        tools:text="@tools:sample/first_names"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/white"
+        tools:textAlignment="center"/>
+
     <ExpandableListView
         android:id="@+id/todolist_expandableList"
         android:layout_width="match_parent"
