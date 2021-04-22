@@ -22,6 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import is.hi.hbv601g.dotoo.Adapters.ExpandableListAdapter;
+import is.hi.hbv601g.dotoo.Adapters.FriendListAdapter;
 import is.hi.hbv601g.dotoo.Fragments.NewFriendDialogFragment;
 import is.hi.hbv601g.dotoo.Model.Friend;
 import is.hi.hbv601g.dotoo.Model.TodoList;
@@ -33,8 +34,8 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
 
     protected BottomNavigationView navigationView;
     private ListView friendList;
-    private ArrayList<String> friends;
-    private ArrayAdapter<String> adapter;
+    private ArrayList<Friend> friends;
+    private FriendListAdapter adapter;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -42,11 +43,7 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
         setContentView(R.layout.activity_friend_list);
 
         friendList = findViewById(R.id.friend_list);
-        friends = new ArrayList<>();
-        friends.add("Jonni");
-        friends.add("Konni");
-        adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
-        friendList.setAdapter(adapter);
+        getFriends();
 
         // floating action button
         FloatingActionButton fab = findViewById(R.id.button_addFriend);
@@ -97,7 +94,30 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
         networkManager.postAddFriend(username, new NetworkCallback<Friend>() {
             @Override
             public void onSuccess(Friend result) {
-                friends.add(result.getName());
+                friends.add(result);
+                friendList.setAdapter(adapter);
+            }
+
+            @Override
+            public void onFailure(String errorString) {
+                Toast.makeText(FriendListActivity.this, errorString, Toast.LENGTH_SHORT).show();
+            }
+        });
+    }
+
+    public void getFriends() {
+        NetworkManager networkManager = NetworkManager.getInstance(this);
+        networkManager.getFriends(new NetworkCallback<List<Friend>>() {
+            @Override
+            public void onSuccess(List<Friend> result) {
+                friends = new ArrayList<>();
+                //adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
+                for(Friend friend: result) {
+                    System.out.println("Vinur: " + friend.getName());
+                    System.out.println("Streak: " + friend.getHighestStreak());
+                    friends.add(friend);
+                }
+                adapter = new FriendListAdapter(friends, FriendListActivity.this);
                 friendList.setAdapter(adapter);
             }
 

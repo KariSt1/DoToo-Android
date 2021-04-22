@@ -54,10 +54,10 @@ import is.hi.hbv601g.dotoo.R;
 // sækir hluti frá networkinu og skilar til baka í gegnum callback
 public class NetworkManager {
 
-    private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
+    //private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
 
 
-  // private static final String BASE_URL = "http://10.0.2.2:8080/";
+    private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -286,12 +286,12 @@ public class NetworkManager {
         CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
             @Override
             public void onResponse(JSONArray response) {
-                try {
-                    JSONObject test = (JSONObject) response.get(0);
-                    System.out.println("Response" +  response.get(0));
-                } catch(JSONException e) {
-                    e.printStackTrace();
-                }
+                //try {
+                    //JSONObject test = (JSONObject) response.get(0);
+                    //System.out.println("Response" +  response.get(0));
+                //} catch(JSONException e) {
+                //    e.printStackTrace();
+                //}
 
                 GsonBuilder builder = new GsonBuilder();
                 builder.registerTypeAdapter(Calendar.class, new CalendarFromTimestampJsonDeserializer());
@@ -448,6 +448,29 @@ public class NetworkManager {
             }
         });
         mQueue.add(jsonObjectRequest);
+    }
+
+    public void getFriends(final NetworkCallback<List<Friend>> callback) {
+
+        String requestURL = String.format(BASE_URL + "friends?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
+        CustomJsonArrayRequest request = new CustomJsonArrayRequest(Request.Method.GET, requestURL, null, new Response.Listener<JSONArray>() {
+            @Override
+            public void onResponse(JSONArray response) {
+                Gson gson = new Gson(); // nota til að yfirfæra strenginn okkar í object
+                Type listType = new TypeToken<List<Friend>>(){}.getType();
+                List<Friend> friends = gson.fromJson(response.toString(), listType);
+                callback.onSuccess(friends);
+            }
+        }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                System.out.println("Error við að fá vini");
+                error.printStackTrace();
+                callback.onFailure("Error getting friends");
+            }
+        });
+        mQueue.add(request); // volley sér um að keyra þetta request
+
     }
 
 }

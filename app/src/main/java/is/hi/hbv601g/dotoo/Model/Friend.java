@@ -1,8 +1,16 @@
 package is.hi.hbv601g.dotoo.Model;
 
+import com.google.gson.annotations.SerializedName;
+
 public class Friend {
+
+    @SerializedName("username")
     private String mUsername;
+
+    @SerializedName("name")
     private String mName;
+
+    @SerializedName("highestStreak")
     private int mHighestStreak;
 
     public Friend(String username, String name, int highestStreak) {
