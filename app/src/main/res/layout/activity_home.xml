@@ -6,8 +6,6 @@
     android:layout_height="fill_parent"
     android:background="@color/dark_blue"
     android:orientation="vertical"
-    android:padding="2dp"
-    android:paddingLeft="2dp"
     tools:context=".Activities.HomeActivity">
 
     <View
@@ -40,11 +38,36 @@
         android:textColor="@color/white"
         android:textSize="30sp" />
 
-    <include
+    <!--<include
         layout="@layout/streak_number"
         android:layout_width="fill_parent"
         android:layout_height="fill_parent"
         android:layout_marginTop="2dp" />
+    -->
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:drawableStartCompat="@drawable/ic_streak"
+        android:id="@+id/list_streak"
+        android:padding="10dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginEnd="41.5dp"
+        android:textSize="30sp"
+        tools:text="@tools:sample/first_names"
+        android:fontFamily="@font/montserrat_regular"
+        android:textColor="@color/white"
+        tools:textAlignment="center"/>
+
+    <Button
+        android:id="@+id/signout_button"
+        android:layout_width="30dp"
+        android:layout_height="30dp"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="16.5dp"
+        android:layout_marginEnd="11.5dp"
+        android:background="@drawable/ic_logout"/>
 
 
     <TextView
@@ -63,7 +86,7 @@
         android:id="@+id/quoteText"
         android:layout_width="fill_parent"
         android:layout_height="45dp"
-        android:layout_marginLeft="5dp"
+        android:layout_marginStart="5dp"
         android:layout_marginTop="95dp"
         android:text="TextView"
         android:textAlignment="center"
