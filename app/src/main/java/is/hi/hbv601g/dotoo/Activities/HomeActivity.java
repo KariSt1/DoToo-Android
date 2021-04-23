@@ -138,6 +138,14 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
                         return true;
                     case R.id.nav_todolists:
                         mListAdapter.sendChanges(networkManager);
+                        try
+                        {
+                            Thread.sleep(150);
+                        }
+                        catch(InterruptedException ex)
+                        {
+                            Thread.currentThread().interrupt();
+                        }
                         System.out.println("Test");
                         Intent todo = new Intent(HomeActivity.this, TodoListActivity.class);
                         startActivity(todo);

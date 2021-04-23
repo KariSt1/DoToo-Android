@@ -104,6 +104,14 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
                         return true;
                     case R.id.nav_home:
                         mListAdapter.sendChanges(networkManager);
+                        try
+                        {
+                            Thread.sleep(150);
+                        }
+                        catch(InterruptedException ex)
+                        {
+                            Thread.currentThread().interrupt();
+                        }
                         Intent home = new Intent(TodoListActivity.this, HomeActivity.class);
                         startActivity(home);
                         return true;
