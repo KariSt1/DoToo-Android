@@ -17,8 +17,10 @@ import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.RectF;
+import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.SystemClock;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -304,37 +306,69 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
         if(giveNotification) {
             System.out.println("Erum að fara að setja hér á notification.");
-            addNotification(startDate);
+            addNotification(startDate, 0);
 
         }
     }
-    private void addNotification(Calendar startDate) {
+    private void addNotification(Calendar startDate, int notificationId) {
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date sd = startDate.getTime();
         String strStartDate = dateFormat.format(sd);
         System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate);
 
-        // Create an explicit intent for an Activity in your app
-        Intent intent = new Intent(this, ReminderBroadcast.class);
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        PendingIntent pendingIntent = PendingIntent.getActivity(this, 0, intent, 0);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
                 .setSmallIcon(R.drawable.ic_dotoo_blue)
+                .setSound(RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION))
                 .setContentTitle("Event reminder!")
                 .setContentText("You have an upcoming event.")
                 .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                // Set the intent that will fire when the user taps the notification
-                .setContentIntent(pendingIntent)
                 .setAutoCancel(true);
 
-        NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
+        // Create an explicit intent for an Activity in your app
+        Intent intent = new Intent(this, ReminderBroadcast.class);
+        PendingIntent activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
+        builder.setContentIntent(activity);
+
+
+       /*NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
 
         // notificationId is a unique int for each notification that you must define
         notificationManager.notify(200, builder.build());
 
-        long currTime = System.currentTimeMillis();
-        long tenSec = 1000*10;
+*/
+        // linkur á stackið með þessu: https://stackoverflow.com/questions/36902667/how-to-schedule-notification-in-android
+
+
+        Notification notification = builder.build();
+
+        Intent notificationIntent = new Intent(this, ReminderBroadcast.class);
+        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATION_ID, notificationId);
+        notificationIntent.putExtra(ReminderBroadcast.NOTIFICATION, notification);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
+
+
+
+        // current Date
+        Date ed = Calendar.getInstance().getTime(); //event date
+        System.out.println("Current time => " + ed);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
+        String currFormatedDate = df.format(ed);
+
+        // hér þarf að ná að reikna tímann á milli
+        /*
+        long diff = sd.getTime() - ed.getTime();
+        long seconds = diff / 1000;
+        long minutes = seconds / 60;
+        long hours = minutes / 60;
+        long days = hours / 24;
+         */
+
+        long futureInMillis = sd.getTime() - ed.getTime()-(60*60*1000); //tíminn í notification
+
+        AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
+        alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
     }
 
     private void createNotificationChannel(){
