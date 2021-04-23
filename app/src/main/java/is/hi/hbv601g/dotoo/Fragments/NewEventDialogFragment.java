@@ -90,7 +90,12 @@ public class NewEventDialogFragment extends DialogFragment {
                         sd.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                         sd.set(Calendar.MONTH, month);
                         sd.set(Calendar.YEAR, year);
+
+                        ed.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                        ed.set(Calendar.MONTH, month);
+                        ed.set(Calendar.YEAR, year);
                         mStartDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
+                        mEndDate.setText(dayOfMonth + "-" + (month + 1) + "-" + year);
 
                     }
                     }, cal.get(Calendar.YEAR),cal.get(Calendar.MONTH),cal.get(Calendar.DATE));
@@ -111,10 +116,17 @@ public class NewEventDialogFragment extends DialogFragment {
                         //Put selected time into startdate variable
                         sd.set(Calendar.HOUR_OF_DAY, hour);
                         sd.set(Calendar.MINUTE, minute);
-                        Date date = sd.getTime();
+
+                        ed.set(Calendar.HOUR_OF_DAY, ++hour);
+                        ed.set(Calendar.MINUTE, minute);
+
+                        Date sdDate = sd.getTime();
+                        Date edDate = ed.getTime();
                         DateFormat dateFormat = new SimpleDateFormat("HH:mm");
-                        String strStartDate = dateFormat.format(date);
+                        String strStartDate = dateFormat.format(sdDate);
+                        String strEndDate = dateFormat.format(edDate);
                         mStartTime.setText(strStartDate);
+                        mEndTime.setText(strEndDate);
                     }
                 }, cal.get(Calendar.HOUR),cal.get(Calendar.MINUTE),true);
                 tpd.show();

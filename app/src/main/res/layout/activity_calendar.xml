@@ -57,7 +57,7 @@
         app:headerColumnTextColor="#8f000000"
         app:headerRowBackgroundColor="#ffefefef"
         app:headerRowPadding="10dp"
-        app:hourHeight="80dp"
+        app:hourHeight="120dp"
         app:noOfVisibleDays="5"
         app:showNowLine="false"
         app:textSize="10sp"

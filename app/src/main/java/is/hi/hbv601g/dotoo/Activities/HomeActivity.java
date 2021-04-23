@@ -4,6 +4,8 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.MenuItem;
+import android.view.View;
+import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ExpandableListView;
 import android.widget.TextView;
@@ -25,6 +27,7 @@ import java.util.Locale;
 
 import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Model.TodoList;
+import is.hi.hbv601g.dotoo.Model.TodoListItem;
 import is.hi.hbv601g.dotoo.Model.User;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
@@ -36,6 +39,7 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
     ExpandableListAdapter mListAdapter;
     ExpandableListView mTodoListView;
     TextView mStreakView;
+    TextView mQuoteView;
     protected BottomNavigationView navigationView;
     List<TodoList> mFavouriteLists;
     List<Long> mDeletedListIds;
@@ -44,6 +48,7 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
     ArrayList<WeekViewEvent> mNewEvents;
     List<Event> mEvents = new ArrayList<Event>();
     CalendarActivity cal = new CalendarActivity();
+    Button mSignoutButton;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -57,6 +62,8 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
             @Override
             public void onSuccess(String result) {
                 System.out.println("successfully got quote of day: " + result);
+                mQuoteView = (TextView) findViewById(R.id.quoteText);
+                mQuoteView.setText(result);
             }
 
             @Override
@@ -157,6 +164,16 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
         setupDateTimeInterpreter(false);
 
         mNewEvents = new ArrayList<WeekViewEvent>();
+
+        // Signout logic
+        mSignoutButton = findViewById(R.id.signout_button);
+        mSignoutButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent startup = new Intent(HomeActivity.this, StartupActivity.class);
+                startActivity(startup);
+            }
+        });
     }
 
     @Override
