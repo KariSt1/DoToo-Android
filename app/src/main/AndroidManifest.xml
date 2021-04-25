@@ -24,7 +24,7 @@
             android:name=".Activities.CalendarActivity"
             android:windowSoftInputMode="adjustPan" />
 
-        <receiver android:name=".Activities.ReminderBroadcast" />
+        <receiver android:name=".Receivers.ReminderBroadcast" />
 
         <activity
             android:name=".Activities.HomeActivity"

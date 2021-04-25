@@ -3,7 +3,6 @@ package is.hi.hbv601g.dotoo.Activities;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.app.NotificationCompat;
-import androidx.core.app.NotificationManagerCompat;
 import androidx.fragment.app.DialogFragment;
 
 import android.app.AlarmManager;
@@ -12,15 +11,12 @@ import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.app.TaskStackBuilder;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
 import android.graphics.RectF;
 import android.media.RingtoneManager;
 import android.os.Build;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
@@ -48,6 +44,7 @@ import is.hi.hbv601g.dotoo.Model.Event;
 import is.hi.hbv601g.dotoo.Networking.NetworkCallback;
 import is.hi.hbv601g.dotoo.Networking.NetworkManager;
 import is.hi.hbv601g.dotoo.R;
+import is.hi.hbv601g.dotoo.Receivers.ReminderBroadcast;
 
 public class CalendarActivity extends AppCompatActivity implements WeekView.EventLongPressListener, MonthLoader.MonthChangeListener, NewEventDialogFragment.NoticeDialogListener {
 

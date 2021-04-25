@@ -1,4 +1,4 @@
-package is.hi.hbv601g.dotoo.Activities;
+package is.hi.hbv601g.dotoo.Receivers;
 
 import android.app.Notification;
 import android.app.NotificationManager;
