@@ -55,12 +55,9 @@ public class LoginActivity extends AppCompatActivity {
                 networkManager.postLogin(new NetworkCallback<User>() {
                     @Override
                     public void onSuccess(User result) {
-
-                        System.out.println("results í success "+ result);
                         userNetwork = result;
                         Intent i = new Intent(LoginActivity.this, HomeActivity.class);
                         User user = networkManager.getUser();
-                        System.out.println("User í onSuccess: " + user.getName());
                         i.putExtra("is.hi.hbv601g.dotoo.user_result", user.getName());
                         startActivity(i);
                     }
@@ -69,8 +66,6 @@ public class LoginActivity extends AppCompatActivity {
                     public void onFailure(String errorString) {
                         networkManager.setContext(LoginActivity.this);
                         mPassword.requestFocus();
-
-                        Log.d(TAG, "Failed to get todolists: " + errorString);
                     }
                 }, mUsername.getText().toString(), mPassword.getText().toString());
             }

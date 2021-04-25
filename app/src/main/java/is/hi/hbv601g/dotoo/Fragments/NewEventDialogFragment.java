@@ -194,12 +194,7 @@ public class NewEventDialogFragment extends DialogFragment {
 
                         boolean giveNotification = false;
                         if(mNotification.isChecked()){
-                            System.out.println("Notification was checked.");
-                            //Toast.makeText(CalendarActivity.getContext(), "Reminder is set!", Toast.LENGTH_SHORT).show();
                             giveNotification=true;
-                        }
-                        else{
-                            System.out.println("Notification wasnt checked.");
                         }
                         mListener.onDialogPositiveClick(title, sd, ed, color, giveNotification);
 

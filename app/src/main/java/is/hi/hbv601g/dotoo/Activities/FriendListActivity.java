@@ -50,7 +50,6 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Notandi ýtti á floating action button.");
                 DialogFragment dialog = new NewFriendDialogFragment();
                 dialog.show(getSupportFragmentManager(),"newFriend");
             }
@@ -111,10 +110,7 @@ public class FriendListActivity extends AppCompatActivity implements NewFriendDi
             @Override
             public void onSuccess(List<Friend> result) {
                 friends = new ArrayList<>();
-                //adapter = new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, friends);
                 for(Friend friend: result) {
-                    System.out.println("Vinur: " + friend.getName());
-                    System.out.println("Streak: " + friend.getHighestStreak());
                     friends.add(friend);
                 }
                 adapter = new FriendListAdapter(friends, FriendListActivity.this);

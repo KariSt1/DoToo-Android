@@ -69,7 +69,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
             }
         });
 
-        System.out.println("Er í TodoListActivity");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_todo_list);
 
@@ -80,7 +79,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
         fab.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                System.out.println("Notandi ýtti á floating action button.");
                 DialogFragment dialog = new NewTodoListDialogFragment();
                 dialog.show(getSupportFragmentManager(),"newTodoList");
             }
@@ -94,7 +92,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                System.out.println("on navigation item selected");
                 switch(item.getItemId()) {
                     case R.id.nav_calendar:
                         Intent cal = new Intent(TodoListActivity.this, CalendarActivity.class);
@@ -126,41 +123,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
     }
 
-    private void prepareListData() {
-        mTodoLists = new ArrayList<TodoList>();
-        mFavoriteButtons = new ArrayList<Button>();
-        String[] colors = new String[] {"orange", "green", "blue", "yellow", "red", "pink", "purple"};
-
-        // Adding child data
-        for(int i=0;i<5;i++) {
-            TodoList list = new TodoList();
-            list.setId(i);
-            list.setName("List " + i);
-            list.setColor(colors[(int) Math.floor(Math.random()*7)]);
-            if(Math.random() > 0.5) {
-                list.setFavorite(true);
-            } else {
-                list.setFavorite(false);
-            }
-            mTodoLists.add(list);
-            List<TodoListItem> items = new ArrayList<TodoListItem>();
-            for(int j=0;j<5;j++) {
-                TodoListItem item = new TodoListItem();
-                item.setId(5*i+j);
-                item.setDescription("Item " + (5*i+j));
-                if(Math.random() > 0.5) {
-                    item.setChecked(true);
-                } else {
-                    item.setChecked(false);
-                }
-                items.add(item);
-            }
-            mTodoLists.get(i).setItems(items);
-        }
-        System.out.println("TodoListar voru búnir til");
-        System.out.println("Fyrsti listi: " + mTodoLists.get(0).getName());
-    }
-
     @Override
     protected void onStop() {
         NetworkManager networkManager = NetworkManager.getInstance(this);
@@ -170,30 +132,6 @@ public class TodoListActivity extends AppCompatActivity implements NewTodoListDi
 
     @Override
     public void onDialogPositiveClick(String name, String color) {
-
-        System.out.println("erum í newtodolist dialog og klikkað var á save todolist");
         mListAdapter.newTodoList(name, color);
-    }
-
-    public void sendChanges() {
-        NetworkManager networkManager = NetworkManager.getInstance(this);
-        mDeletedListIds = mListAdapter.getDeletedLists();
-        if(mDeletedListIds.size() > 0) {
-            System.out.println("Eyði listum");
-            try {
-                networkManager.deleteTodolist(mDeletedListIds);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-        mChangedTodoLists = mListAdapter.getChangedLists();
-        if(mChangedTodoLists.size() > 0) {
-            System.out.println("Sendi breytta lista");
-            try {
-                networkManager.postTodolists(mChangedTodoLists);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
     }
 }

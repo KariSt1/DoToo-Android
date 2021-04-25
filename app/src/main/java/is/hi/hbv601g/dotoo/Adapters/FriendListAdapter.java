@@ -43,8 +43,6 @@ public class FriendListAdapter extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        //View view = mLayoutInflater.inflate(R.layout.friend_list_view,parent,false);
-
         if(convertView == null) {
             LayoutInflater infalInflater = (LayoutInflater) this.mContext
                     .getSystemService(Context.LAYOUT_INFLATER_SERVICE);

@@ -8,36 +8,6 @@
     android:background="@color/dark_blue"
     >
 
-    <!--
-    <ImageView
-        android:layout_width="150dp"
-        android:layout_height="101.1dp"
-        android:layout_marginStart="30dp"
-        android:layout_marginTop="120dp"
-        android:src="@drawable/ic_dotoo_blue"
-        android:contentDescription="@string/logo" />
-
-    <View
-        android:id="@+id/signup_upper_box"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="44dp"
-        android:background="@drawable/ic_startup_upper_box"
-        />
-
-    <View
-        android:id="@+id/signup_lower_box"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentEnd="true"
-        android:layout_alignParentBottom="true"
-        android:layout_marginTop="82dp"
-        android:background="@drawable/ic_startup_lower_box" /> -->
-
     <View
         android:layout_width="360dp"
         android:layout_height="304dp"

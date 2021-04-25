@@ -137,9 +137,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         // Get a reference for the week view in the layout.
         mWeekView = (WeekView) findViewById(R.id.weekView);
 
-        // Set an action when any event is clicked.
-      //  mWeekView.setOnEventClickListener(this);
-
         // The week view has infinite scrolling horizontally. We have to provide the events of a
         // month every time the month changes on the week view.
         mWeekView.setMonthChangeListener(this);
@@ -291,20 +288,12 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
 
 
         NetworkManager networkManager = NetworkManager.getInstance(this);
-        /*
-        try {
-            networkManager.newEvent(mainEvent);
-        } catch (Exception e) {
-            System.out.println(e.toString());
-        }
-         */
 
         networkManager.newEvent(mainEvent, new NetworkCallback<Event>() {
             @Override
             public void onSuccess(Event result) {
                 Event idEvent = result;
                 mainEvent.setId(idEvent.getId());
-                System.out.println("id " + mainEvent.getId());
                 mEvents.add(mainEvent);
 
                 WeekViewEvent event = new WeekViewEvent(mainEvent.getId(),title, startDate, endDate);
@@ -322,7 +311,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         });
 
         if(giveNotification) {
-            System.out.println("Erum að fara að setja hér á notification.");
             addNotification(startDate, 0);
 
         }
@@ -331,7 +319,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         DateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         Date sd = startDate.getTime();
         String strStartDate = dateFormat.format(sd);
-        System.out.println("Notificationið á að koma klukkutíma fyrir: " + strStartDate);
 
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "notify")
@@ -347,16 +334,6 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         PendingIntent activity = PendingIntent.getActivity(this, notificationId, intent, PendingIntent.FLAG_CANCEL_CURRENT);
         builder.setContentIntent(activity);
 
-
-       /*NotificationManagerCompat notificationManager = NotificationManagerCompat.from(this);
-
-        // notificationId is a unique int for each notification that you must define
-        notificationManager.notify(200, builder.build());
-
-*/
-        // linkur á stackið með þessu: https://stackoverflow.com/questions/36902667/how-to-schedule-notification-in-android
-
-
         Notification notification = builder.build();
 
         Intent notificationIntent = new Intent(this, ReminderBroadcast.class);
@@ -364,23 +341,11 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         notificationIntent.putExtra(ReminderBroadcast.NOTIFICATION, notification);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, notificationId, notificationIntent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-
-
         // current Date
         Date ed = Calendar.getInstance().getTime(); //event date
-        System.out.println("Current time => " + ed);
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
         String currFormatedDate = df.format(ed);
-
-        // hér þarf að ná að reikna tímann á milli
-        /*
-        long diff = sd.getTime() - ed.getTime();
-        long seconds = diff / 1000;
-        long minutes = seconds / 60;
-        long hours = minutes / 60;
-        long days = hours / 24;
-         */
 
         long futureInMillis = sd.getTime() - ed.getTime()-(60*60*1000); //tíminn í notification
 
@@ -427,5 +392,4 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
                 break;
         }
     }
-
 }

@@ -57,9 +57,8 @@ import is.hi.hbv601g.dotoo.R;
 public class NetworkManager {
 
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
-
-
-   // private static final String BASE_URL = "http://10.0.2.2:8080/";
+    // Nota þennan BASE_URL fyrir local database:
+    // private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
@@ -109,25 +108,15 @@ public class NetworkManager {
                 Gson gson = new Gson(); // nota til að yfirfæra strenginn okkar í object
                 Type listType = new TypeToken<List<TodoList>>(){}.getType();
                 List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
-                //mUser.setmTodoLists(todoListBank);
 
-                //System.out.println("Todolistbank: " + todoListBank);
-                //System.out.println("Todolistbank items: " + todoListBank.get(0).getItems().get(0).getDescription());
-                //System.out.println("Todolistbank isfinished: " + todoListBank.get(0).isFinished());
-                //int finishedLists = 0;
                 for(int i = 0; i < todoListBank.size(); i++) {
                     todoListBank.get(i).setUser(mUser);
-                //    if(todoListBank.get(i).isFinished()) finishedLists++;
                 }
-                //mUser.setmStreak(finishedLists);
-                //System.out.println("finished lists: " + finishedLists);
-
                 callback.onSuccess(todoListBank);
             }
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að fá todo lista");
                 error.printStackTrace();
             }
         });
@@ -145,12 +134,10 @@ public class NetworkManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Delete todolists body: " + json.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deletelists", json, response -> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að deleta todo lista");
                 error.printStackTrace();
             }
         }){
@@ -169,27 +156,20 @@ public class NetworkManager {
 
     public void postTodolists(List<TodoList> changedTodoLists) {
         Gson gson = new Gson(); // nota til að yfirfæra strenginn okkar í object
-        // Type listType = new TypeToken<List<TodoList>>(){}.getType();
-        //List<TodoList> todoListBank = gson.fromJson(response.toString(), listType);
         String jsonString = gson.toJson(changedTodoLists);
-        System.out.println("GSON changedTodolists: "+ jsonString);
 
         JSONArray json = new JSONArray();
         try {
             json = new JSONArray(jsonString);
         } catch (JSONException e) {
-            System.out.println("Villa við að búa til JSON array í post todolist");
             e.printStackTrace();
         }
-        System.out.println("Changed todolists body: " + json.toString());
 
         String uri = String.format(BASE_URL + "todolist?username=%1$s&password=%2$s&finishedTodoLists=%3$s", mUser.getUsername(), mUser.getPassword(), mUser.getmStreak());
-        System.out.println(uri);
         JsonArrayRequest request = new JsonArrayRequest(Request.Method.POST, uri, json, response -> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að posta todo listum");
                 error.printStackTrace();
             }
         }) {
@@ -248,8 +228,6 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        System.out.println(json);
-
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "login", json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
@@ -268,7 +246,6 @@ public class NetworkManager {
             @Override
             public void onErrorResponse(VolleyError error) {
                 Toast.makeText(mContext, R.string.inc_pass_usern, Toast.LENGTH_SHORT).show();
-                System.out.println("Fengum error í login");
                 error.printStackTrace();
             }
         });
@@ -298,7 +275,6 @@ public class NetworkManager {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að fá todo lista");
                 error.printStackTrace();
             }
         });
@@ -324,8 +300,6 @@ public class NetworkManager {
             e.printStackTrace();
         }
 
-        System.out.println("Json newEvent: " + json);
-
         String uri = String.format(BASE_URL + "events?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, uri, json, new Response.Listener<JSONObject>() {
             @Override
@@ -338,7 +312,6 @@ public class NetworkManager {
             }}, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að posta event");
                 error.printStackTrace();
             }
 
@@ -356,12 +329,10 @@ public class NetworkManager {
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        System.out.println("Delete event body: " + json.toString());
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.POST, BASE_URL + "deleteEvent", json, response -> {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að deleta event");
                 error.printStackTrace();
             }
         }){
@@ -408,11 +379,9 @@ public class NetworkManager {
         }
 
         String uri = String.format(BASE_URL + "addFriend?username=%1$s&password=%2$s", mUser.getUsername(), mUser.getPassword());
-        System.out.println(uri);
         JsonObjectRequest jsonObjectRequest = new JsonObjectRequest(Request.Method.POST, uri, json, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println(response);
                 if(response.has("error")) {
                     try {
                         callback.onFailure(response.getString("error"));
@@ -453,7 +422,6 @@ public class NetworkManager {
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að fá vini");
                 error.printStackTrace();
                 callback.onFailure("Error getting friends");
             }
@@ -467,31 +435,23 @@ public class NetworkManager {
         JsonObjectRequest request = new JsonObjectRequest(Request.Method.GET, "https://quotes.rest/qod?language=en", null, new Response.Listener<JSONObject>() {
             @Override
             public void onResponse(JSONObject response) {
-                System.out.println("getting quote of the day " + response);
-
                 String quote = "";
                 try {
                     JSONArray quoteInfo = response.getJSONObject("contents").getJSONArray("quotes");
                     quote = quoteInfo.getJSONObject(0).getString("quote");
-                    System.out.print("quote " + quote);
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-
                 callback.onSuccess(quote);
-
             }
 
         }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                System.out.println("Error við að ná í quote");
                 error.printStackTrace();
                 callback.onFailure("Error getting quote of the day");
             }
         });
         mQueue.add(request); // volley sér um að keyra þetta request
-
     }
-
 }

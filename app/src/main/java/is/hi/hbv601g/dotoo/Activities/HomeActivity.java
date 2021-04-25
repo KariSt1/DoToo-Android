@@ -52,7 +52,6 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
-        System.out.println("home activity on create");
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_home);
 
@@ -61,7 +60,6 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
         networkManager.getQuoteOfDay(new NetworkCallback<String>() {
             @Override
             public void onSuccess(String result) {
-                System.out.println("successfully got quote of day: " + result);
                 mQuoteView = (TextView) findViewById(R.id.quoteText);
                 mQuoteView.setText(result);
             }
@@ -75,8 +73,6 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
             @Override
             public void onSuccess(List<TodoList> result) {
                 mFavouriteLists = result;
-
-                System.out.print("Home activity on successs");
 
                 mTodoListView = (ExpandableListView) findViewById(R.id.home_expandableList);
 
@@ -126,7 +122,6 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
          * Navigation bar logic
          */
         navigationView = (BottomNavigationView) findViewById(R.id.bottomNavigationView);
-        System.out.println("found navigation view");
         navigationView.setSelectedItemId(R.id.nav_home);
         navigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -146,10 +141,8 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
                         {
                             Thread.currentThread().interrupt();
                         }
-                        System.out.println("Test");
                         Intent todo = new Intent(HomeActivity.this, TodoListActivity.class);
                         startActivity(todo);
-                        System.out.println("Test2");
                         return true;
                     case R.id.nav_home:
                         return true;
@@ -189,28 +182,6 @@ public class HomeActivity extends AppCompatActivity implements MonthLoader.Month
         NetworkManager networkManager = NetworkManager.getInstance(this);
         mListAdapter.sendChanges(networkManager);
         super.onStop();
-    }
-
-    public void sendChanges() {
-        NetworkManager networkManager = NetworkManager.getInstance(this);
-        mDeletedListIds = mListAdapter.getDeletedLists();
-        if(mDeletedListIds.size() > 0) {
-            System.out.println("Eyði listum");
-            try {
-                networkManager.deleteTodolist(mDeletedListIds);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
-        mChangedTodoLists = mListAdapter.getChangedLists();
-        if(mChangedTodoLists.size() > 0) {
-            System.out.println("Sendi breytta lista");
-            try {
-                networkManager.postTodolists(mChangedTodoLists);
-            } catch (Exception e) {
-                System.out.println(e.toString());
-            }
-        }
     }
 
     @Override

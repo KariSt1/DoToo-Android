@@ -347,19 +347,16 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
     }
 
     public void todoListChanged(TodoList changedTodoList) {
-        System.out.println("Erum í todoListChanged");
         for(TodoList list: mChangedTodoLists) {
             if (list == changedTodoList) {
                 return;
             }
         }
         mChangedTodoLists.add(changedTodoList);
-        System.out.println("Todolista breytt, fjöldi breyttra: " + mChangedTodoLists.size());
     }
 
     public void newTodoList(String name, String color) {
         TodoList list = new TodoList();
-        //list.setUser(mUser);
         list.setName(name);
         list.setColor(color);
         mTodoLists.add(list);
@@ -369,7 +366,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
 
     public void sendChanges(NetworkManager networkManager) {
         if(mDeletedListIds.size() > 0) {
-            System.out.println("Eyði listum");
             try {
                 networkManager.deleteTodolist(mDeletedListIds);
                 mDeletedListIds = new ArrayList<Long>();
@@ -378,7 +374,6 @@ public class ExpandableListAdapter extends BaseExpandableListAdapter {
             }
         }
         if(mChangedTodoLists.size() > 0) {
-            System.out.println("Sendi breytta lista");
             try {
                 networkManager.postTodolists(mChangedTodoLists);
                 mChangedTodoLists = new ArrayList<TodoList>();

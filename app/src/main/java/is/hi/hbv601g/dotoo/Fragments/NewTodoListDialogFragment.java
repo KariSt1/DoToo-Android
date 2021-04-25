@@ -38,8 +38,6 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
     NewTodoListDialogFragment.NoticeDialogListener mListener;
 
-
-
     // Override the Fragment.onAttach() method to instantiate the NoticeDialogListener
     @Override
     public void onAttach(Context context) {
@@ -62,7 +60,6 @@ public class NewTodoListDialogFragment extends DialogFragment {
 
        final EditText mTitle = (EditText)view.findViewById(R.id.new_todo_list_title);
 
-
         //get the spinner from the xml.
         Spinner dropdown = (Spinner)view.findViewById(R.id.color_list);
         //dropdown.setOnItemSelectedListener(getActivity());
@@ -72,8 +69,6 @@ public class NewTodoListDialogFragment extends DialogFragment {
         ArrayAdapter<String> adapter = new ArrayAdapter<>(getActivity(), R.layout.spinner_custom_textcolor, colors);
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);;
         dropdown.setAdapter(adapter);
-
-        //dropdown.setSelection(0);
 
         String selectedColor = dropdown.getSelectedItem().toString();
 
@@ -87,17 +82,13 @@ public class NewTodoListDialogFragment extends DialogFragment {
                         //selectedColor = dropdown.getSelectedItem().toString();
                         String title = mTitle.getText().toString();
                         String color = dropdown.getSelectedItem().toString();
-                        System.out.println("Titill er: " + title );
-                        System.out.println("Valinn litur er: " + color);
 
                         mListener.onDialogPositiveClick(title, color);
-
                     }
                 })
                 .setNegativeButton(R.string.cancel, new DialogInterface.OnClickListener() {
                     public void onClick(DialogInterface dialog, int id) {
                         NewTodoListDialogFragment.this.getDialog().cancel();
-
                     }
                 });
 
