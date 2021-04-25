@@ -1,19 +1,16 @@
 # DoToo-Android
 
-# Code Review
+# Uppsetning
 
-Notið branchið DoTooCodeReview
+Hægt er að clone-a þetta repo og keyra appið í android studio. 
 
-Við erum að keyra serverinn á dotoo2.herokuapp.com
+Serverinn er uppsettur á dotoo2.herokuapp.com
+Þar sem notast er við fría útgáfu af Heroku fer serverinn að sofa ef ekki er send beiðni á hann í hálftíma svo  það ef login/signup virkar ekki til að byrja með þarf að gefa servernum smá tíma til að vakna.
 
 GitHub repo fyrir server: https://github.com/KariSt1/DoToo-Server 
 
-Það er hægt að sign up en það er einnig til notandi:
+Til er notandi á servernum sem er með todolistum og eventum núþegar:
 ```
 username: nonni
 password: 1234
 ```
-
-Client grunnvirknin fyrir todo-lista og events er nánast komin en POST og GET á server í NetworkManager er enn í vinnslu.
-
-Eins og er virkar ekki að búa til nýjan todo lista.
