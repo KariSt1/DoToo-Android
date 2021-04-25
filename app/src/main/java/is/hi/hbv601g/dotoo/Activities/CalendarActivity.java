@@ -345,9 +345,8 @@ public class CalendarActivity extends AppCompatActivity implements WeekView.Even
         Date ed = Calendar.getInstance().getTime(); //event date
 
         SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss", Locale.getDefault());
-        String currFormatedDate = df.format(ed);
 
-        long futureInMillis = sd.getTime() - ed.getTime()-(60*60*1000); //tíminn í notification
+        long futureInMillis = sd.getTime() - ed.getTime()-(60*60*1000); //time til the notification
 
         AlarmManager alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         alarmManager.set(AlarmManager.ELAPSED_REALTIME_WAKEUP, futureInMillis, pendingIntent);
