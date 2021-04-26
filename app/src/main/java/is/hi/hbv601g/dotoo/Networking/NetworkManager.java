@@ -58,7 +58,7 @@ public class NetworkManager {
 
     private static final String BASE_URL = "https://dotoo2.herokuapp.com/";
     // Nota þennan BASE_URL fyrir local database:
-    // private static final String BASE_URL = "http://10.0.2.2:8080/";
+    //private static final String BASE_URL = "http://10.0.2.2:8080/";
 
 
     private static NetworkManager mInstance;
